@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RakeSieve — Lean 4 prime sieve formalization</title>
+  <meta name="description" content="Formally verified natural-number sieves and RakeSieve prime generator in Lean 4." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site">
+    <div class="wrap">
+      <a class="brand" href="index.html">rakesieve</a>
+      <nav>
+        <a class="active" href="index.html">Overview</a>
+        <a href="#theorems">Theorems</a>
+        <a href="#build">Build</a>
+        <a class="github" href="https://github.com/tangentproofs/rakesieve">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <span class="badge">Lean 4 · primes · tangentproofs</span>
+    <h1>RakeSieve</h1>
+    <p class="lead">
+      Natural-number sieves for Lean&nbsp;4: arithmetic sequences, rakes, and a
+      formally verified (if laughably inefficient) prime sieve based on
+      <code>RakeMap</code>. Formerly published as <code>leansieve</code>.
+    </p>
+
+    <div class="card">
+      <h3>Library pieces</h3>
+      <ul class="clean">
+        <li><code>ASeq</code> — single arithmetic sequence (<code>k + d·n</code>)</li>
+        <li><code>Rake</code> — collection of sequences sharing the same delta <code>d</code></li>
+        <li><code>RakeMap</code> — mapping between a rake and subsets of ℕ</li>
+        <li><code>PrimeGen</code> — interface for a prime-generating algorithm</li>
+        <li><code>PrimeSieve</code> — generic logic of Eratosthenes-style sieves</li>
+        <li><code>RakeSieve</code> — rake-based prime sieve (proven correct; not practical)</li>
+      </ul>
+    </div>
+
+    <h2 id="theorems">Paper-facing theorems (<code>Results.lean</code>)</h2>
+    <table>
+      <thead>
+        <tr><th>Theorem</th><th>Meaning</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>results_three_mem_R_two</code></td><td><code>3 ∈ R 2</code> (base rake after sieving 2)</td></tr>
+        <tr><td><code>results_three_le_of_mem_R_two</code></td><td>Every member of <code>R 2</code> is ≥ 3</td></tr>
+        <tr><td><code>results_exists_prime_gt_of_primeGen</code></td><td>Any <code>PrimeGen</code> yields primes past any <code>n</code> (infinitude)</td></tr>
+        <tr><td><code>results_exists_prime_gt_of_simpleGen</code></td><td>Infinitude via <code>SimpleGen</code></td></tr>
+        <tr><td><code>results_exists_prime_gt_of_rakeSieve</code></td><td>Infinitude via <code>RakeSieve</code> as a <code>PrimeGen</code></td></tr>
+      </tbody>
+    </table>
+
+    <h2>How RakeSieve works (sketch)</h2>
+    <p class="muted">
+      Start from <code>ge2 := { d:=1, ks=[2] }</code> and repeatedly partition on the lowest
+      constant term (a prime), keeping residue classes that are not multiples of that prime.
+      Sequence count grows by a factor of <code>P−1</code> at each new prime <code>P</code> — worse than exponential.
+    </p>
+    <pre><code>step: 0 1 2  3   4    5     6       7        8          9
+size: 1 2 8 48 480 5760 92160 1658880 36495360 1021870080</code></pre>
+    <div class="note">
+      For a practical Lean prime sieve see
+      <a href="https://github.com/ykonstant1/esiv">esiv</a>; for counting primes via Selberg,
+      see <a href="https://reservoir.lean-lang.org/@FLDutchmann/selbergSieve">selbergSieve</a>.
+    </div>
+
+    <h2 id="build">Building</h2>
+    <p>Toolchain: <strong><code>leanprover/lean4:v4.35.0-rc1</code></strong> (see <code>lean-toolchain</code>).</p>
+    <pre><code>git clone https://github.com/tangentproofs/rakesieve.git
+cd rakesieve
+lake exe cache get
+lake build</code></pre>
+
+    <footer class="site">
+      <p>
+        <a href="https://github.com/tangentproofs/rakesieve">tangentproofs/rakesieve</a>
+        · Site is documentation only; Lean sources are authoritative.
+      </p>
+    </footer>
+  </main>
+</body>
+</html>

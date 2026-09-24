@@ -1,0 +1,171 @@
+:root {
+  --bg: #0f1419;
+  --surface: #1a2332;
+  --border: #2d3a4d;
+  --text: #e7ecf3;
+  --muted: #9aa8bc;
+  --accent: #6cb6ff;
+  --accent-hover: #9dceff;
+  --ok: #3dd68c;
+  --code-bg: #0b0f14;
+  --link: #6cb6ff;
+  --table-stripe: #151d2a;
+  --radius: 8px;
+  --font: "Segoe UI", system-ui, -apple-system, sans-serif;
+  --mono: "SF Mono", "Cascadia Code", "Fira Code", ui-monospace, monospace;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+a { color: var(--link); text-decoration: none; }
+a:hover { color: var(--accent-hover); text-decoration: underline; }
+
+.wrap { max-width: 920px; margin: 0 auto; padding: 0 1.25rem 3rem; }
+
+header.site {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 0;
+  margin-bottom: 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(8px);
+}
+header.site .wrap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.5rem;
+  padding-bottom: 0;
+}
+header.site .brand {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text);
+  text-decoration: none;
+}
+header.site .brand:hover { color: var(--accent); text-decoration: none; }
+nav { display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; }
+nav a {
+  color: var(--muted);
+  font-size: 0.95rem;
+  padding: 0.2rem 0;
+}
+nav a:hover, nav a.active { color: var(--accent); text-decoration: none; }
+nav a.github {
+  margin-left: auto;
+  color: var(--ok);
+}
+
+h1 { font-size: 1.85rem; margin: 0 0 0.5rem; line-height: 1.25; }
+h2 { font-size: 1.35rem; margin: 2rem 0 0.75rem; border-bottom: 1px solid var(--border); padding-bottom: 0.35rem; }
+h3 { font-size: 1.1rem; margin: 1.5rem 0 0.5rem; color: var(--accent); }
+.lead { color: var(--muted); font-size: 1.05rem; margin: 0 0 1.5rem; }
+.badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  background: #1e3a2f;
+  color: var(--ok);
+  border: 1px solid #2a5a45;
+  border-radius: 999px;
+  padding: 0.15rem 0.65rem;
+  margin-bottom: 0.75rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+  margin: 1rem 0 1.5rem;
+}
+th, td {
+  text-align: left;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--border);
+  vertical-align: top;
+}
+th { background: var(--surface); color: var(--accent); font-weight: 600; }
+tr:nth-child(even) td { background: var(--table-stripe); }
+code, .mono {
+  font-family: var(--mono);
+  font-size: 0.88em;
+}
+td code, p code, li code {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.1rem 0.35rem;
+}
+
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1.1rem;
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+pre code { background: none; border: none; padding: 0; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.1rem 1.25rem;
+  margin: 1rem 0;
+}
+.card h3 { margin-top: 0; }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+  margin: 1.25rem 0;
+}
+.grid a.card {
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 0.15s, transform 0.15s;
+}
+.grid a.card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+.grid a.card h3 { color: var(--accent); }
+.grid a.card p { color: var(--muted); margin: 0; font-size: 0.95rem; }
+
+ul.clean { padding-left: 1.2rem; }
+ul.clean li { margin: 0.35rem 0; }
+.muted { color: var(--muted); }
+.note {
+  border-left: 3px solid var(--accent);
+  padding: 0.6rem 1rem;
+  margin: 1rem 0;
+  background: var(--surface);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+footer.site {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.9rem;
+}

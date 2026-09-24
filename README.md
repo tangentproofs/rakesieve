@@ -2,6 +2,10 @@
 
 > Natural number sieves for Lean 4.
 
+**Docs site:** [https://tangentproofs.github.io/rakesieve/](https://tangentproofs.github.io/rakesieve/)
+
+**Repo:** [`tangentproofs/rakesieve`](https://github.com/tangentproofs/rakesieve) (renamed from `leansieve`).
+
 This library contains some data structures that model the natural numbers as collections of arithmetic sequences.
 
 ---
