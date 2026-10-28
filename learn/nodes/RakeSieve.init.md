@@ -33,6 +33,8 @@ quiz:
 ---
 ## Plain English
 
+**R stands for *residue*.** R p is the set of numbers ≥ 2 that no prime ≤ p divides: what is left after crossing out the multiples of every prime up to p ([R](#/node/R)). For example, R 2 is the odd numbers from 3 up.
+
 `RakeSieve.init` (RakeSieve.lean lines 19–53) is the start state:
 
 - the rake map is [rm_ge2](#/node/RakeMap.rm_ge2) (the rake {2 + n}, i.e. every number ≥ 2) with the multiples of 2 removed by [RakeMap.rem](#/node/RakeMap.rem); its predicate is n ≥ 2 ∧ ¬ 2 ∣ n;

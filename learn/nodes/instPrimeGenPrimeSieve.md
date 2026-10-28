@@ -74,6 +74,8 @@ quiz:
 ---
 ## Plain English
 
+**R stands for *residue*.** R p is the set of numbers ≥ 2 that no prime ≤ p divides: what is left after crossing out the multiples of every prime up to p ([R](#/node/R)). For example, R 2 is the odd numbers from 3 up.
+
 **Instance (`instance : PrimeGen (PrimeSieve α)`, PrimeSieve.lean lines 218–242).** For any type α of sieve states that has a [PrimeSieveState](#/node/PrimeSieveState) and a [PrimeSieveDriver](#/node/PrimeSieveDriver) instance, the wrapper [PrimeSieve](#/node/PrimeSieve) α is a [PrimeGen](#/node/PrimeGen): a prime generator. Concretely:
 
 - its current prime is the state's prime P;

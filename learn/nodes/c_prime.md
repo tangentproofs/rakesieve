@@ -31,6 +31,8 @@ quiz:
 ---
 ## Plain English
 
+**R stands for *residue*.** R p is the set of numbers ≥ 2 that no prime ≤ p divides: what is left after crossing out the multiples of every prime up to p ([R](#/node/R)). For example, R 2 is the odd numbers from 3 up.
+
 **Theorem (`c_prime`, PrimeSieve.lean lines 173–193).** For any driven sieve state g, C g is prime.
 
 Proof by [no_prime_factors_im_no_factors](#/node/no_prime_factors_im_no_factors): C ≥ 2 because C > P ≥ 2 ([c_gt_p](#/node/c_gt_p)). A prime q < C dividing C would be ≤ P, impossible since C ∈ [R](#/node/R) P, or > P, impossible by [no_skipped_prime](#/node/no_skipped_prime).

@@ -494,6 +494,7 @@ function startPage() {
     simplest first. These come from the statement's own mentions, followed down to Mathlib. Whatever the <i>proof</i>
     uses comes later and is not listed here. You have marked <b>${done}</b> of ${STMT.defs.length} of these definitions understood.</p>
     <p class="muted" style="max-width:60rem">Five theorems are exported in <code>Results.lean</code>. The first three statements below say the same thing, Euclid's theorem; they differ only in which prime generator the proof runs. The second card is not a theorem but the instance that says the RakeSieve, stepped, yields each next prime with none skipped: that is where the sieve's correctness lives (see <a href="#/review">the review</a>).</p>
+    <p class="muted" style="max-width:60rem"><b>R stands for <i>residue</i>.</b> In the statements below, <code>R p</code> is the set of numbers ≥ 2 that no prime ≤ p divides: what is left after crossing out the multiples of every prime up to p. So <code>R 2</code> is the odd numbers from 3 up, and the sieve's next prime is always the least element of <code>R p</code> (<a href="#/node/R">more on R</a>).</p>
     <h2>The statements</h2>
     ${HEADLINES.map((id) => stmtCard(id, true)).join("")}
     <h2>Definitions it uses (${STMT.defs.length}), simplest first</h2>

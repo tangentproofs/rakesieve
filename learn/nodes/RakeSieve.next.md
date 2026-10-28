@@ -43,6 +43,8 @@ quiz:
 ---
 ## Plain English
 
+**R stands for *residue*.** R p is the set of numbers ≥ 2 that no prime ≤ p divides: what is left after crossing out the multiples of every prime up to p ([R](#/node/R)). For example, R 2 is the odd numbers from 3 up.
+
 `RakeSieve.next rs₀ hC₀ hNS` (RakeSieve.lean lines 55–111) takes a state, a proof that its candidate c is prime, and a proof that no prime lies between p and c ([nosk'](#/node/nosk')). It returns the state with prime c:
 
 1. Package c as the least prime above p (a [MinPrimeGt](#/node/MinPrimeGt)), using [r_gt_p](#/node/r_gt_p) for c > p.

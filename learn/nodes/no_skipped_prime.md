@@ -32,6 +32,8 @@ quiz:
 ---
 ## Plain English
 
+**R stands for *residue*.** R p is the set of numbers ≥ 2 that no prime ≤ p divides: what is left after crossing out the multiples of every prime up to p ([R](#/node/R)). For example, R 2 is the odd numbers from 3 up.
+
 **Theorem (`no_skipped_prime`, PrimeSieve.lean lines 133–151).** For any driven sieve state g there is no prime q with P g < q < C g.
 
 Proof: such a q is ≥ 2, and any prime p ≤ P dividing q would equal q (both prime), but q > P. So q ∈ [R](#/node/R) (P g). The driver's `hRmin` then gives C g ≤ q, contradicting q < C g.

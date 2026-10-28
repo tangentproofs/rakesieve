@@ -34,6 +34,8 @@ quiz:
 ---
 ## Plain English
 
+**R stands for *residue*.** R p is the set of numbers ≥ 2 that no prime ≤ p divides: what is left after crossing out the multiples of every prime up to p ([R](#/node/R)). For example, R 2 is the odd numbers from 3 up.
+
 **Theorem (`r_next`, PrimeSieve.lean lines 60–96).** Let p₁ be the least prime greater than p₀ (a [MinPrimeGt](#/node/MinPrimeGt) p₀). Then for every n:
 
 n ∈ [R](#/node/R) p₀ and p₁ ∤ n **if and only if** n ∈ R p₁.

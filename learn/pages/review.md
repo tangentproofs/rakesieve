@@ -15,6 +15,8 @@
 
 ## The five theorems in Results.lean
 
+Below, R stands for *residue*: [R](#/node/R) p is the set of numbers ≥ 2 that no prime ≤ p divides, what survives after crossing out the multiples of every prime up to p.
+
 | Theorem | Statement | Reading |
 |---|---|---|
 | [results_exists_prime_gt_of_rakeSieve](#/node/results_exists_prime_gt_of_rakeSieve) | ∀ n, ∃ p, p prime ∧ n < p | **Euclid's theorem.** RakeSieve appears only in the proof |

@@ -1,8 +1,8 @@
 ---
 id: RakeSieve.instPrimeSieveStateRakeSieve
 title: The RakeSieve is a sieve state
-summary: 'The proof that the candidate grows reuses the generic r_gt_p: the new candidate is in R of the new prime,
-  so it exceeds the new prime, which is the old candidate.'
+summary: 'The proof that the candidate grows reuses the generic r_gt_p: the new candidate is in the residue R (the
+  survivors of sieving) of the new prime, so it exceeds the new prime, which is the old candidate.'
 review: draft
 authors:
 - grok-bot
@@ -33,5 +33,7 @@ quiz:
   explain: '`next := .next` (RakeSieve.lean line 116).'
 ---
 ## Plain English
+
+**R stands for *residue*.** R p is the set of numbers ≥ 2 that no prime ≤ p divides: what is left after crossing out the multiples of every prime up to p ([R](#/node/R)). For example, R 2 is the odd numbers from 3 up.
 
 `instance : PrimeSieveState RakeSieve` (RakeSieve.lean lines 113–126): P is the state's prime p, C its candidate c, the step is [RakeSieve.next](#/node/RakeSieve.next). The `hNext` proof shows the new p is the old c (by unfolding `next`) and the new c exceeds the old c (the new c is in R (new p), so [r_gt_p](#/node/r_gt_p) applies).

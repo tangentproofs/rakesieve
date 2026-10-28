@@ -1,6 +1,7 @@
 # Explainer nodes for the headline theorems of Results.lean and the instance that carries the
 # sieve's correctness. Written as Python data so the YAML is always valid; tools/write_nodes.py
 # turns each entry into learn/nodes/<id>.md.
+from _terms import PLAIN_R
 NODES = []
 def node(id, title, summary, body, quiz, caveats=(), widgets=None):
     NODES.append(dict(id=id, title=title, summary=summary, body=body, quiz=quiz, caveats=list(caveats), widgets=widgets))
@@ -61,10 +62,7 @@ The proof is one line (Results.lean line 21). The outline below follows it, then
 
 node("instPrimeGenPrimeSieve", "The sieve driver: every PrimeSieve is a prime generator",
  "The sieve's correctness theorem is not a named theorem at all. It is this instance: any sieve state whose candidate is the least survivor gives, step by step, the next prime with none skipped. It is proved once, for every such sieve.",
- r"""
-## Plain English
-
-**Instance (`instance : PrimeGen (PrimeSieve α)`, PrimeSieve.lean lines 218–242).** For any type α of sieve states that has a [PrimeSieveState](#/node/PrimeSieveState) and a [PrimeSieveDriver](#/node/PrimeSieveDriver) instance, the wrapper [PrimeSieve](#/node/PrimeSieve) α is a [PrimeGen](#/node/PrimeGen): a prime generator. Concretely:
+ PLAIN_R + r"""**Instance (`instance : PrimeGen (PrimeSieve α)`, PrimeSieve.lean lines 218–242).** For any type α of sieve states that has a [PrimeSieveState](#/node/PrimeSieveState) and a [PrimeSieveDriver](#/node/PrimeSieveDriver) instance, the wrapper [PrimeSieve](#/node/PrimeSieve) α is a [PrimeGen](#/node/PrimeGen): a prime generator. Concretely:
 
 - its current prime is the state's prime P;
 - one step runs the sieve once ([PrimeSieve.next](#/node/PrimeSieve.next));
@@ -164,10 +162,7 @@ Its value is as a reference point: it shows the [PrimeGen](#/node/PrimeGen) inte
 
 node("results_three_mem_R_two", "3 survives sieving by 2",
  "A fact this small is a headline because it is the sieve's base case: after crossing out multiples of 2, the number 3 is still there. Lean checks it by computation (`decide`), not by reasoning.",
- r"""
-## Plain English
-
-**Theorem (`results_three_mem_R_two`, Results.lean lines 5–6).** 3 ∈ R 2: the number 3 is at least 2 and is not divisible by any prime q ≤ 2.
+ PLAIN_R + r"""**Theorem (`results_three_mem_R_two`, Results.lean lines 5–6).** 3 ∈ R 2: the number 3 is at least 2 and is not divisible by any prime q ≤ 2.
 
 [R](#/node/R) P is the set of numbers that survive a sieve once every prime up to P has crossed out its multiples. So R 2 is the odd numbers from 3 up, and this theorem says 3 is one of them.
 
@@ -189,10 +184,7 @@ Why it matters: the RakeSieve starts with prime p = 2 and candidate c = 3 ([Rake
 
 node("results_three_le_of_mem_R_two", "Nothing in R 2 is smaller than 3",
  "With the previous theorem this pins down the sieve's first candidate: 3 is the *least* survivor after sieving by 2. That is exactly what the sieve needs to know 3 is the next prime.",
- r"""
-## Plain English
-
-**Theorem (`results_three_le_of_mem_R_two`, Results.lean lines 8–9).** Every r ∈ R 2 satisfies 3 ≤ r.
+ PLAIN_R + r"""**Theorem (`results_three_le_of_mem_R_two`, Results.lean lines 8–9).** Every r ∈ R 2 satisfies 3 ≤ r.
 
 Together with [3 ∈ R 2](#/node/results_three_mem_R_two), this says 3 is the minimum of [R](#/node/R) 2. The sieve's start state needs both: its candidate must be in R p (`hCinR`) and below everything else in R p (`hRmin`). See the [RakeSieve](#/node/RakeSieve) structure and RakeSieve.lean lines 48–53.
 

@@ -1,8 +1,8 @@
 ---
 id: three_le_of_mem_R_two
 title: Nothing in R 2 is below 3 (the lemma behind the headline)
-summary: With 3 ∈ R 2 it makes 3 the minimum of R 2, which is exactly what the start state must prove about its
-  candidate.
+summary: R 2, the residue after sieving by 2, is the odd numbers from 3 up. With 3 ∈ R 2 this makes 3 its minimum,
+  which is exactly what the start state must prove about its candidate.
 review: draft
 authors:
 - grok-bot
@@ -30,5 +30,7 @@ quiz:
   explain: '`by_contra h` on PrimeSieve.lean line 32.'
 ---
 ## Plain English
+
+**R stands for *residue*.** R p is the set of numbers ≥ 2 that no prime ≤ p divides: what is left after crossing out the multiples of every prime up to p ([R](#/node/R)). For example, R 2 is the odd numbers from 3 up.
 
 **Theorem (`three_le_of_mem_R_two`, PrimeSieve.lean lines 30–37).** Every r ∈ [R](#/node/R) 2 has 3 ≤ r. Exported as [results_three_le_of_mem_R_two](#/node/results_three_le_of_mem_R_two), which has the proof outline. Used by [RakeSieve.init](#/node/RakeSieve.init).

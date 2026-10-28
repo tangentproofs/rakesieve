@@ -31,6 +31,8 @@ quiz:
 ---
 ## Plain English
 
+**R stands for *residue*.** R p is the set of numbers ≥ 2 that no prime ≤ p divides: what is left after crossing out the multiples of every prime up to p ([R](#/node/R)). For example, R 2 is the odd numbers from 3 up.
+
 **Theorem (`c_gt_p`, PrimeSieve.lean lines 129–131).** For any driven sieve state g, C g > P g.
 
 Because C g ∈ [R](#/node/R) (P g) (the driver's `hCinR`) and everything in R P exceeds P ([r_gt_p](#/node/r_gt_p)). The [driver instance](#/node/instPrimeGenPrimeSieve) uses it for `hP_lt`.

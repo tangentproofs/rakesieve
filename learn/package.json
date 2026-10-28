@@ -6,7 +6,7 @@
   "scripts": {
     "validate": "node tools/build_site.mjs --check",
     "build": "node tools/build_site.mjs",
-    "test": "node tools/test_progress.mjs && node tools/test_leanlines.mjs && node tools/test_statement.mjs && node tools/build_site.mjs --check",
+    "test": "node tools/test_progress.mjs && node tools/test_leanlines.mjs && node tools/test_statement.mjs && node tools/test_terms.mjs && node tools/build_site.mjs --check",
     "serve": "node tools/build_site.mjs && python3 -m http.server -d dist 8765",
     "decls": "python3 tools/scan_decls.py"
   },

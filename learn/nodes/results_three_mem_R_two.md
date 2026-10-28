@@ -47,6 +47,8 @@ quiz:
 ---
 ## Plain English
 
+**R stands for *residue*.** R p is the set of numbers ≥ 2 that no prime ≤ p divides: what is left after crossing out the multiples of every prime up to p ([R](#/node/R)). For example, R 2 is the odd numbers from 3 up.
+
 **Theorem (`results_three_mem_R_two`, Results.lean lines 5–6).** 3 ∈ R 2: the number 3 is at least 2 and is not divisible by any prime q ≤ 2.
 
 [R](#/node/R) P is the set of numbers that survive a sieve once every prime up to P has crossed out its multiples. So R 2 is the odd numbers from 3 up, and this theorem says 3 is one of them.

@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Write learn/nodes/<id>.md from the node data in learn/nodes_src/*.py (keeps the YAML valid)."""
-import importlib.util, os, yaml
+import importlib.util, os, sys, yaml
 SITE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 out = os.path.join(SITE, "nodes")
+sys.path.insert(0, os.path.join(SITE, "nodes_src"))  # node files share wording from nodes_src/_terms.py
 for f in sorted(os.listdir(os.path.join(SITE, "nodes_src"))):
-    if not f.endswith(".py"): continue
+    if not f.endswith(".py") or f.startswith("_"): continue
     spec = importlib.util.spec_from_file_location(f[:-3], os.path.join(SITE, "nodes_src", f))
     m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
     for n in m.NODES:

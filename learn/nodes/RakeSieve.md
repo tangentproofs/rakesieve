@@ -1,8 +1,9 @@
 ---
 id: RakeSieve
 title: 'RakeSieve: a sieve state that carries its own correctness proof'
-summary: 'Each state is data plus three proofs: its rake lists exactly R p, its candidate is in R p, and its candidate
-  is below everything in R p. A wrong state cannot even be constructed.'
+summary: 'Each state is data plus three proofs: its rake lists exactly the residue R p (the survivors of sieving
+  up to p), its candidate is in R p, and its candidate is below everything in R p. A wrong state cannot even be
+  constructed.'
 review: draft
 authors:
 - grok-bot
@@ -35,6 +36,8 @@ quiz:
   explain: '`let c₁ := rs.rake.term 0` (RakeSieve.lean line 88).'
 ---
 ## Plain English
+
+**R stands for *residue*.** R p is the set of numbers ≥ 2 that no prime ≤ p divides: what is left after crossing out the multiples of every prime up to p ([R](#/node/R)). For example, R 2 is the odd numbers from 3 up.
 
 A `RakeSieve` (RakeSieve.lean lines 5–12) has:
 

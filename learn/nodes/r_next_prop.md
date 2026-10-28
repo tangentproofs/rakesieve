@@ -1,8 +1,8 @@
 ---
 id: r_next_prop
 title: 'r_next for predicates: how a sieve tracks R step by step'
-summary: The RakeSieve never computes R directly. It carries a predicate, adds '∧ not a multiple of c' at each step,
-  and this lemma certifies that the predicate still means exactly R.
+summary: The RakeSieve never computes the residue R (what survives sieving) directly. It carries a predicate, adds
+  '∧ not a multiple of c' at each step, and this lemma certifies that the predicate still means exactly R.
 review: draft
 authors:
 - grok-bot
@@ -33,6 +33,8 @@ quiz:
   explain: The proof is `simp[hh₁, hh₀]; exact r_next p₀ m`.
 ---
 ## Plain English
+
+**R stands for *residue*.** R p is the set of numbers ≥ 2 that no prime ≤ p divides: what is left after crossing out the multiples of every prime up to p ([R](#/node/R)). For example, R 2 is the odd numbers from 3 up.
 
 **Theorem (`r_next_prop`, PrimeSieve.lean lines 110–114).** Suppose h₀ n ↔ n ∈ [R](#/node/R) p₀, and h₁ n ↔ h₀ n ∧ ¬ (m.p ∣ n), where m.p is the least prime above p₀. Then h₁ n ↔ n ∈ R m.p.
 

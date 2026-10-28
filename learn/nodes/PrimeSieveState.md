@@ -33,6 +33,8 @@ quiz:
 ---
 ## Plain English
 
+**R stands for *residue*.** R p is the set of numbers ≥ 2 that no prime ≤ p divides: what is left after crossing out the multiples of every prime up to p ([R](#/node/R)). For example, R 2 is the odd numbers from 3 up.
+
 A `PrimeSieveState` on a type α (PrimeSieve.lean lines 6–11) provides, for each state s:
 
 - `P s : NPrime`, the latest prime found ([NPrime](#/node/NPrime));

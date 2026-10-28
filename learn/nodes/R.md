@@ -1,8 +1,9 @@
 ---
 id: R
-title: 'R P: the numbers that survive sieving by every prime up to P'
-summary: The whole sieve is driven by this one set. Its least element is always the next prime, and sieving by a
-  new prime p is exactly the step from R (previous prime) to R p.
+title: 'R P, the residue: the numbers that survive sieving by every prime up to P'
+summary: 'R stands for residue: what is left after sieving. The whole sieve is driven by this one set. Its least
+  element is always the next prime, and sieving by a new prime p is exactly the step from R (previous prime) to
+  R p.'
 review: draft
 authors:
 - grok-bot
@@ -39,7 +40,7 @@ quiz:
 ---
 ## Plain English
 
-`R P = { n | n ≥ 2 ∧ ∀ q ≤ P, q prime → ¬ q ∣ n }` (PrimeSieve.lean line 16). The comment calls it the "residue": the numbers from 2 up that no prime ≤ P divides. These are what is left after the sieve of Eratosthenes has crossed out the multiples of every prime up to P.
+**R stands for *residue*.** `R P = { n | n ≥ 2 ∧ ∀ q ≤ P, q prime → ¬ q ∣ n }` (PrimeSieve.lean line 16); the comment there reads "the residue, or remaining nats". In words: the numbers from 2 up that no prime ≤ P divides. These are what is left after the sieve of Eratosthenes has crossed out the multiples of every prime up to P.
 
 Examples: R 2 = {3, 5, 7, 9, 11, …} (odd numbers ≥ 3); R 3 = {5, 7, 11, 13, 17, 19, 23, 25, …}.
 

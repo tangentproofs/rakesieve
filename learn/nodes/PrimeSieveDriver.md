@@ -1,8 +1,9 @@
 ---
 id: PrimeSieveDriver
 title: 'PrimeSieveDriver: the candidate is the least survivor'
-summary: Two lines, 'C is in R P' and 'C is below everything in R P', are all a sieve needs to promise. From them
-  alone the library proves C is prime and nothing was skipped, for every sieve.
+summary: Two lines, 'C is in the residue R P' (what survives sieving up to P) and 'C is below everything in R P',
+  are all a sieve needs to promise. From them alone the library proves C is prime and nothing was skipped, for every
+  sieve.
 review: draft
 authors:
 - grok-bot
@@ -33,6 +34,8 @@ quiz:
     just reads them (lines 130–132).
 ---
 ## Plain English
+
+**R stands for *residue*.** R p is the set of numbers ≥ 2 that no prime ≤ p divides: what is left after crossing out the multiples of every prime up to p ([R](#/node/R)). For example, R 2 is the odd numbers from 3 up.
 
 A `PrimeSieveDriver` for a sieve state type α (PrimeSieve.lean lines 124–126) adds two facts to [PrimeSieveState](#/node/PrimeSieveState), for every state g:
 

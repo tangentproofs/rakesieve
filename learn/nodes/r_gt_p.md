@@ -33,6 +33,8 @@ quiz:
 ---
 ## Plain English
 
+**R stands for *residue*.** R p is the set of numbers ≥ 2 that no prime ≤ p divides: what is left after crossing out the multiples of every prime up to p ([R](#/node/R)). For example, R 2 is the odd numbers from 3 up.
+
 **Lemma (`r_gt_p`, PrimeSieve.lean lines 40–53).** For every r ∈ [R](#/node/R) p, r > p.
 
 Proof: suppose r ≤ p. Since r ≥ 2, r has some prime factor f (Mathlib's `Nat.exists_prime_and_dvd`), and f ≤ r ≤ p. But membership in R p says no prime ≤ p divides r. Contradiction.

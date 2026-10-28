@@ -31,4 +31,6 @@ quiz:
 ---
 ## Plain English
 
+**R stands for *residue*.** R p is the set of numbers ≥ 2 that no prime ≤ p divides: what is left after crossing out the multiples of every prime up to p ([R](#/node/R)). For example, R 2 is the odd numbers from 3 up.
+
 **Theorem (`three_mem_R_two`, PrimeSieve.lean lines 19–27).** 3 ∈ [R](#/node/R) 2. Exported as [results_three_mem_R_two](#/node/results_three_mem_R_two), which has the proof outline. Used by [RakeSieve.init](#/node/RakeSieve.init).

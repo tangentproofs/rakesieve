@@ -1,5 +1,6 @@
 # Nodes for the generic interface: primes as a type, prime generators, the residue set R, and the
 # generic sieve driver (PrimeGen.lean, PrimeSieve.lean).
+from _terms import PLAIN_R
 NODES = []
 def node(id, title, summary, body, quiz, caveats=(), widgets=None):
     NODES.append(dict(id=id, title=title, summary=summary, body=body, quiz=quiz, caveats=list(caveats), widgets=widgets))
@@ -61,12 +62,12 @@ node("nosk'", "nosk': no prime strictly between P and C",
   q("Is `nosk' 7 13` true?", ["Yes", "No: 11 is a prime strictly between"], 1, "11 is prime and 7 < 11 < 13."),
   q("Does `nosk' P C` say C is prime?", ["Yes", "No, it only says no prime lies strictly between"], 1, "Primality of C is a separate argument `hC` of `PrimeSieveState.next`.")])
 
-node("R", "R P: the numbers that survive sieving by every prime up to P",
- "The whole sieve is driven by this one set. Its least element is always the next prime, and sieving by a new prime p is exactly the step from R (previous prime) to R p.",
+node("R", "R P, the residue: the numbers that survive sieving by every prime up to P",
+ "R stands for residue: what is left after sieving. The whole sieve is driven by this one set. Its least element is always the next prime, and sieving by a new prime p is exactly the step from R (previous prime) to R p.",
  r"""
 ## Plain English
 
-`R P = { n | n ≥ 2 ∧ ∀ q ≤ P, q prime → ¬ q ∣ n }` (PrimeSieve.lean line 16). The comment calls it the "residue": the numbers from 2 up that no prime ≤ P divides. These are what is left after the sieve of Eratosthenes has crossed out the multiples of every prime up to P.
+**R stands for *residue*.** `R P = { n | n ≥ 2 ∧ ∀ q ≤ P, q prime → ¬ q ∣ n }` (PrimeSieve.lean line 16); the comment there reads "the residue, or remaining nats". In words: the numbers from 2 up that no prime ≤ P divides. These are what is left after the sieve of Eratosthenes has crossed out the multiples of every prime up to P.
 
 Examples: R 2 = {3, 5, 7, 9, 11, …} (odd numbers ≥ 3); R 3 = {5, 7, 11, 13, 17, 19, 23, 25, …}.
 
@@ -84,10 +85,7 @@ Note that R P is defined for any number P, prime or not, and contains composites
 
 node("PrimeSieveState", "PrimeSieveState: a sieve's state, its prime, its candidate, its step",
  "The step function demands proofs as inputs: you may only advance a sieve after proving the candidate is prime and nothing was skipped. The interface makes an unjustified step impossible to write.",
- r"""
-## Plain English
-
-A `PrimeSieveState` on a type α (PrimeSieve.lean lines 6–11) provides, for each state s:
+ PLAIN_R + r"""A `PrimeSieveState` on a type α (PrimeSieve.lean lines 6–11) provides, for each state s:
 
 - `P s : NPrime`, the latest prime found ([NPrime](#/node/NPrime));
 - `C s : Nat`, the candidate for the next prime;
@@ -103,11 +101,8 @@ On its own this says nothing about whether C really is the next prime. That job 
     "`PrimeSieveDriver` adds `hCinR` and `hRmin` (PrimeSieve.lean lines 124–126).")])
 
 node("PrimeSieveDriver", "PrimeSieveDriver: the candidate is the least survivor",
- "Two lines, 'C is in R P' and 'C is below everything in R P', are all a sieve needs to promise. From them alone the library proves C is prime and nothing was skipped, for every sieve.",
- r"""
-## Plain English
-
-A `PrimeSieveDriver` for a sieve state type α (PrimeSieve.lean lines 124–126) adds two facts to [PrimeSieveState](#/node/PrimeSieveState), for every state g:
+ "Two lines, 'C is in the residue R P' (what survives sieving up to P) and 'C is below everything in R P', are all a sieve needs to promise. From them alone the library proves C is prime and nothing was skipped, for every sieve.",
+ PLAIN_R + r"""A `PrimeSieveDriver` for a sieve state type α (PrimeSieve.lean lines 124–126) adds two facts to [PrimeSieveState](#/node/PrimeSieveState), for every state g:
 
 - `hCinR`: the candidate C g is in [R](#/node/R) (P g), i.e. it survived sieving by every prime up to P g;
 - `hRmin`: C g ≤ n for every n in R (P g), i.e. it is the *least* survivor.

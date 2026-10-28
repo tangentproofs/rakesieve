@@ -1,5 +1,6 @@
 # Nodes for the generic sieve lemmas (PrimeSieve.lean), the RakeSieve itself (RakeSieve.lean)
 # and the simple reference generator (PrimeGen.lean).
+from _terms import PLAIN_R
 NODES = []
 def node(id, title, summary, body, quiz, caveats=(), widgets=None):
     NODES.append(dict(id=id, title=title, summary=summary, body=body, quiz=quiz, caveats=list(caveats), widgets=widgets))
@@ -8,10 +9,7 @@ def q(text, choices, answer, explain):
 
 node("r_gt_p", "Everything in R P is bigger than P",
  "This is why sieving works at all: a number ≤ P that is at least 2 has a prime factor ≤ P, so it cannot survive. Every survivor, including the next candidate, is beyond P.",
- r"""
-## Plain English
-
-**Lemma (`r_gt_p`, PrimeSieve.lean lines 40–53).** For every r ∈ [R](#/node/R) p, r > p.
+ PLAIN_R + r"""**Lemma (`r_gt_p`, PrimeSieve.lean lines 40–53).** For every r ∈ [R](#/node/R) p, r > p.
 
 Proof: suppose r ≤ p. Since r ≥ 2, r has some prime factor f (Mathlib's `Nat.exists_prime_and_dvd`), and f ≤ r ≤ p. But membership in R p says no prime ≤ p divides r. Contradiction.
 
@@ -23,10 +21,7 @@ It gives [c_gt_p](#/node/c_gt_p) (the candidate is beyond the current prime) and
 
 node("r_next", "Sieving by the next prime: R p₁ = R p₀ minus multiples of p₁",
  "This is the sieve of Eratosthenes as one equation. Crossing out the multiples of the next prime is exactly the move from 'no prime factor ≤ p₀' to 'no prime factor ≤ p₁', because no prime lies in between.",
- r"""
-## Plain English
-
-**Theorem (`r_next`, PrimeSieve.lean lines 60–96).** Let p₁ be the least prime greater than p₀ (a [MinPrimeGt](#/node/MinPrimeGt) p₀). Then for every n:
+ PLAIN_R + r"""**Theorem (`r_next`, PrimeSieve.lean lines 60–96).** Let p₁ be the least prime greater than p₀ (a [MinPrimeGt](#/node/MinPrimeGt) p₀). Then for every n:
 
 n ∈ [R](#/node/R) p₀ and p₁ ∤ n **if and only if** n ∈ R p₁.
 
@@ -40,11 +35,8 @@ Its companion [r_next_prop](#/node/r_next_prop) restates it for predicates, whic
   q("Where is this used?", ["in the RakeSieve step, via `r_next_prop`", "nowhere", "in SimpleGen"], 0, "RakeSieve.lean line 96.")])
 
 node("r_next_prop", "r_next for predicates: how a sieve tracks R step by step",
- "The RakeSieve never computes R directly. It carries a predicate, adds '∧ not a multiple of c' at each step, and this lemma certifies that the predicate still means exactly R.",
- r"""
-## Plain English
-
-**Theorem (`r_next_prop`, PrimeSieve.lean lines 110–114).** Suppose h₀ n ↔ n ∈ [R](#/node/R) p₀, and h₁ n ↔ h₀ n ∧ ¬ (m.p ∣ n), where m.p is the least prime above p₀. Then h₁ n ↔ n ∈ R m.p.
+ "The RakeSieve never computes the residue R (what survives sieving) directly. It carries a predicate, adds '∧ not a multiple of c' at each step, and this lemma certifies that the predicate still means exactly R.",
+ PLAIN_R + r"""**Theorem (`r_next_prop`, PrimeSieve.lean lines 110–114).** Suppose h₀ n ↔ n ∈ [R](#/node/R) p₀, and h₁ n ↔ h₀ n ∧ ¬ (m.p ∣ n), where m.p is the least prime above p₀. Then h₁ n ↔ n ∈ R m.p.
 
 It is [r_next](#/node/r_next) with names for the two predicates. The comment above it (PrimeSieve.lean lines 98–109) explains the design: a sieve models R p by a bijection with its data structure, and whatever it does to sift out the next prime corresponds to adding `∧ ¬(p₁∣n)` to the predicate. The RakeSieve uses it once per step (RakeSieve.lean line 96).
 """,
@@ -54,10 +46,7 @@ It is [r_next](#/node/r_next) with names for the two predicates. The comment abo
 
 node("c_gt_p", "The candidate is beyond the current prime",
  "A one-line consequence, but it is the whole reason the generated primes strictly increase, the property that turned out to be needed for infinitude.",
- r"""
-## Plain English
-
-**Theorem (`c_gt_p`, PrimeSieve.lean lines 129–131).** For any driven sieve state g, C g > P g.
+ PLAIN_R + r"""**Theorem (`c_gt_p`, PrimeSieve.lean lines 129–131).** For any driven sieve state g, C g > P g.
 
 Because C g ∈ [R](#/node/R) (P g) (the driver's `hCinR`) and everything in R P exceeds P ([r_gt_p](#/node/r_gt_p)). The [driver instance](#/node/instPrimeGenPrimeSieve) uses it for `hP_lt`.
 """,
@@ -67,10 +56,7 @@ Because C g ∈ [R](#/node/R) (P g) (the driver's `hCinR`) and everything in R P
 
 node("no_skipped_prime", "No prime lies between P and the candidate",
  "The proof is three lines of idea: a prime above P has no small prime factor, so it survives the sieve, so it is at least the least survivor C.",
- r"""
-## Plain English
-
-**Theorem (`no_skipped_prime`, PrimeSieve.lean lines 133–151).** For any driven sieve state g there is no prime q with P g < q < C g.
+ PLAIN_R + r"""**Theorem (`no_skipped_prime`, PrimeSieve.lean lines 133–151).** For any driven sieve state g there is no prime q with P g < q < C g.
 
 Proof: such a q is ≥ 2, and any prime p ≤ P dividing q would equal q (both prime), but q > P. So q ∈ [R](#/node/R) (P g). The driver's `hRmin` then gives C g ≤ q, contradicting q < C g.
 
@@ -97,10 +83,7 @@ Used by [c_prime](#/node/c_prime).
 
 node("c_prime", "The candidate is prime",
  "No sieve ever tests the candidate for primality. Its primality is a theorem: a prime factor would be either ≤ P (sieved out) or between P and C (impossible).",
- r"""
-## Plain English
-
-**Theorem (`c_prime`, PrimeSieve.lean lines 173–193).** For any driven sieve state g, C g is prime.
+ PLAIN_R + r"""**Theorem (`c_prime`, PrimeSieve.lean lines 173–193).** For any driven sieve state g, C g is prime.
 
 Proof by [no_prime_factors_im_no_factors](#/node/no_prime_factors_im_no_factors): C ≥ 2 because C > P ≥ 2 ([c_gt_p](#/node/c_gt_p)). A prime q < C dividing C would be ≤ P, impossible since C ∈ [R](#/node/R) P, or > P, impossible by [no_skipped_prime](#/node/no_skipped_prime).
 
@@ -133,11 +116,8 @@ node("PrimeSieve.next", "PrimeSieve.next: step the wrapped sieve",
   q("Does it need proofs from the caller?", ["No", "Yes"], 0, "`nextState` supplies them.")])
 
 node("RakeSieve", "RakeSieve: a sieve state that carries its own correctness proof",
- "Each state is data plus three proofs: its rake lists exactly R p, its candidate is in R p, and its candidate is below everything in R p. A wrong state cannot even be constructed.",
- r"""
-## Plain English
-
-A `RakeSieve` (RakeSieve.lean lines 5–12) has:
+ "Each state is data plus three proofs: its rake lists exactly the residue R p (the survivors of sieving up to p), its candidate is in R p, and its candidate is below everything in R p. A wrong state cannot even be constructed.",
+ PLAIN_R + r"""A `RakeSieve` (RakeSieve.lean lines 5–12) has:
 
 - `prop : Nat → Prop` and `rm : RakeMap prop`: a [RakeMap](#/node/RakeMap), i.e. a rake (a sorted list of arithmetic sequences with a common step) whose terms are exactly the numbers satisfying `prop`;
 - `p : NPrime`, the current prime, and `c : Nat`, the candidate;
@@ -155,10 +135,7 @@ The commented-out field `Q : Array RakeMap` is the planned queue of primes below
 
 node("RakeSieve.init", "RakeSieve.init: prime 2, odd numbers ≥ 3, candidate 3",
  "The starting rake is built by the same operation as every later step: begin with 2 + n (all numbers ≥ 2) and remove the multiples of 2, leaving the single sequence 3 + 2n.",
- r"""
-## Plain English
-
-`RakeSieve.init` (RakeSieve.lean lines 19–53) is the start state:
+ PLAIN_R + r"""`RakeSieve.init` (RakeSieve.lean lines 19–53) is the start state:
 
 - the rake map is [rm_ge2](#/node/RakeMap.rm_ge2) (the rake {2 + n}, i.e. every number ≥ 2) with the multiples of 2 removed by [RakeMap.rem](#/node/RakeMap.rem); its predicate is n ≥ 2 ∧ ¬ 2 ∣ n;
 - p = 2, c = 3;
@@ -173,10 +150,7 @@ To call `rem`, the code must show some term of {2 + n} is odd; it uses 3 = 2 + 1
 
 node("RakeSieve.next", "RakeSieve.next: remove the multiples of c, take the first term",
  "The step needs Mathlib's 'there is always a bigger prime' just to know the rake will not come out empty. The sieve's own correctness rests on Euclid, which is why its infinitude theorem is not an independent proof.",
- r"""
-## Plain English
-
-`RakeSieve.next rs₀ hC₀ hNS` (RakeSieve.lean lines 55–111) takes a state, a proof that its candidate c is prime, and a proof that no prime lies between p and c ([nosk'](#/node/nosk')). It returns the state with prime c:
+ PLAIN_R + r"""`RakeSieve.next rs₀ hC₀ hNS` (RakeSieve.lean lines 55–111) takes a state, a proof that its candidate c is prime, and a proof that no prime lies between p and c ([nosk'](#/node/nosk')). It returns the state with prime c:
 
 1. Package c as the least prime above p (a [MinPrimeGt](#/node/MinPrimeGt)), using [r_gt_p](#/node/r_gt_p) for c > p.
 2. Prove that removing c's multiples leaves at least one term: Mathlib's `Nat.exists_infinite_primes` gives a prime q > c (RakeSieve.lean line 71); q is in R p, so it is a term of the rake, and c ∤ q.
@@ -194,11 +168,8 @@ Step 2 could be replaced by an explicit witness, but that witness would essentia
  caveats=["Uses Mathlib's `Nat.exists_infinite_primes` (RakeSieve.lean line 71); see the main theorem's caveats."])
 
 node("RakeSieve.instPrimeSieveStateRakeSieve", "The RakeSieve is a sieve state",
- "The proof that the candidate grows reuses the generic r_gt_p: the new candidate is in R of the new prime, so it exceeds the new prime, which is the old candidate.",
- r"""
-## Plain English
-
-`instance : PrimeSieveState RakeSieve` (RakeSieve.lean lines 113–126): P is the state's prime p, C its candidate c, the step is [RakeSieve.next](#/node/RakeSieve.next). The `hNext` proof shows the new p is the old c (by unfolding `next`) and the new c exceeds the old c (the new c is in R (new p), so [r_gt_p](#/node/r_gt_p) applies).
+ "The proof that the candidate grows reuses the generic r_gt_p: the new candidate is in the residue R (the survivors of sieving) of the new prime, so it exceeds the new prime, which is the old candidate.",
+ PLAIN_R + r"""`instance : PrimeSieveState RakeSieve` (RakeSieve.lean lines 113–126): P is the state's prime p, C its candidate c, the step is [RakeSieve.next](#/node/RakeSieve.next). The `hNext` proof shows the new p is the old c (by unfolding `next`) and the new c exceeds the old c (the new c is in R (new p), so [r_gt_p](#/node/r_gt_p) applies).
 """,
  [q("What is `C` for a RakeSieve state?", ["its field `c`", "its rake's last term"], 0, "`C x := x.c` (RakeSieve.lean line 115)."),
   q("Why is the new candidate bigger than the old one?", ["it lies in R (new p), so it exceeds new p = old c", "the rake grows"], 0, "RakeSieve.lean lines 123–126."),
@@ -323,21 +294,15 @@ node("instPrimeGenSimpleGen", "SimpleGen is a prime generator",
 
 node("three_mem_R_two", "3 ∈ R 2 (the lemma behind the headline)",
  "Shared by every sieve, it lives in PrimeSieve.lean, not in the RakeSieve, so any future sieve can start from it.",
- r"""
-## Plain English
-
-**Theorem (`three_mem_R_two`, PrimeSieve.lean lines 19–27).** 3 ∈ [R](#/node/R) 2. Exported as [results_three_mem_R_two](#/node/results_three_mem_R_two), which has the proof outline. Used by [RakeSieve.init](#/node/RakeSieve.init).
+ PLAIN_R + r"""**Theorem (`three_mem_R_two`, PrimeSieve.lean lines 19–27).** 3 ∈ [R](#/node/R) 2. Exported as [results_three_mem_R_two](#/node/results_three_mem_R_two), which has the proof outline. Used by [RakeSieve.init](#/node/RakeSieve.init).
 """,
  [q("Which file holds it?", ["PrimeSieve.lean", "RakeSieve.lean"], 0, "Moved there in 37c37c7 so every sieve can use it."),
   q("How is ¬ 2 ∣ 3 checked?", ["`decide`", "`native_decide`"], 0, "By `decide`, PrimeSieve.lean line 27."),
   q("Which Results.lean theorem re-exports it?", ["`results_three_mem_R_two`", "`results_exists_prime_gt_of_rakeSieve`"], 0, "See Results.lean lines 5–6.")])
 
 node("three_le_of_mem_R_two", "Nothing in R 2 is below 3 (the lemma behind the headline)",
- "With 3 ∈ R 2 it makes 3 the minimum of R 2, which is exactly what the start state must prove about its candidate.",
- r"""
-## Plain English
-
-**Theorem (`three_le_of_mem_R_two`, PrimeSieve.lean lines 30–37).** Every r ∈ [R](#/node/R) 2 has 3 ≤ r. Exported as [results_three_le_of_mem_R_two](#/node/results_three_le_of_mem_R_two), which has the proof outline. Used by [RakeSieve.init](#/node/RakeSieve.init).
+ "R 2, the residue after sieving by 2, is the odd numbers from 3 up. With 3 ∈ R 2 this makes 3 its minimum, which is exactly what the start state must prove about its candidate.",
+ PLAIN_R + r"""**Theorem (`three_le_of_mem_R_two`, PrimeSieve.lean lines 30–37).** Every r ∈ [R](#/node/R) 2 has 3 ≤ r. Exported as [results_three_le_of_mem_R_two](#/node/results_three_le_of_mem_R_two), which has the proof outline. Used by [RakeSieve.init](#/node/RakeSieve.init).
 """,
  [q("Why is 2 excluded from R 2?", ["2 divides 2", "2 is not prime"], 0, "The prime 2 ≤ 2 divides it."),
   q("Which structure field does it provide for the start state?", ["`hRmin`", "`hprop`"], 0, "See RakeSieve.lean line 53."),
