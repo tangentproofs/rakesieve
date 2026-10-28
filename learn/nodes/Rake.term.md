@@ -21,7 +21,7 @@ quiz:
   - No; for example if a constant exceeds d the order can saw-tooth
   - 'Yes'
   answer: 0
-  explain: Rake.lean lines 180–184 say so.
+  explain: Rake.lean lines 187–191 say so.
 - q: Which term is the minimum of a sorted rake?
   type: choice
   choices:

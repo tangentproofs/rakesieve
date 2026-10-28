@@ -32,4 +32,4 @@ quiz:
 ---
 ## Plain English
 
-`min_prime_gt n` (PrimeGen.lean lines 47–51) is the [MinPrimeGt](#/node/MinPrimeGt) n whose number is `Nat.find (ex_prime_gt n)`: the least p satisfying [PrimeGt](#/node/PrimeGt) n p. `Nat.find_spec` and `Nat.find_min` give the two proofs. It is [SimpleGen](#/node/SimpleGen)'s step.
+`min_prime_gt n` (SimpleGen.lean lines 24–28) is the [MinPrimeGt](#/node/MinPrimeGt) n whose number is `Nat.find (ex_prime_gt n)`: the least p satisfying [PrimeGt](#/node/PrimeGt) n p. `Nat.find_spec` and `Nat.find_min` give the two proofs. It is [SimpleGen](#/node/SimpleGen)'s step.

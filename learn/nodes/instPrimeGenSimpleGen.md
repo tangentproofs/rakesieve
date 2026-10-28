@@ -15,14 +15,14 @@ quiz:
   - '`hmin`'
   - '`hpgt`'
   answer: 0
-  explain: PrimeGen.lean lines 67–71.
+  explain: SimpleGen.lean lines 44–48.
 - q: Which field gives strict increase?
   type: choice
   choices:
   - '`hpgt`'
   - '`hmin`'
   answer: 0
-  explain: PrimeGen.lean lines 72–74.
+  explain: SimpleGen.lean lines 49–51.
 - q: Is this instance anonymous in the source?
   type: choice
   choices:
@@ -33,4 +33,4 @@ quiz:
 ---
 ## Plain English
 
-`instance : PrimeGen SimpleGen` (PrimeGen.lean lines 64–76): `P g := g.p`, `next := SimpleGen.next`. `hP'`: a prime between p and the next would contradict `hmin`. `hP_lt`: `hpgt` says the next prime is above p. See [PrimeGen](#/node/PrimeGen), [SimpleGen](#/node/SimpleGen).
+`instance : PrimeGen SimpleGen` (SimpleGen.lean lines 41–53): `P g := g.p`, `next := SimpleGen.next`. `hP'`: a prime between p and the next would contradict `hmin`. `hP_lt`: `hpgt` says the next prime is above p. See [PrimeGen](#/node/PrimeGen), [SimpleGen](#/node/SimpleGen).

@@ -1,0 +1,1727 @@
+{
+ "ASeq.lean:35-35": {
+  "text": [
+   "@[simp] def aseq (k:Nat) (d:Nat) := ASeq.mk k d"
+  ],
+  "decl": "aseq",
+  "whole": true
+ },
+ "ASeq.lean:40-42": {
+  "text": [
+   "def nats  := aseq 0 1",
+   "def evens := aseq 0 2",
+   "def odds  := aseq 1 2"
+  ]
+ },
+ "ASeq.lean:45-45": {
+  "text": [
+   "@[simp] def term (s : ASeq) (n : Nat) : Nat := s.k + s.d * n"
+  ],
+  "decl": "ASeq.term",
+  "whole": true
+ },
+ "ASeq.lean:50-50": {
+  "text": [
+   "#guard (aseq 0 2) 10 = 20"
+  ]
+ },
+ "ASeq.lean:6-9": {
+  "text": [
+   "structure ASeq where  -- arithmetic sequence (k + dn)",
+   "k : Nat  -- constant",
+   "d : Nat  -- delta (step size)",
+   "deriving Repr"
+  ],
+  "decl": "ASeq",
+  "whole": true
+ },
+ "Main.lean:12-12": {
+  "text": [
+   "#eval main"
+  ]
+ },
+ "Main.lean:4-10": {
+  "text": [
+   "def main : IO Unit := do",
+   "let mut s : PrimeSieve _ := { state := RakeSieve.init }",
+   "let mut r : List NPrime := []",
+   "for _ in [0:5] do",
+   "r := s.state.p :: r",
+   "s := s.next",
+   "IO.println <| r.reverse"
+  ],
+  "decl": "main",
+  "whole": true
+ },
+ "Main.lean:5-5": {
+  "text": [
+   "let mut s : PrimeSieve _ := { state := RakeSieve.init }"
+  ]
+ },
+ "PrimeGen.lean:15-17": {
+  "text": [
+   "/-- A prime generator yields a strictly increasing sequence of consecutive primes.",
+   "`init` is intentionally *not* part of the class: only needed for zero-arg `primes`;",
+   "prefer `primes g₀ n` with an explicit start state (e.g. `SimpleGen.start` in SimpleGen.lean). -/"
+  ]
+ },
+ "PrimeGen.lean:18-25": {
+  "text": [
+   "class PrimeGen (α : Type) where",
+   "P : α → NPrime",
+   "next : α → α",
+   "/-- No prime is skipped between `P g` and `P (next g)`. -/",
+   "hP' (g:α) : (¬∃ q, Nat.Prime q ∧ P g < q ∧  q < P (next g))",
+   "/-- The generated prime strictly increases at each step.",
+   "Needed for infinitude: `hP'` alone allows a constant generator. -/",
+   "hP_lt (g:α) : (P g : Nat) < P (next g)"
+  ],
+  "decl": "PrimeGen",
+  "whole": true
+ },
+ "PrimeGen.lean:22-22": {
+  "text": [
+   "hP' (g:α) : (¬∃ q, Nat.Prime q ∧ P g < q ∧  q < P (next g))"
+  ]
+ },
+ "PrimeGen.lean:23-24": {
+  "text": [
+   "/-- The generated prime strictly increases at each step.",
+   "Needed for infinitude: `hP'` alone allows a constant generator. -/"
+  ]
+ },
+ "PrimeGen.lean:28-28": {
+  "text": [
+   "abbrev PrimeGt (n p:Nat) := Nat.Prime p ∧ n < p"
+  ],
+  "decl": "PrimeGt",
+  "whole": true
+ },
+ "PrimeGen.lean:30-33": {
+  "text": [
+   "structure MinPrimeGt (n:Nat) where",
+   "p : Nat",
+   "hpgt : PrimeGt n p",
+   "hmin : ∀q:Nat, q < p → (¬ PrimeGt n q)"
+  ],
+  "decl": "MinPrimeGt",
+  "whole": true
+ },
+ "PrimeGen.lean:34-34": {
+  "text": [
+   "theorem MinPrimeGt.p' (m:MinPrimeGt n) : Nat.Prime m.p := m.hpgt.left"
+  ],
+  "decl": "MinPrimeGt.p'",
+  "whole": true
+ },
+ "PrimeGen.lean:56-64": {
+  "text": [
+   "theorem PrimeGen.P_iterate_add_le {α : Type} [PrimeGen α] (g : α) (k : Nat) :",
+   "(P g : Nat) + k ≤ P (next^[k] g) := by",
+   "induction k with",
+   "| zero => simp",
+   "| succ k ih =>",
+   "rw [Function.iterate_succ_apply']",
+   "have hlt := hP_lt (next^[k] g)",
+   "-- ih: P g + k ≤ P (next^[k] g); hlt: P (next^[k] g) < P (next (next^[k] g))",
+   "omega"
+  ],
+  "decl": "PrimeGen.P_iterate_add_le",
+  "whole": true
+ },
+ "PrimeGen.lean:58-64": {
+  "text": [
+   "induction k with",
+   "| zero => simp",
+   "| succ k ih =>",
+   "rw [Function.iterate_succ_apply']",
+   "have hlt := hP_lt (next^[k] g)",
+   "-- ih: P g + k ≤ P (next^[k] g); hlt: P (next^[k] g) < P (next (next^[k] g))",
+   "omega"
+  ]
+ },
+ "PrimeGen.lean:6-6": {
+  "text": [
+   "def NPrime : Type := { n: Nat // Nat.Prime n } deriving Repr, Ord, LT, LE"
+  ],
+  "decl": "NPrime",
+  "whole": true
+ },
+ "PrimeGen.lean:62-62": {
+  "text": [
+   "have hlt := hP_lt (next^[k] g)"
+  ]
+ },
+ "PrimeGen.lean:68-74": {
+  "text": [
+   "theorem exists_prime_gt_of_primeGen {α : Type} [PrimeGen α] (g₀ : α) (n : Nat) :",
+   "∃ p, Nat.Prime p ∧ n < p := by",
+   "let k := n + 1",
+   "have hle : (P g₀ : Nat) + k ≤ P (next^[k] g₀) := PrimeGen.P_iterate_add_le g₀ k",
+   "have h2 : (P g₀ : Nat) ≥ 2 := Nat.Prime.two_le (P g₀).prop",
+   "refine ⟨P (next^[k] g₀), (P (next^[k] g₀)).prop, ?_⟩",
+   "omega"
+  ],
+  "decl": "exists_prime_gt_of_primeGen",
+  "whole": true
+ },
+ "PrimeGen.lean:73-73": {
+  "text": [
+   "refine ⟨P (next^[k] g₀), (P (next^[k] g₀)).prop, ?_⟩"
+  ]
+ },
+ "PrimeGen.lean:79-97": {
+  "text": [
+   "theorem PrimeGen.exists_iterate_P_eq {α : Type} [PrimeGen α] (g₀ : α) (q : Nat)",
+   "(hq : Nat.Prime q) (hle : (P g₀ : Nat) ≤ q) : ∃ k, (P (next^[k] g₀) : Nat) = q := by",
+   "classical",
+   "have hex : ∃ k, q < (P (next^[k] g₀) : Nat) :=",
+   "⟨q + 1, by have := PrimeGen.P_iterate_add_le g₀ (q + 1); omega⟩",
+   "set k := Nat.find hex with hkdef",
+   "have hk : q < (P (next^[k] g₀) : Nat) := Nat.find_spec hex",
+   "have hk0 : k ≠ 0 := by",
+   "intro h0",
+   "rw [h0, Function.iterate_zero, id] at hk",
+   "omega",
+   "obtain ⟨j, hj⟩ : ∃ j, k = j + 1 := Nat.exists_eq_succ_of_ne_zero hk0",
+   "have hjle : (P (next^[j] g₀) : Nat) ≤ q := by",
+   "have := Nat.find_min hex (show j < k by omega)",
+   "omega",
+   "rw [hj, Function.iterate_succ_apply'] at hk",
+   "refine ⟨j, ?_⟩",
+   "by_contra hne",
+   "exact hP' (next^[j] g₀) ⟨q, hq, by omega, hk⟩"
+  ],
+  "decl": "PrimeGen.exists_iterate_P_eq",
+  "whole": true
+ },
+ "PrimeGen.lean:8-11": {
+  "text": [
+   "@[simp] theorem NPrime.eq_iff (a b : NPrime) : a = b ↔ a.val = b.val := Subtype.ext_iff",
+   "instance : ToString NPrime where toString s := s!\"{s.val}\"",
+   "instance : Dvd NPrime where dvd a b := a.val ∣ b.val",
+   "instance : Coe NPrime Nat where coe n := n.val"
+  ]
+ },
+ "PrimeGen.lean:84-84": {
+  "text": [
+   "set k := Nat.find hex with hkdef"
+  ]
+ },
+ "PrimeGen.lean:97-97": {
+  "text": [
+   "exact hP' (next^[j] g₀) ⟨q, hq, by omega, hk⟩"
+  ]
+ },
+ "PrimeSieve.lean:110-114": {
+  "text": [
+   "theorem r_next_prop {p₀ n:Nat} {h₀ h₁: Nat → Prop} {m : MinPrimeGt p₀}",
+   "(hh₀: h₀ n ↔ n ∈ R p₀) (hh₁: h₁ n ↔ h₀ n ∧ ¬(m.p ∣ n))",
+   ": (h₁ n ↔ n ∈ R m.p) := by",
+   "simp[hh₁, hh₀]",
+   "exact r_next p₀ m"
+  ],
+  "decl": "r_next_prop",
+  "whole": true
+ },
+ "PrimeSieve.lean:124-126": {
+  "text": [
+   "class PrimeSieveDriver (α : Type) [PrimeSieveState α] where",
+   "hCinR  (g:α) : C g ∈ R (P g)            -- C is an element of R",
+   "hRmin  (g:α) : ∀ n ∈ R (P g), C g ≤ n   -- C is min of R"
+  ],
+  "decl": "PrimeSieveDriver",
+  "whole": true
+ },
+ "PrimeSieve.lean:129-131": {
+  "text": [
+   "theorem c_gt_p (α : Type) [PrimeSieveState α] [PrimeSieveDriver α] (g:α) : C g > P g := by",
+   "have := hCinR g",
+   "exact r_gt_p (↑(P g)) (C g) this"
+  ],
+  "decl": "c_gt_p",
+  "whole": true
+ },
+ "PrimeSieve.lean:133-151": {
+  "text": [
+   "theorem no_skipped_prime (α : Type) [PrimeSieveState α] [PrimeSieveDriver α] (g:α)",
+   ": ¬ ∃ q:Nat, Nat.Prime q ∧ P g < q ∧ q < C g := by",
+   "intro ⟨q, ⟨hQ', hPltQ, hQltC⟩⟩ -- `intro q` on a ¬∃ goal requires we find a contradiction.",
+   "-- hRmin tells us that that C is the min of the set R.",
+   "have hRmin: ∀n ∈ R (P g), C g ≤ n := hRmin <| g",
+   "",
+   "-- demonstrating `q ∈ R` would show the contradiction since `q<P` and `P` is min of `R`",
+   "suffices hQinR: q ∈ R (P g) from by apply hRmin at hQinR; omega",
+   "",
+   "-- so now we just show hQinR. q∈R means q≥2 ∧ (¬∃p∈ S g, p∣q)",
+   "-- both of these facts follow immediately from the fact that q is prime,",
+   "-- provided we can *also* show that q itself is not an element of s.",
+   "unfold R; constructor",
+   "· show q ≥ 2 ; exact Nat.Prime.two_le hQ'",
+   "· show ∀ p ≤ ↑(P g), Nat.Prime p → ¬(p ∣ q)",
+   "intro p hp hp' -- assume p exists and p|q. show a contradiction.",
+   "-- since that p|q and both are prime, it follows that p=q.",
+   "have := Nat.prime_dvd_prime_iff_eq hp' hQ'",
+   "omega"
+  ],
+  "decl": "no_skipped_prime",
+  "whole": true
+ },
+ "PrimeSieve.lean:153-170": {
+  "text": [
+   "lemma no_prime_factors_im_no_factors {c:Nat} -- c is a candidate prime",
+   "(h2lc: 2 ≤ c)                              -- c is at least 2",
+   "(hnpf: ∀ p < c, Nat.Prime p → ¬(p∣c))      -- c has no prime factors",
+   ": Nat.Prime c := by",
+   "have : ∀ m < c, m ∣ c → m=1 := by  -- c has no divisors but 1 and c",
+   "intro m hmc hmdc  -- give names to the above assumptions",
+   "by_contra         -- assume ¬(m=1) and show contradiction",
+   "obtain ⟨p, hp', hpm⟩ : ∃ p, Nat.Prime p ∧ p ∣ m :=",
+   "Nat.exists_prime_and_dvd ‹m ≠ 1›",
+   "have : p∣c := Nat.dvd_trans hpm hmdc",
+   "have : ¬(p∣c) := by",
+   "have : 0 < c := by omega",
+   "have : 0 < m := Nat.pos_of_dvd_of_pos hmdc this",
+   "have : p ≤ m := Nat.le_of_dvd this hpm",
+   "have : p < c := by omega",
+   "exact hnpf p this hp'",
+   "contradiction",
+   "exact Nat.prime_def_lt.mpr ⟨‹2 ≤ c› , this⟩"
+  ],
+  "decl": "no_prime_factors_im_no_factors",
+  "whole": true
+ },
+ "PrimeSieve.lean:16-16": {
+  "text": [
+   "def R(P:Nat) : Set Nat := { n | n≥2 ∧ ∀q≤P, Nat.Prime q → ¬q∣n }"
+  ],
+  "decl": "R",
+  "whole": true
+ },
+ "PrimeSieve.lean:170-170": {
+  "text": [
+   "exact Nat.prime_def_lt.mpr ⟨‹2 ≤ c› , this⟩"
+  ]
+ },
+ "PrimeSieve.lean:173-193": {
+  "text": [
+   "theorem c_prime (α: Type) [PrimeSieveState α] [PrimeSieveDriver α] (g:α)",
+   ": Nat.Prime (C g) := by",
+   "set c := C g",
+   "have hfac: ∀ q < C g, Nat.Prime q → ¬ q ∣ c := by",
+   "intro q₀ hqc hPq",
+   "set q : NPrime := ⟨q₀,hPq⟩",
+   "by_cases hq: q ≤ (P g)",
+   "case pos => -- ¬p∣C because C∈R and that's how R is defined",
+   "have hCinR := hCinR g",
+   "unfold R at hCinR; simp at hCinR",
+   "aesop",
+   "case neg => -- we have P < q and q < C but this can't happen",
+   "have : (P g) < q := by exact Nat.gt_of_not_le hq",
+   "have := no_skipped_prime α g",
+   "absurd this; use q; aesop",
+   "have h2c: 2 ≤ C g := by",
+   "set p := P g",
+   "have : p.val ≥ 2 := by exact Nat.Prime.two_le p.prop",
+   "have : c > p.val := c_gt_p α g",
+   "omega",
+   "exact no_prime_factors_im_no_factors h2c hfac"
+  ],
+  "decl": "c_prime",
+  "whole": true
+ },
+ "PrimeSieve.lean:180-187": {
+  "text": [
+   "case pos => -- ¬p∣C because C∈R and that's how R is defined",
+   "have hCinR := hCinR g",
+   "unfold R at hCinR; simp at hCinR",
+   "aesop",
+   "case neg => -- we have P < q and q < C but this can't happen",
+   "have : (P g) < q := by exact Nat.gt_of_not_le hq",
+   "have := no_skipped_prime α g",
+   "absurd this; use q; aesop"
+  ]
+ },
+ "PrimeSieve.lean:188-192": {
+  "text": [
+   "have h2c: 2 ≤ C g := by",
+   "set p := P g",
+   "have : p.val ≥ 2 := by exact Nat.Prime.two_le p.prop",
+   "have : c > p.val := c_gt_p α g",
+   "omega"
+  ]
+ },
+ "PrimeSieve.lean:19-27": {
+  "text": [
+   "theorem three_mem_R_two : (3 : Nat) ∈ R 2 := by",
+   "unfold R",
+   "refine ⟨by decide, ?_⟩",
+   "intro q hqle hq'",
+   "have : q = 2 := by",
+   "have := Nat.Prime.two_le hq'",
+   "omega",
+   "subst this",
+   "decide"
+  ],
+  "decl": "three_mem_R_two",
+  "whole": true
+ },
+ "PrimeSieve.lean:205-208": {
+  "text": [
+   "def nextState {α : Type} [PrimeSieveState α] [PrimeSieveDriver α] (s: α) : α :=",
+   "let c' := c_prime α s",
+   "let ns := no_skipped_prime α s",
+   "PrimeSieveState.next s c' ns"
+  ],
+  "decl": "nextState",
+  "whole": true
+ },
+ "PrimeSieve.lean:206-208": {
+  "text": [
+   "let c' := c_prime α s",
+   "let ns := no_skipped_prime α s",
+   "PrimeSieveState.next s c' ns"
+  ]
+ },
+ "PrimeSieve.lean:210-210": {
+  "text": [
+   "variable (α : Type) [PrimeSieveState α] [PrimeSieveDriver α]"
+  ]
+ },
+ "PrimeSieve.lean:211-212": {
+  "text": [
+   "structure PrimeSieve  where",
+   "state  : α"
+  ],
+  "decl": "PrimeSieve",
+  "whole": true
+ },
+ "PrimeSieve.lean:212-212": {
+  "text": [
+   "state  : α"
+  ]
+ },
+ "PrimeSieve.lean:214-215": {
+  "text": [
+   "def PrimeSieve.next (x:PrimeSieve α) : PrimeSieve α :=",
+   "{ state := nextState x.state }"
+  ],
+  "decl": "PrimeSieve.next",
+  "whole": true
+ },
+ "PrimeSieve.lean:215-215": {
+  "text": [
+   "{ state := nextState x.state }"
+  ]
+ },
+ "PrimeSieve.lean:218-242": {
+  "text": [
+   "instance : PrimeGen (PrimeSieve α) where",
+   "P s := PrimeSieveState.P s.state",
+   "next := PrimeSieve.next (α := α)",
+   "hP' s := by",
+   "intro ⟨q, hq, hgt, hlt⟩",
+   "have hc' := c_prime α s.state",
+   "have hns := no_skipped_prime α s.state",
+   "have hEq : PrimeSieveState.P (nextState (α := α) s.state) = C s.state :=",
+   "(PrimeSieveState.hNext (α := α) s.state hc' hns rfl).left",
+   "have hlt' : q < C s.state := by",
+   "-- hlt : q < PrimeGen.P (next s) = PrimeSieveState.P (nextState s.state)",
+   "change q < (PrimeSieveState.P (nextState (α := α) s.state) : Nat) at hlt",
+   "simpa [hEq] using hlt",
+   "have hgt' : (PrimeSieveState.P s.state : Nat) < q := hgt",
+   "exact hns ⟨q, hq, hgt', hlt'⟩",
+   "hP_lt s := by",
+   "have hc' := c_prime α s.state",
+   "have hns := no_skipped_prime α s.state",
+   "have hEq : PrimeSieveState.P (nextState (α := α) s.state) = C s.state :=",
+   "(PrimeSieveState.hNext (α := α) s.state hc' hns rfl).left",
+   "have hgt := c_gt_p α s.state",
+   "-- goal: PrimeGen.P s < PrimeGen.P (next s)",
+   "change (PrimeSieveState.P s.state : Nat) <",
+   "PrimeSieveState.P (nextState (α := α) s.state)",
+   "simpa [hEq] using hgt"
+  ],
+  "decl": "instPrimeGenPrimeSieve",
+  "whole": true
+ },
+ "PrimeSieve.lean:220-220": {
+  "text": [
+   "next := PrimeSieve.next (α := α)"
+  ]
+ },
+ "PrimeSieve.lean:27-27": {
+  "text": [
+   "decide"
+  ]
+ },
+ "PrimeSieve.lean:30-37": {
+  "text": [
+   "theorem three_le_of_mem_R_two : ∀ r ∈ R 2, (3 : Nat) ≤ r := by",
+   "intro r ⟨hr, hrr⟩",
+   "by_contra h",
+   "simp at h",
+   "have r2 : r = 2 := by omega",
+   "have := hrr 2 (by omega) Nat.prime_two",
+   "rw [r2] at this",
+   "exact this (dvd_refl _)"
+  ],
+  "decl": "three_le_of_mem_R_two",
+  "whole": true
+ },
+ "PrimeSieve.lean:32-32": {
+  "text": [
+   "by_contra h"
+  ]
+ },
+ "PrimeSieve.lean:40-53": {
+  "text": [
+   "lemma r_gt_p (p:Nat) : (∀r∈R p, r > p) := by",
+   "-- argument: R and S together say ∀ p:prime ≤ P, ¬ p∣r",
+   "intro r hrr;  unfold R at hrr",
+   "-- if r is ≤ P, there is a contradiction.",
+   "by_contra h; simp at h",
+   "-- r (like all natural numbers) has a minimum prime factor f",
+   "have : r ≠ 1 := by aesop -- R say r ≥ 2",
+   "obtain ⟨f, hf', hfr⟩ : ∃ f, Nat.Prime f ∧ f ∣ r :=",
+   "Nat.exists_prime_and_dvd ‹r ≠ 1›",
+   "-- from a chain of relationships we can conclude that f≤P...",
+   "have : 0 < r := by exact Nat.zero_lt_of_lt hrr.left",
+   "have : f ≤ r := Nat.le_of_dvd this hfr",
+   "have : f ≤ p := by omega",
+   "aesop"
+  ],
+  "decl": "r_gt_p",
+  "whole": true
+ },
+ "PrimeSieve.lean:48-48": {
+  "text": [
+   "Nat.exists_prime_and_dvd ‹r ≠ 1›"
+  ]
+ },
+ "PrimeSieve.lean:5-5": {
+  "text": [
+   "abbrev nosk' P C := (¬∃ q:Nat, Nat.Prime q ∧ P < q ∧ q < C) -- no skipped prime"
+  ],
+  "decl": "nosk'",
+  "whole": true
+ },
+ "PrimeSieve.lean:6-11": {
+  "text": [
+   "class PrimeSieveState (α : Type) where",
+   "P     (s:α) : NPrime",
+   "C     (s:α) : Nat",
+   "next  (s:α) (hC: Nat.Prime (C s)) (hN: nosk' (P s) (C s)): α",
+   "hNext (s:α) (hC: Nat.Prime (C s)) (hN: nosk' (P s) (C s)) {s':α}",
+   ": (s'=(next s hC hN) → P s' = C s ∧ C s' > C s)"
+  ],
+  "decl": "PrimeSieveState",
+  "whole": true
+ },
+ "PrimeSieve.lean:60-96": {
+  "text": [
+   "theorem r_next (p₀: Nat) (m: MinPrimeGt p₀) {n:Nat}",
+   ": (n ∈ R p₀ ∧ ¬↑m.p ∣ n) ↔ (n ∈ R m.p) := by",
+   "let ⟨h₁,hinc⟩ := m.hpgt; let hmin := m.hmin; set p₁ := m.p",
+   "unfold R; simp; apply Iff.intro",
+   "all_goals intro hn; apply And.intro; simp_all",
+   "· show ∀ q ≤ p₁, Nat.Prime q → ¬q ∣ n",
+   "intro q hq hq2",
+   "by_cases hq₀: q≤p₀",
+   "case pos => simp_all",
+   "case neg =>",
+   "by_contra hqn",
+   "simp at hq₀",
+   "have : q ≠ 1 := by aesop",
+   "obtain ⟨f, hf', hfq⟩ := Nat.exists_prime_and_dvd ‹q ≠ 1›",
+   "have hmin := m.hmin",
+   "absurd hmin; simp; use f; split_ands",
+   "· show f < m.p",
+   "have : 0 < q := by omega",
+   "have : f ≤ q := by exact Nat.le_of_dvd this hfq",
+   "have : q ≠ p₁ := by aesop",
+   "omega",
+   "· exact hf'",
+   "· show p₀ < f",
+   "simp_all",
+   "by_contra h",
+   "have : f ≤ p₀ := by omega",
+   "have : 2 ≤ f := by exact Nat.Prime.two_le hf'",
+   "simp_all",
+   "have : ¬ f ∣ n := by aesop",
+   "have : f ∣ n := by exact Nat.dvd_trans hfq hqn",
+   "contradiction",
+   "· show ∀ q ≤ p₀, Nat.Prime q → ¬q ∣ n",
+   "intro q hq hq2",
+   "have : q ≤ p₁ := by omega",
+   "exact (hn.right q this) hq2",
+   "· show ¬p₁ ∣ n",
+   "simp_all"
+  ],
+  "decl": "r_next",
+  "whole": true
+ },
+ "PrimeSieve.lean:9-9": {
+  "text": [
+   "next  (s:α) (hC: Nat.Prime (C s)) (hN: nosk' (P s) (C s)): α"
+  ]
+ },
+ "PrimeSieve.lean:98-109": {
+  "text": [
+   "/- A prime sieve implementation can model `R p` by providing",
+   "a bijection between `R p` and its internal data structures.",
+   "",
+   "For RakeSieve, this is exposed to the type system by attaching",
+   "a predicate to the internal data structure.",
+   "",
+   "Whatever the sieve does to \"sift out\" multiples of the next",
+   "prime `p₁` is equivalent to the expression  `∧ ¬(p₁∣n)`.",
+   "",
+   "The following theorem allows us to construct a predicate for",
+   "membership in `R pₙ` by induction using predicates of this",
+   "form at each step. -/"
+  ]
+ },
+ "Rake.lean:11-11": {
+  "text": [
+   "abbrev Sorted {α : Type _} (r : α → α → Prop) (l : List α) : Prop := l.Pairwise r"
+  ],
+  "decl": "List.Sorted",
+  "whole": true
+ },
+ "Rake.lean:15-22": {
+  "text": [
+   "structure Rake : Type where",
+   "d     : Nat",
+   "ks    : List Nat",
+   "size : Nat := ks.length",
+   "sorted: Bool := true",
+   "hsort : sorted → List.Sorted (·<·) ks := by simp",
+   "huniq : sorted → ks.Nodup := by simp",
+   "hsize : 0 < ks.length := by simp"
+  ],
+  "decl": "Rake",
+  "whole": true
+ },
+ "Rake.lean:187-191": {
+  "text": [
+   "/--",
+   "As currently defined, the terms of a sorted rake can be non-ascending in one of two ways:",
+   "- ascending sawtooth pattern if ∃k∈r.ks, k>r.d",
+   "- cyclic (and possibly constant) if r.d=0",
+   "But in all cases, if the rake is sorted, term 0 is the minimum. -/"
+  ]
+ },
+ "Rake.lean:192-203": {
+  "text": [
+   "theorem sorted_min_term_zero (r: Rake) (hr: r.sorted) : ∀ n, (r.term 0 ≤ r.term n) := by",
+   "intro n",
+   "obtain ⟨k₀, hk₀, i₀, hi₀⟩ := r.term_simp 0",
+   "obtain ⟨k₁, hk₁, i₁, hi₁⟩ := r.term_simp n",
+   "simp[hk₀, hk₁]",
+   "suffices k₀ ≤ k₁ by exact le_add_right this",
+   "rw[hi₀.right, hi₁.right]",
+   "apply zero_le_cases i₁.val; all_goals intro hi",
+   "case zeq => simp_all",
+   "case zlt =>",
+   "have : i₀.val < i₁.val := by aesop",
+   "exact Nat.le_of_succ_le <| sorted_get r.ks (r.hsort hr) i₀ i₁ this"
+  ],
+  "decl": "Rake.sorted_min_term_zero",
+  "whole": true
+ },
+ "Rake.lean:234-238": {
+  "text": [
+   "/--",
+   "Partition each sequence in the rake by partitioning their *inputs*",
+   "into equivalance classes mod n. This multiplies the number of sequences",
+   "by n. We can't allow n to be zero because then we'd have no sequences left,",
+   "and this would break the guarantee that term (n) < term n+1. -/"
+  ]
+ },
+ "Rake.lean:239-246": {
+  "text": [
+   "def partition (r:Rake) (j: Nat) (hj:0<j:=by simp): Rake :=",
+   "let ks' := List.range (j*r.ks.length) |>.map λi =>",
+   "r.ks[i%r.ks.length]'(List.mod_length r.ks i r.hsize) + (i/r.ks.length) * r.d",
+   "have : ks'.length = j*r.ks.length := by simp [ks']",
+   "have := r.hsize",
+   "{ d:= r.d*j, ks := ks', sorted:=false, hsize:=by aesop }",
+   "",
+   "@[simp]"
+  ],
+  "decl": "Rake.partition",
+  "whole": true
+ },
+ "Rake.lean:255-285": {
+  "text": [
+   "theorem partition_term_same (r:Rake) (j:Nat) (hj: 0 < j) (r':Rake) (hr':r' = r.partition j hj)",
+   ": ∀n, (∃m', r'.term m' = n) → (∃m, r.term m = n) := by",
+   "-- `partition` changes `d` and `ks` but keeps a permutation of the terms.",
+   "-- we use term_iff so we can argue in terms of `.ks` before and after.",
+   "intro n; repeat rw[term_iff]",
+   "",
+   "-- note that r'.d := r.d*j by the definition of `partition`",
+   "(have : r'.d = r.d*j := by simp[hr', partition]); simp only[this]; clear this",
+   "",
+   "-- we can now write the goal like so:",
+   "show (∃ k' ∈ r'.ks, ∃ x', k' + x' * (r.d * j) = n) → ∃ k ∈ r.ks, ∃ x, k + x * r.d = n",
+   "-- introduce variables for the left side such that",
+   "-- hik: (r'[i']=k)   and   hx': k' + x' + r.d * j= n",
+   "intro ⟨k', hk', x', hx'⟩",
+   "obtain ⟨i', hik'⟩ : ∃(i': Fin r'.ks.length), _:= by",
+   "rw[List.mem_iff_get] at hk'; exact hk'",
+   "",
+   "show ∃ k, k ∈ r.ks ∧ ∃ x, k + x * r.d = n",
+   "-- we already have a theorem that relates the indices of k and k'",
+   "-- derived from the definition of `partition`.",
+   "have hdef := partition_def r j hj",
+   "specialize hdef i' (by rw[←hr']; exact i'.prop)",
+   "set i  := i' % r.ks.length with hi",
+   "set k  := r.ks[i]'(List.mod_length r.ks i' r.hsize) with hk",
+   "set x  := i' / r.ks.length with hx",
+   "use k",
+   "apply And.intro",
+   "· exact List.get_mem r.ks ⟨i, by simpa [i] using List.mod_length r.ks i' r.hsize⟩",
+   "· replace hdef : k' = k + x * r.d := by simp_all",
+   "open Nat in rw[mul_comm,hdef,mul_comm,add_assoc,mul_assoc,←mul_add,mul_comm] at hx'",
+   "use x + j * x'"
+  ],
+  "decl": "Rake.partition_term_same",
+  "whole": true
+ },
+ "Rake.lean:26-26": {
+  "text": [
+   "def zer : Rake := { d := 0, ks := [0] }"
+  ],
+  "decl": "Rake.zer",
+  "whole": true
+ },
+ "Rake.lean:28-28": {
+  "text": [
+   "def ge2 : Rake := { d := 1, ks := [2] }"
+  ],
+  "decl": "Rake.ge2",
+  "whole": true
+ },
+ "Rake.lean:287-345": {
+  "text": [
+   "theorem partition_term_keep (r:Rake) (j:Nat) (hj: 0 < j) (r':Rake) (hr':r' = r.partition j hj)",
+   ": ∀t, (∃n, r.term n = t) → (∃n, r'.term n = t) := by",
+   "/- In this direction, each sequence `ksᵢ + d` gets partitioned into",
+   "*multiple* sequences. There are exactly `j` new sequences, arranged like so:",
+   "",
+   "`  r.ks  = [ks₀, ks₁, ..., ksₖ₋₁]`",
+   "`  r'.ks = [ks₀, ks₁, ..., ks₀+d, ks₁+d, ..., ks[z]₋₁+d×(j-1)]`",
+   "",
+   "Since `r.term n = r.ks[(i := n % z)] + d * (n /z)`, and",
+   "`r'.ks.length` is a multiple of `r.ks.length`, the terms come out",
+   "in the exact same order.",
+   "",
+   "To prove this, we first use `k_of_term` to expand the formula for `r.term n`: -/",
+   "intro t ⟨n, hn⟩; simp[term_iff]",
+   "",
+   "set z := r.ks.length",
+   "set z':= r'.ks.length with hz'",
+   "have hz'z: z' = (z * j) := by rw[hz',hr',length_partition,Nat.mul_comm]",
+   "",
+   "obtain ⟨k, _, i, hi, hki, ht⟩ := r.k_of_term (hn: r.term n = t)",
+   "set i' : Fin z':= ⟨n%z', Nat.mod_lt n r'.hsize⟩ with hi'",
+   "set k' := r'.ks[i'] with hk'",
+   "have hi'_val : (i' : Nat) = n % z' := by simp [hi']",
+   "",
+   "-- map the new constant to the old one",
+   "have hdef: k' = k + i'/z * r.d := by",
+   "have hpart := partition_def r j hj i' (by simpa [hr', length_partition, hz', z] using i'.prop)",
+   "have hidx : (↑i' % r.ks.length) = n % r.ks.length := by",
+   "rw [hi'_val, hz'z, Nat.mod_mul_right_mod]",
+   "have hkidx : r.ks[↑i' % r.ks.length] = k := by",
+   "simpa [hidx, hi] using hki.symm",
+   "calc",
+   "k' = r.ks[↑i' % r.ks.length] + (↑i' / r.ks.length) * r.d := by",
+   "simpa [hr', hk'] using hpart",
+   "_ = k + (↑i' / z) * r.d := by",
+   "simpa [z] using congrArg (fun t => t + (↑i' / z) * r.d) hkidx",
+   "",
+   "show ∃ k' ∈ r'.ks, ∃ x', k' + x' * r'.d = t",
+   "use k'",
+   "apply And.intro",
+   "· show k' ∈ r'.ks",
+   "exact List.get_mem r'.ks i'",
+   "· use n/z'; subst ht; rw[Nat.mul_comm]",
+   "set  t':= k' + r'.d * (n/z') with ht'",
+   "show t' = k  + r.d  * (n/z)  -- we need to remove the `'` on `r'.d` and `z'`",
+   "calc t' = k + i'/z * r.d + (r.d * j) * (n/(z *j))  := by simp_all [partition]",
+   "_= k + r.d * (i'/z + j * (n/(z *j)))             :=",
+   "by rw[Nat.mul_assoc, Nat.add_assoc, Nat.mul_comm, Nat.mul_add]",
+   "_= k + r.d * ((n%(z*j)/z) + j * (n/(z *j)))      := by",
+   "have hiDiv : ↑i' / z = n % (z * j) / z := by rw [hi'_val, hz'z]",
+   "rw [hiDiv]",
+   "_= k + r.d * (((n/z)%j) + j * (n/(z *j)))        := by rw[Nat.mod_mul_right_div_self]",
+   "_= k + r.d * ((n/z)%j + j * ((n/z)/j))           :=",
+   "by",
+   "simp [z]",
+   "left",
+   "left",
+   "exact Eq.symm (Nat.div_div_eq_div_mul n z j)",
+   "_= k + r.d * (n / z)                             := by rw[Nat.mod_add_div (n/z) j]"
+  ],
+  "decl": "Rake.partition_term_keep",
+  "whole": true
+ },
+ "Rake.lean:32-35": {
+  "text": [
+   "def term (r: Rake) (n : Nat) : Nat :=",
+   "let q := r.ks.length",
+   "have : n%q < r.ks.length := Nat.mod_lt _ r.hsize",
+   "aseq r.ks[n%q] r.d |>.term (n/q)"
+  ],
+  "decl": "Rake.term",
+  "whole": true
+ },
+ "Rake.lean:347-351": {
+  "text": [
+   "theorem partition_term_iff (r:Rake) (j:Nat) (hj: 0 < j)",
+   ": ∀n, (∃m, (r.partition j hj).term m = n) ↔ (∃m, r.term m = n) :=",
+   "λn => Iff.intro",
+   "(partition_term_same r j hj (r.partition j hj) rfl n)",
+   "(partition_term_keep r j hj (r.partition j hj) rfl n)"
+  ],
+  "decl": "Rake.partition_term_iff",
+  "whole": true
+ },
+ "Rake.lean:360-369": {
+  "text": [
+   "def rem : Rake :=",
+   "-- !! I was going to have be a bit smarter in the general case but",
+   "--    this makes no difference in RakeSieve because j is always prime",
+   "-- let gcd := r.d.gcd j",
+   "-- have hz : 0 < (j/gcd) := Nat.div_gcd_pos_of_pos_right r.d hj",
+   "-- let r' := if j∣r.d then r else r.partition (j/gcd) hz",
+   "let r' := r.partition j hj",
+   "let ks := r'.ks.filter (λk => ¬j∣k)",
+   "if hlen: ks.length = 0 then zer",
+   "else { d := r'.d, ks:=ks, sorted := false, hsize := Nat.zero_lt_of_ne_zero hlen }"
+  ],
+  "decl": "Rake.rem",
+  "whole": true
+ },
+ "Rake.lean:368-368": {
+  "text": [
+   "if hlen: ks.length = 0 then zer"
+  ]
+ },
+ "Rake.lean:371-371": {
+  "text": [
+   "abbrev HasNonMultiple (j:Nat): Prop := ∃n, ¬j∣n ∧ ∃m, r.term m=n"
+  ],
+  "decl": "Rake.HasNonMultiple",
+  "whole": true
+ },
+ "Rake.lean:377-416": {
+  "text": [
+   "theorem rem_def (r:Rake) {j: Nat} (hj: 0<j) (r': Rake) (hr': r' = r.rem hj) (hnm: HasNonMultiple r j)",
+   ": r'.d=r.d*j ∧ r'.ks=(r.partition j hj).ks.filter (λk => ¬j∣k) ∧ 0<r'.ks.length := by",
+   "obtain hzer | ⟨hd', hks', hlen'⟩ := rem_def' r hj r' hr'",
+   "· -- show hzer case cannot happen thanks to h₁",
+   "-- r produces terms that don't divide k, and r.partition produces the same terms.",
+   "",
+   "-- from h1 we can obtain a k∈r.k coprime to p",
+   "obtain ⟨n, hn, hex⟩ := hnm",
+   "obtain ⟨k, hk, x, hx⟩ := by rwa[←r.partition_term_iff j hj n, term_iff] at hex",
+   "have hjk : ¬j ∣ k := by",
+   "by_contra h",
+   "have :  j ∣     r.d * j * x := by",
+   "have := Nat.dvd_mul_right j (r.d*x); rwa[Nat.mul_left_comm,←Nat.mul_assoc] at this",
+   "have :  j ∣ k + r.d * j * x := by exact (Nat.dvd_add_iff_right h).mp this",
+   "have : ¬j ∣ k + r.d * j * x := by",
+   "have : (r.partition j hj).d = r.d * j := by aesop",
+   "rwa[←hx, this,Nat.mul_comm] at hn",
+   "contradiction",
+   "",
+   "-- now show that k survives the filter operation:",
+   "set r'k := (r.partition j hj).ks.filter (λk => ¬j∣k)",
+   "have rk: k ∈ r'k := by simp[hk, r'k, hjk, List.mem_filter]",
+   "",
+   "-- k ≠ 0 because ¬p∣k and ∀n,n∣0",
+   "have : k ≠ 0 := by by_contra h; have := Nat.dvd_zero j; rw[h] at hjk; contradiction",
+   "-- but that contradicts the notion that r'=hzer",
+   "have : k = 0 := by",
+   "set rpk := (r.partition j hj).ks.filter (λk => ¬j∣k)",
+   "have rk: k ∈ rpk := by simp[hk, hjk, rpk, List.mem_filter]",
+   "have hlen : rpk.length ≠ 0 := Nat.ne_of_gt (List.length_pos_of_mem rk)",
+   "have hnot : ¬ ∀ a ∈ (r.partition j hj).ks, j ∣ a := by",
+   "intro hall",
+   "exact hjk (hall k hk)",
+   "have : r'.ks = rpk := by simp [hr', rem, rpk, hnot]",
+   "have : r'.ks = [0] := by simp[hzer, zer]",
+   "simp_all",
+   "contradiction",
+   "",
+   "· -- the non-zer case just passes through",
+   "exact ⟨hd', hks', hlen'⟩"
+  ],
+  "decl": "Rake.rem_def",
+  "whole": true
+ },
+ "Rake.lean:418-438": {
+  "text": [
+   "theorem rem_drop (r:Rake) {j: Nat} (hj: 0<j) (r': Rake) (hr': r' = r.rem hj) (hnm: HasNonMultiple r j)",
+   ": ∀n, j∣n → ¬(∃m, r'.term m = n) := by",
+   "-- general idea:",
+   "--   the only way term m = n is if ∃x, ∃k∈r.ks, k + x*d = n",
+   "--   x would have to be be n/ks.length, but i'm not sure we need that fact",
+   "--   term_iff supplies this fact.",
+   "intro n hjn; rw[term_iff]",
+   "-- we will show no such k exists",
+   "push_neg; intro k hk x",
+   "set d' := r'.d",
+   "-- either rem returns zer, or we can extract the formulas for d and ks",
+   "obtain ⟨hd', hks', hlen'⟩ := rem_def r hj r' hr' hnm",
+   "-- we only have to show ¬j∣k, because `j∣d` so `x*d` cancels out mod j",
+   "suffices ¬j∣k from by",
+   "by_contra h",
+   "have h₀: j ∣ k + x * d' := by rwa[h.symm] at hjn",
+   "have h₁: j ∣ x * d' := Dvd.dvd.mul_left (Dvd.intro_left r.d hd'.symm) x",
+   "have : j ∣ k := (Nat.dvd_add_iff_left h₁).mpr h₀",
+   "contradiction",
+   "show ¬j∣k",
+   "simp_all[List.mem_filter]"
+  ],
+  "decl": "Rake.rem_drop",
+  "whole": true
+ },
+ "Rake.lean:440-464": {
+  "text": [
+   "theorem rem_keep (r:Rake) {j: Nat} (hj: 0<j) (r': Rake) (hr': r' = r.rem hj)",
+   ": ∀n, ¬j∣n → (∃m, r.term m = n) → (∃m', r'.term m' = n) := by",
+   "-- this follows from partition_term_iff and the nature of filter",
+   "intro n hjn ht",
+   "have ht' := ht",
+   "-- r produces terms that don't divide k, and r.partition produces the same terms.",
+   "rw[←r.partition_term_iff j hj n, term_iff] at ht'",
+   "-- since r.partition produces n, we can show ¬j∣k for the corresponding k",
+   "obtain ⟨k, hk, x, hx⟩ := ht'",
+   "have hnm: HasNonMultiple r j := by use n",
+   "obtain ⟨hd', hks'⟩ := rem_def r hj r' hr' hnm",
+   "-- !! this duplicates some work from rem_def' ... consolidate?",
+   "have hjk : ¬ j ∣ k := by",
+   "by_contra h",
+   "have : j ∣  r.d * j * x := by",
+   "have : j ∣  j * (r.d * x) := Nat.dvd_mul_right j _",
+   "rwa[Nat.mul_left_comm,←Nat.mul_assoc] at this",
+   "have :  j ∣ k + r.d * j * x := by exact (Nat.dvd_add_iff_right h).mp this",
+   "have : ¬j ∣ k + r.d * j * x := by",
+   "have : (r.partition j hj).d = r.d * j := by aesop",
+   "rwa[←hx, this,Nat.mul_comm] at hjn",
+   "contradiction",
+   "have : k ∈ r'.ks := by simp[hk, hks', hjk, List.mem_filter]",
+   "rw[term_iff]",
+   "use k; aesop"
+  ],
+  "decl": "Rake.rem_keep",
+  "whole": true
+ },
+ "Rake.lean:449-449": {
+  "text": [
+   "have hnm: HasNonMultiple r j := by use n"
+  ]
+ },
+ "Rake.lean:466-474": {
+  "text": [
+   "theorem rem_same (r:Rake) {j: Nat} (hj: 0<j) (r': Rake) (hr': r' = r.rem hj) (hnm: HasNonMultiple r j)",
+   ": ∀n, (∃m', r'.term m' = n) → (∃m, r.term m = n) := by",
+   "-- this follows from partition_term_iff and the nature of filter.",
+   "intro n h; rw[term_iff] at h; obtain ⟨k, hk, x, hx⟩ := h",
+   "obtain ⟨hd', hks'⟩ := rem_def r hj r' hr' hnm",
+   "have := r.partition_term_iff j hj n",
+   "rw[term_iff] at this; rw[←this]",
+   "have : k ∈ (r.partition j hj).ks := by simp_all",
+   "use k; aesop"
+  ],
+  "decl": "Rake.rem_same",
+  "whole": true
+ },
+ "Rake.lean:50-53": {
+  "text": [
+   "theorem term_add_len (r : Rake) (m : Nat) : r.term (m + r.ks.length) = r.term m + r.d := by",
+   "have hmod : (m + r.ks.length) % r.ks.length = m % r.ks.length := Nat.add_mod_right m _",
+   "have hdiv : (m + r.ks.length) / r.ks.length = m / r.ks.length + 1 := Nat.add_div_right m r.hsize",
+   "simp only [term, aseq, ASeq.term, hmod, hdiv, Nat.mul_add, Nat.mul_one, Nat.add_assoc]"
+  ],
+  "decl": "Rake.term_add_len",
+  "whole": true
+ },
+ "Rake.lean:51-51": {
+  "text": [
+   "have hmod : (m + r.ks.length) % r.ks.length = m % r.ks.length := Nat.add_mod_right m _"
+  ]
+ },
+ "Rake.lean:55-106": {
+  "text": [
+   "theorem term_iff (r:Rake)",
+   ": ∀m, (∃n, r.term n = m) ↔ (∃ k∈r.ks,  ∃x:Nat, k+x*r.d = m) := by",
+   "intro m; apply Iff.intro",
+   "· show (∃ n, r.term n = m) → ∃ k ∈ r.ks, ∃ x, k + x * r.d = m",
+   "-- this is just grunt work, but it follows from the definition of term",
+   "intro ⟨n,hn⟩; obtain ⟨k, hk, i, hi, hki⟩ := r.term_simp n",
+   "use k; apply And.intro",
+   "· simp[List.mem_iff_get]; use i; exact hki.symm",
+   "· use (n/r.ks.length); subst hki hn; simp_all;",
+   "exact Nat.mul_comm (n / r.ks.length) r.d",
+   "",
+   "· show (∃ k ∈ r.ks, ∃ x, k + x * r.d = m) → ∃ n, r.term n = m",
+   "-- in other words, given some k in our list and an arbitrary x",
+   "-- the rake ought to produce m = k + x * r.d at some point. we prove",
+   "-- this by working backwards to calculate what n we have to plug",
+   "-- into (r.term n) in order to get n back out.",
+   "intro ⟨k, hk, hx₀⟩",
+   "",
+   "-- k is a member of ks so it must have an index in ks: k=r.ks.get i",
+   "rw[List.mem_iff_get] at hk",
+   "obtain ⟨i: Fin r.ks.length, hi₀ : r.ks.get i = k⟩ := hk",
+   "",
+   "-- k uniquely identifies a particular arithmetic sequence within",
+   "-- the rake, and there's some x that we can feed into this sequence",
+   "-- to get the result m. we can obtain it:",
+   "obtain ⟨x, hx: k + x * r.d = m⟩ := hx₀",
+   "",
+   "-- now we can choose n so that r.term n picks k=ks[ i ] as the constant.",
+   "-- this happens ∀ n, i = n % r.ks.length ∧ x = n / r.ks.length",
+   "have hi₁ : i.val % r.ks.length = i.val := Nat.mod_eq_of_lt i.prop",
+   "let n := (i.val % r.ks.length) + (x * r.ks.length)",
+   "",
+   "-- now we run this definition of `n` through `r.term n` and",
+   "-- once we deal with annoying divmod issues, out comes the result.",
+   "use n",
+   "have hmod : (n % r.ks.length) = i.val := by",
+   "dsimp [n]",
+   "calc",
+   "(i.val % r.ks.length + x * r.ks.length) % r.ks.length = (i.val % r.ks.length) % r.ks.length := by",
+   "rw [Nat.add_mul_mod_self_right]",
+   "_ = i.val % r.ks.length := Nat.mod_mod _ _",
+   "_ = i.val := Nat.mod_eq_of_lt i.prop",
+   "have hdiv : (n / r.ks.length) = x := by",
+   "dsimp [n]",
+   "rw [Nat.add_mul_div_right _ _ r.hsize, Nat.div_eq_of_lt (Nat.mod_lt _ r.hsize)]",
+   "simp",
+   "calc",
+   "r.term n = r.ks[i] + x * r.d := by",
+   "dsimp [term]",
+   "simp [hmod, hdiv, Nat.mul_comm]",
+   "_ = k + x * r.d := by simpa using congrArg (fun t => t + x * r.d) hi₀",
+   "_ = m := hx"
+  ],
+  "decl": "Rake.term_iff",
+  "whole": true
+ },
+ "Rake.lean:85-85": {
+  "text": [
+   "let n := (i.val % r.ks.length) + (x * r.ks.length)"
+  ]
+ },
+ "Rake.lean:9-13": {
+  "text": [
+   "namespace List",
+   "",
+   "abbrev Sorted {α : Type _} (r : α → α → Prop) (l : List α) : Prop := l.Pairwise r",
+   "",
+   "end List"
+  ]
+ },
+ "RakeMap.lean:15-15": {
+  "text": [
+   "def pred {p:Nat → Prop} (_:RakeMap p) : Nat → Prop := p"
+  ],
+  "decl": "RakeMap.pred",
+  "whole": true
+ },
+ "RakeMap.lean:18-19": {
+  "text": [
+   "theorem min_term_zero (rm:RakeMap p)  : ∀ n, (rm.term 0 ≤ rm.term n) :=",
+   "@Rake.sorted_min_term_zero rm.rake rm.hord"
+  ],
+  "decl": "RakeMap.min_term_zero",
+  "whole": true
+ },
+ "RakeMap.lean:19-19": {
+  "text": [
+   "@Rake.sorted_min_term_zero rm.rake rm.hord"
+  ]
+ },
+ "RakeMap.lean:27-34": {
+  "text": [
+   "def rm_ge2 : RakeMap (λn => 2≤n) := {",
+   "rake := ge2",
+   "hbij := by",
+   "intro n; simp[Rake.term, ge2, aseq, ASeq.term]; apply Iff.intro",
+   "· show 2 ≤ n → ∃ m, 2 + m = n",
+   "intro n2; use n-2; simp_all",
+   "· show (∃ m, 2 + m = n) → 2 ≤ n",
+   "intro hm; obtain ⟨m,hm⟩ := hm; rw[←hm]; simp }"
+  ],
+  "decl": "RakeMap.rm_ge2",
+  "whole": true
+ },
+ "RakeMap.lean:32-32": {
+  "text": [
+   "intro n2; use n-2; simp_all"
+  ]
+ },
+ "RakeMap.lean:39-41": {
+  "text": [
+   "This removes all multiples of a number from the rake.",
+   "- `hx: 0 < x` is necessary because we multiply the delta",
+   "by x in the partition step, and delta=0 gives you a cyclic rake."
+  ]
+ },
+ "RakeMap.lean:48-48": {
+  "text": [
+   "def rem (rm : RakeMap prop) (j: Nat) (hj: 0<j) (hnmr: ∃n m, ¬j∣n ∧ rm.term m = n)"
+  ],
+  "decl": "RakeMap.rem",
+  "whole": false
+ },
+ "RakeMap.lean:48-68": {
+  "text": [
+   "def rem (rm : RakeMap prop) (j: Nat) (hj: 0<j) (hnmr: ∃n m, ¬j∣n ∧ rm.term m = n)",
+   ": RakeMap (λ n => prop n ∧ ¬j∣n) :=",
+   "let r₀ := rm.rake",
+   "let r₁ := r₀.rem hj;",
+   "have hbij₀ := rm.hbij",
+   "have hbij₁ : ∀n, prop n ∧ ¬j∣n ↔ ∃ m, r₁.term m = n := by",
+   "intro n",
+   "have hnm: r₀.HasNonMultiple j := by",
+   "obtain ⟨n, m, hjn, ht⟩ := hnmr",
+   "dsimp[HasNonMultiple, r₀]",
+   "use n; aesop",
+   "have hd := r₀.rem_drop hj",
+   "have hk := r₀.rem_keep hj",
+   "have hs := r₀.rem_same hj",
+   "repeat aesop",
+   "let r₂ := r₁.sort",
+   "let hbij₂ : ∀ n, prop n ∧ ¬j∣n ↔ ∃ m, r₂.val.term m = n := by",
+   "intro n",
+   "have hs := r₁.sort_term_iff_term n",
+   "apply Iff.intro; all_goals aesop",
+   "{ rake := r₂, hbij := hbij₂, hord := by simp[r₂.prop] }"
+  ],
+  "decl": "RakeMap.rem",
+  "whole": true
+ },
+ "RakeMap.lean:6-9": {
+  "text": [
+   "structure RakeMap (pred: Nat → Prop) where",
+   "rake : Rake",
+   "hbij : ∀ n, pred n ↔ ∃ m, rake.term m = n",
+   "hord : rake.sorted := by rfl"
+  ],
+  "decl": "RakeMap",
+  "whole": true
+ },
+ "RakeMap.lean:72-80": {
+  "text": [
+   "theorem rem_d (rm : RakeMap prop) (j : Nat) (hj : 0 < j) (hnmr : ∃ n m, ¬j∣n ∧ rm.term m = n) :",
+   "(rm.rem j hj hnmr).rake.d = rm.rake.d * j := by",
+   "have hnm : rm.rake.HasNonMultiple j := by",
+   "obtain ⟨n, m, hjn, ht⟩ := hnmr",
+   "exact ⟨n, hjn, m, ht⟩",
+   "have h₁ := (Rake.rem_def rm.rake hj (rm.rake.rem hj) rfl hnm).1",
+   "have h₂ := (rm.rake.rem hj).sort.prop.1",
+   "show (rm.rake.rem hj).sort.val.d = _",
+   "rw [h₂, h₁]"
+  ],
+  "decl": "RakeMap.rem_d",
+  "whole": true
+ },
+ "RakeMap.lean:78-78": {
+  "text": [
+   "have h₂ := (rm.rake.rem hj).sort.prop.1"
+  ]
+ },
+ "RakeMap.lean:8-8": {
+  "text": [
+   "hbij : ∀ n, pred n ↔ ∃ m, rake.term m = n"
+  ]
+ },
+ "RakeSieve.lean:10-10": {
+  "text": [
+   "hprop : ∀ n:Nat, prop n ↔ n ∈ R p"
+  ]
+ },
+ "RakeSieve.lean:101-101": {
+  "text": [
+   "let rs := rs₀.rm.rem c'.p (Nat.Prime.pos hC₀) hsurv"
+  ]
+ },
+ "RakeSieve.lean:101-108": {
+  "text": [
+   "let rs := rs₀.rm.rem c'.p (Nat.Prime.pos hC₀) hsurv",
+   "let c₁ := rs.rake.term 0",
+   "have hc₁: ∃ i, rs.rake.term i = c₁ := by",
+   "exact exists_apply_eq_apply (fun a => rs.rake.term a) 0",
+   "let h₁ := rs.pred",
+   "have hh₁ : ∀n, h₁ n ↔ h₀ n ∧ ¬(c'.p∣n) := by",
+   "intro n",
+   "rfl"
+  ]
+ },
+ "RakeSieve.lean:102-102": {
+  "text": [
+   "let c₁ := rs.rake.term 0"
+  ]
+ },
+ "RakeSieve.lean:11-12": {
+  "text": [
+   "hCinR : c ∈ R p",
+   "hRmin : ∀ r ∈ R p, c ≤ r"
+  ]
+ },
+ "RakeSieve.lean:110-110": {
+  "text": [
+   "intro n; exact r_next_prop (hh₀ n) (hh₁ n)"
+  ]
+ },
+ "RakeSieve.lean:111-111": {
+  "text": [
+   "{ prop := rs.pred, rm := rs, p := ⟨c'.p, hC₀⟩, c := c₁,"
+  ]
+ },
+ "RakeSieve.lean:12-12": {
+  "text": [
+   "hRmin : ∀ r ∈ R p, c ≤ r"
+  ]
+ },
+ "RakeSieve.lean:125-125": {
+  "text": [
+   "exact rs.min_term_zero k"
+  ]
+ },
+ "RakeSieve.lean:126-136": {
+  "text": [
+   "hdfac := by",
+   "-- the new period is d * c: its prime factors are those of d (all ≤ p < c) and c itself.",
+   "intro q hq hqd",
+   "have hd : rs.rake.d = rs₀.rm.rake.d * rs₀.c := RakeMap.rem_d _ _ _ _",
+   "rw [hd] at hqd",
+   "show q ≤ rs₀.c",
+   "rcases (Nat.Prime.dvd_mul hq).mp hqd with h | h",
+   "· have h₁ := rs₀.hdfac q hq h",
+   "have h₂ : rs₀.c > rs₀.p.val := r_gt_p rs₀.p.val rs₀.c hCR₀",
+   "omega",
+   "· exact Nat.le_of_dvd hC₀.pos h }"
+  ]
+ },
+ "RakeSieve.lean:129-129": {
+  "text": [
+   "have hd : rs.rake.d = rs₀.rm.rake.d * rs₀.c := RakeMap.rem_d _ _ _ _"
+  ]
+ },
+ "RakeSieve.lean:138-151": {
+  "text": [
+   "instance : PrimeSieveState RakeSieve where",
+   "P x := x.p",
+   "C x := x.c",
+   "next := .next",
+   "hNext := by",
+   "intro s hC hNS s' hs'; simp_all; rw[←hs']",
+   "unfold next at hs'; simp at hs'",
+   "have hpc: s'.p = s.c := by simp_all",
+   "apply And.intro",
+   "· exact hpc",
+   "· show s'.c > s.c",
+   "have := s'.hCinR",
+   "have := r_gt_p",
+   "aesop"
+  ],
+  "decl": "RakeSieve.instPrimeSieveStateRakeSieve",
+  "whole": true
+ },
+ "RakeSieve.lean:140-140": {
+  "text": [
+   "C x := x.c"
+  ]
+ },
+ "RakeSieve.lean:141-141": {
+  "text": [
+   "next := .next"
+  ]
+ },
+ "RakeSieve.lean:148-151": {
+  "text": [
+   "· show s'.c > s.c",
+   "have := s'.hCinR",
+   "have := r_gt_p",
+   "aesop"
+  ]
+ },
+ "RakeSieve.lean:15-15": {
+  "text": [
+   "hdfac : ∀ q, Nat.Prime q → q ∣ rm.rake.d → q ≤ p.val"
+  ]
+ },
+ "RakeSieve.lean:155-157": {
+  "text": [
+   "instance : PrimeSieveDriver RakeSieve where",
+   "hCinR x := by dsimp[C]; dsimp[P]; exact x.hCinR",
+   "hRmin x := by dsimp[C]; dsimp[P]; exact x.hRmin"
+  ],
+  "decl": "RakeSieve.instPrimeSieveDriverRakeSieve",
+  "whole": true
+ },
+ "RakeSieve.lean:22-62": {
+  "text": [
+   "def init : RakeSieve :=",
+   "let rm : RakeMap (λn => n≥2 ∧ ¬2∣n) := rm_ge2 |>.rem 2 (by simp) (by",
+   "use 3; use 1; simp[rm_ge2, Rake.ge2, Rake.term])",
+   "let p := ⟨2, Nat.prime_two⟩",
+   "{ prop := rm.pred, rm := rm, p := p, c := 3,",
+   "hprop := by",
+   "have hrm : rm.pred = λn => n ≥ 2 ∧ ¬ 2∣n := by simp[RakeMap.pred]",
+   "show ∀ n, rm.pred n ↔ n ∈ R p",
+   "have hbij := rm.hbij",
+   "unfold R; simp_all; intro n",
+   "apply Iff.intro",
+   "case mp =>",
+   "intro hn",
+   "apply And.intro",
+   "· rw[← hbij] at hn; exact hn.left",
+   "· intro q hq hq'",
+   "simp[←hbij] at hn",
+   "have hp2 : (p : Nat) = 2 := rfl",
+   "have hq2 : 2 ≤ q := Nat.Prime.two_le hq'",
+   "have : 2 = q := by omega",
+   "rw[this] at hn",
+   "omega",
+   "case mpr =>",
+   "simp; intro hn hn2; rw[←hbij]; simp_all",
+   "have hp2: p.val = 2 := by rfl",
+   "have hn2' := hn2",
+   "set p' := p.val",
+   "specialize hn2' p';  simp[hp2] at hn2'",
+   "exact hn2' Nat.prime_two",
+   "hCinR := by",
+   "-- generic base-case fact: 3 ∈ R 2",
+   "simpa [p] using three_mem_R_two",
+   "hRmin := by",
+   "-- generic base-case fact: 3 is least in R 2",
+   "simpa [p] using three_le_of_mem_R_two",
+   "hdfac := by",
+   "-- the period of the start rake is 1 * 2 = 2, whose only prime factor is 2.",
+   "intro q _ hqd",
+   "have hd : rm.rake.d = 2 := (RakeMap.rem_d _ _ _ _).trans rfl",
+   "rw [hd] at hqd",
+   "exact Nat.le_of_dvd (by decide) hqd }"
+  ],
+  "decl": "RakeSieve.init",
+  "whole": true
+ },
+ "RakeSieve.lean:23-23": {
+  "text": [
+   "let rm : RakeMap (λn => n≥2 ∧ ¬2∣n) := rm_ge2 |>.rem 2 (by simp) (by"
+  ]
+ },
+ "RakeSieve.lean:24-24": {
+  "text": [
+   "use 3; use 1; simp[rm_ge2, Rake.ge2, Rake.term])"
+  ]
+ },
+ "RakeSieve.lean:25-25": {
+  "text": [
+   "let p := ⟨2, Nat.prime_two⟩"
+  ]
+ },
+ "RakeSieve.lean:26-26": {
+  "text": [
+   "{ prop := rm.pred, rm := rm, p := p, c := 3,"
+  ]
+ },
+ "RakeSieve.lean:27-50": {
+  "text": [
+   "hprop := by",
+   "have hrm : rm.pred = λn => n ≥ 2 ∧ ¬ 2∣n := by simp[RakeMap.pred]",
+   "show ∀ n, rm.pred n ↔ n ∈ R p",
+   "have hbij := rm.hbij",
+   "unfold R; simp_all; intro n",
+   "apply Iff.intro",
+   "case mp =>",
+   "intro hn",
+   "apply And.intro",
+   "· rw[← hbij] at hn; exact hn.left",
+   "· intro q hq hq'",
+   "simp[←hbij] at hn",
+   "have hp2 : (p : Nat) = 2 := rfl",
+   "have hq2 : 2 ≤ q := Nat.Prime.two_le hq'",
+   "have : 2 = q := by omega",
+   "rw[this] at hn",
+   "omega",
+   "case mpr =>",
+   "simp; intro hn hn2; rw[←hbij]; simp_all",
+   "have hp2: p.val = 2 := by rfl",
+   "have hn2' := hn2",
+   "set p' := p.val",
+   "specialize hn2' p';  simp[hp2] at hn2'",
+   "exact hn2' Nat.prime_two"
+  ]
+ },
+ "RakeSieve.lean:5-15": {
+  "text": [
+   "structure RakeSieve where",
+   "prop : Nat -> Prop",
+   "rm: RakeMap prop",
+   "p : NPrime               -- the current prime",
+   "c : Nat                  -- the candidate for next prime",
+   "hprop : ∀ n:Nat, prop n ↔ n ∈ R p",
+   "hCinR : c ∈ R p",
+   "hRmin : ∀ r ∈ R p, c ≤ r",
+   "-- every prime factor of the rake's period is one of the primes sifted so far.",
+   "-- (the period is their product, p#.) This is what lets the rake prove it never runs empty.",
+   "hdfac : ∀ q, Nat.Prime q → q ∣ rm.rake.d → q ≤ p.val"
+  ],
+  "decl": "RakeSieve",
+  "whole": true
+ },
+ "RakeSieve.lean:51-56": {
+  "text": [
+   "hCinR := by",
+   "-- generic base-case fact: 3 ∈ R 2",
+   "simpa [p] using three_mem_R_two",
+   "hRmin := by",
+   "-- generic base-case fact: 3 is least in R 2",
+   "simpa [p] using three_le_of_mem_R_two"
+  ]
+ },
+ "RakeSieve.lean:53-53": {
+  "text": [
+   "simpa [p] using three_mem_R_two"
+  ]
+ },
+ "RakeSieve.lean:56-56": {
+  "text": [
+   "simpa [p] using three_le_of_mem_R_two"
+  ]
+ },
+ "RakeSieve.lean:57-62": {
+  "text": [
+   "hdfac := by",
+   "-- the period of the start rake is 1 * 2 = 2, whose only prime factor is 2.",
+   "intro q _ hqd",
+   "have hd : rm.rake.d = 2 := (RakeMap.rem_d _ _ _ _).trans rfl",
+   "rw [hd] at hqd",
+   "exact Nat.le_of_dvd (by decide) hqd }"
+  ]
+ },
+ "RakeSieve.lean:64-71": {
+  "text": [
+   "/--",
+   "The rake never runs empty: removing the multiples of the candidate `c` always leaves a term.",
+   "",
+   "The witness comes from the rake itself, not from Mathlib's infinitude of primes. `c` is a term",
+   "of the rake, say at index `m₀`; one period later, at `m₀ + len`, the rake produces `c + d`.",
+   "Every prime factor of `d` is ≤ p < c (`hdfac`), so the prime `c` does not divide `d`, hence",
+   "does not divide `c + d`. (This is Euclid's argument, with `c + p#` playing the part of",
+   "`p# + 1`, but it is carried by the data structure: no infinitude theorem is imported.) -/"
+  ]
+ },
+ "RakeSieve.lean:72-82": {
+  "text": [
+   "theorem survivor (s : RakeSieve) (hC : Nat.Prime s.c) :",
+   "∃ n m, ¬ s.c ∣ n ∧ s.rm.term m = n := by",
+   "obtain ⟨m₀, hm₀⟩ := (s.rm.hbij s.c).mp ((s.hprop s.c).mpr s.hCinR)",
+   "refine ⟨s.c + s.rm.rake.d, m₀ + s.rm.rake.ks.length, ?_, ?_⟩",
+   "· intro hdvd",
+   "have hcd : s.c ∣ s.rm.rake.d := (Nat.dvd_add_iff_right (dvd_refl s.c)).mpr hdvd",
+   "have hle : s.c ≤ s.p.val := s.hdfac s.c hC hcd",
+   "have hgt : s.c > s.p.val := r_gt_p s.p.val s.c s.hCinR",
+   "omega",
+   "· show s.rm.rake.term (m₀ + s.rm.rake.ks.length) = _",
+   "rw [Rake.term_add_len, hm₀]"
+  ],
+  "decl": "RakeSieve.survivor",
+  "whole": true
+ },
+ "RakeSieve.lean:75-75": {
+  "text": [
+   "refine ⟨s.c + s.rm.rake.d, m₀ + s.rm.rake.ks.length, ?_, ?_⟩"
+  ]
+ },
+ "RakeSieve.lean:77-80": {
+  "text": [
+   "have hcd : s.c ∣ s.rm.rake.d := (Nat.dvd_add_iff_right (dvd_refl s.c)).mpr hdvd",
+   "have hle : s.c ≤ s.p.val := s.hdfac s.c hC hcd",
+   "have hgt : s.c > s.p.val := r_gt_p s.p.val s.c s.hCinR",
+   "omega"
+  ]
+ },
+ "RakeSieve.lean:78-78": {
+  "text": [
+   "have hle : s.c ≤ s.p.val := s.hdfac s.c hC hcd"
+  ]
+ },
+ "RakeSieve.lean:82-82": {
+  "text": [
+   "rw [Rake.term_add_len, hm₀]"
+  ]
+ },
+ "RakeSieve.lean:84-136": {
+  "text": [
+   "def next (rs₀ : RakeSieve) (hC₀: Nat.Prime rs₀.c) (hNS: nosk' rs₀.p rs₀.c): RakeSieve :=",
+   "let h₀ := rs₀.prop",
+   "have hh₀ : ∀n, h₀ n ↔ n ∈ R rs₀.p := rs₀.hprop",
+   "have hCR₀ := rs₀.hCinR",
+   "have hpgt:PrimeGt rs₀.p rs₀.c := by",
+   "constructor",
+   "· exact hC₀",
+   "· exact r_gt_p (↑rs₀.p) rs₀.c hCR₀",
+   "have hmin: ∀ q < rs₀.c, ¬PrimeGt (↑rs₀.p) q := by",
+   "simp_all; intro q hq hq'; apply hNS at hq'; omega",
+   "let c' : MinPrimeGt rs₀.p := { p:=rs₀.c, hpgt:=hpgt, hmin:=hmin}",
+   "",
+   "-- to call `rem`, we have to prove that it won't remove everything.",
+   "-- the rake supplies its own witness, c + d (see `survivor`).",
+   "have hsurv : ∃n m, ¬rs₀.c ∣ n ∧ rs₀.rm.term m = n := rs₀.survivor hC₀",
+   "",
+   "-- now we can use this fact to remove multiples of c",
+   "let rs := rs₀.rm.rem c'.p (Nat.Prime.pos hC₀) hsurv",
+   "let c₁ := rs.rake.term 0",
+   "have hc₁: ∃ i, rs.rake.term i = c₁ := by",
+   "exact exists_apply_eq_apply (fun a => rs.rake.term a) 0",
+   "let h₁ := rs.pred",
+   "have hh₁ : ∀n, h₁ n ↔ h₀ n ∧ ¬(c'.p∣n) := by",
+   "intro n",
+   "rfl",
+   "have hprop : ∀n, h₁ n ↔ n ∈ R c'.p := by",
+   "intro n; exact r_next_prop (hh₀ n) (hh₁ n)",
+   "{ prop := rs.pred, rm := rs, p := ⟨c'.p, hC₀⟩, c := c₁,",
+   "hprop := hprop",
+   "hCinR := by",
+   "show c₁ ∈ R c'.p",
+   "· have : h₁ c₁ := by rw[← rs.hbij] at hc₁; exact hc₁",
+   "specialize hprop c₁",
+   "exact hprop.mp this",
+   "hRmin := by",
+   "dsimp[c₁,p,h₁] at *",
+   "intro r hr",
+   "have : ∃k, rs.rake.term k = r := by",
+   "exact (rs.hbij r).mp ((hprop r).mpr hr)",
+   "obtain ⟨k, hk⟩ := this",
+   "rw[←hk]",
+   "exact rs.min_term_zero k",
+   "hdfac := by",
+   "-- the new period is d * c: its prime factors are those of d (all ≤ p < c) and c itself.",
+   "intro q hq hqd",
+   "have hd : rs.rake.d = rs₀.rm.rake.d * rs₀.c := RakeMap.rem_d _ _ _ _",
+   "rw [hd] at hqd",
+   "show q ≤ rs₀.c",
+   "rcases (Nat.Prime.dvd_mul hq).mp hqd with h | h",
+   "· have h₁ := rs₀.hdfac q hq h",
+   "have h₂ : rs₀.c > rs₀.p.val := r_gt_p rs₀.p.val rs₀.c hCR₀",
+   "omega",
+   "· exact Nat.le_of_dvd hC₀.pos h }"
+  ],
+  "decl": "RakeSieve.next",
+  "whole": true
+ },
+ "RakeSieve.lean:98-98": {
+  "text": [
+   "have hsurv : ∃n m, ¬rs₀.c ∣ n ∧ rs₀.rm.term m = n := rs₀.survivor hC₀"
+  ]
+ },
+ "Results.lean:11-12": {
+  "text": [
+   "theorem results_three_mem_R_two : (3 : Nat) ∈ R 2 :=",
+   "three_mem_R_two"
+  ],
+  "decl": "results_three_mem_R_two",
+  "whole": true
+ },
+ "Results.lean:14-15": {
+  "text": [
+   "theorem results_three_le_of_mem_R_two : ∀ r ∈ R 2, (3 : Nat) ≤ r :=",
+   "three_le_of_mem_R_two"
+  ],
+  "decl": "results_three_le_of_mem_R_two",
+  "whole": true
+ },
+ "Results.lean:20-22": {
+  "text": [
+   "theorem results_rakeSieve_never_empty (s : RakeSieve) :",
+   "∃ n m, ¬ s.c ∣ n ∧ s.rm.term m = n :=",
+   "s.survivor (c_prime RakeSieve s)"
+  ],
+  "decl": "results_rakeSieve_never_empty",
+  "whole": true
+ },
+ "Results.lean:27-31": {
+  "text": [
+   "theorem results_rakeSieve_step (s : RakeSieve) :",
+   "((nextState s).p : Nat) = s.c ∧ Nat.Prime s.c ∧ (s.p : Nat) < s.c ∧",
+   "¬ ∃ q, Nat.Prime q ∧ (s.p : Nat) < q ∧ q < s.c :=",
+   "⟨(PrimeSieveState.hNext s (c_prime RakeSieve s) (no_skipped_prime RakeSieve s) rfl).1,",
+   "c_prime RakeSieve s, c_gt_p RakeSieve s, no_skipped_prime RakeSieve s⟩"
+  ],
+  "decl": "results_rakeSieve_step",
+  "whole": true
+ },
+ "Results.lean:28-28": {
+  "text": [
+   "((nextState s).p : Nat) = s.c ∧ Nat.Prime s.c ∧ (s.p : Nat) < s.c ∧"
+  ]
+ },
+ "Results.lean:35-37": {
+  "text": [
+   "theorem results_rakeSieve_emits_every_prime (q : Nat) (hq : Nat.Prime q) :",
+   "∃ k, (PrimeGen.P (PrimeGen.next^[k] ({ state := RakeSieve.init } : PrimeSieve RakeSieve)) : Nat) = q :=",
+   "PrimeGen.exists_iterate_P_eq _ q hq (Nat.Prime.two_le hq)"
+  ],
+  "decl": "results_rakeSieve_emits_every_prime",
+  "whole": true
+ },
+ "Results.lean:37-37": {
+  "text": [
+   "PrimeGen.exists_iterate_P_eq _ q hq (Nat.Prime.two_le hq)"
+  ]
+ },
+ "Results.lean:40-40": {
+  "text": [
+   "theorem results_exists_prime_gt_of_primeGen {α : Type} [PrimeGen α] (g₀ : α) (n : Nat) :"
+  ],
+  "decl": "results_exists_prime_gt_of_primeGen",
+  "whole": false
+ },
+ "Results.lean:40-42": {
+  "text": [
+   "theorem results_exists_prime_gt_of_primeGen {α : Type} [PrimeGen α] (g₀ : α) (n : Nat) :",
+   "∃ p, Nat.Prime p ∧ n < p :=",
+   "exists_prime_gt_of_primeGen g₀ n"
+  ],
+  "decl": "results_exists_prime_gt_of_primeGen",
+  "whole": true
+ },
+ "Results.lean:46-47": {
+  "text": [
+   "theorem results_exists_prime_gt_of_rakeSieve (n : Nat) :",
+   "∃ p, Nat.Prime p ∧ n < p :="
+  ],
+  "decl": "results_exists_prime_gt_of_rakeSieve",
+  "whole": false
+ },
+ "Results.lean:46-48": {
+  "text": [
+   "theorem results_exists_prime_gt_of_rakeSieve (n : Nat) :",
+   "∃ p, Nat.Prime p ∧ n < p :=",
+   "exists_prime_gt_of_primeGen ({ state := RakeSieve.init } : PrimeSieve RakeSieve) n"
+  ],
+  "decl": "results_exists_prime_gt_of_rakeSieve",
+  "whole": true
+ },
+ "Results.lean:48-48": {
+  "text": [
+   "exists_prime_gt_of_primeGen ({ state := RakeSieve.init } : PrimeSieve RakeSieve) n"
+  ]
+ },
+ "SimpleGen.lean:16-22": {
+  "text": [
+   "theorem ex_prime_gt (c:Nat) : ∃ p, PrimeGt c p := by",
+   "let d := c + 1 -- because the line below has ≤ and we need <",
+   "let ⟨p, hcp, hprime⟩ : ∃ (p : ℕ), d ≤ p ∧ Nat.Prime p :=",
+   "Nat.exists_infinite_primes d",
+   "use p; constructor",
+   "· exact hprime",
+   "· omega"
+  ],
+  "decl": "ex_prime_gt",
+  "whole": true
+ },
+ "SimpleGen.lean:17-17": {
+  "text": [
+   "let d := c + 1 -- because the line below has ≤ and we need <"
+  ]
+ },
+ "SimpleGen.lean:19-19": {
+  "text": [
+   "Nat.exists_infinite_primes d"
+  ]
+ },
+ "SimpleGen.lean:24-28": {
+  "text": [
+   "def min_prime_gt (n: Nat) : MinPrimeGt n :=",
+   "let e := ex_prime_gt n",
+   "{ p:=Nat.find e,",
+   "hpgt:=Nat.find_spec e,",
+   "hmin:= by exact fun {q} a => Nat.find_min e a}"
+  ],
+  "decl": "min_prime_gt",
+  "whole": true
+ },
+ "SimpleGen.lean:30-32": {
+  "text": [
+   "structure SimpleGen where",
+   "p : NPrime",
+   "c : MinPrimeGt p.val"
+  ],
+  "decl": "SimpleGen",
+  "whole": true
+ },
+ "SimpleGen.lean:38-39": {
+  "text": [
+   "def SimpleGen.start : SimpleGen :=",
+   "{ p := ⟨2, Nat.prime_two⟩, c := min_prime_gt 2 }"
+  ],
+  "decl": "SimpleGen.start",
+  "whole": true
+ },
+ "SimpleGen.lean:39-39": {
+  "text": [
+   "{ p := ⟨2, Nat.prime_two⟩, c := min_prime_gt 2 }"
+  ]
+ },
+ "SimpleGen.lean:41-53": {
+  "text": [
+   "instance : PrimeGen SimpleGen where",
+   "P g := g.p",
+   "next := .next",
+   "hP' g := by  -- goal: no prime q between g.p and (g.next.p = g.c.p)",
+   "-- why? that would imply prime_gt (g.p) q, but hmin contradicts this",
+   "intro h",
+   "rcases h with ⟨q, hq, hgt, hlt⟩",
+   "exact (g.c.hmin q hlt) ⟨hq, hgt⟩",
+   "hP_lt g := by",
+   "-- g.next.p = g.c.p and g.c witnesses PrimeGt g.p",
+   "simpa [SimpleGen.next] using g.c.hpgt.right",
+   "",
+   "open PrimeGen"
+  ],
+  "decl": "instPrimeGenSimpleGen",
+  "whole": true
+ },
+ "SimpleGen.lean:44-48": {
+  "text": [
+   "hP' g := by  -- goal: no prime q between g.p and (g.next.p = g.c.p)",
+   "-- why? that would imply prime_gt (g.p) q, but hmin contradicts this",
+   "intro h",
+   "rcases h with ⟨q, hq, hgt, hlt⟩",
+   "exact (g.c.hmin q hlt) ⟨hq, hgt⟩"
+  ]
+ },
+ "SimpleGen.lean:49-51": {
+  "text": [
+   "hP_lt g := by",
+   "-- g.next.p = g.c.p and g.c witnesses PrimeGt g.p",
+   "simpa [SimpleGen.next] using g.c.hpgt.right"
+  ]
+ },
+ "SimpleGen.lean:57-57": {
+  "text": [
+   "#guard (primes SimpleGen.start 10 |>.map (·.val)) = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]"
+  ]
+ },
+ "SimpleGen.lean:62-63": {
+  "text": [
+   "theorem simpleGen_exists_prime_gt (n : Nat) : ∃ p, Nat.Prime p ∧ n < p :=",
+   "exists_prime_gt_of_primeGen SimpleGen.start n"
+  ],
+  "decl": "simpleGen_exists_prime_gt",
+  "whole": true
+ }
+}

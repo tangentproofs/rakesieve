@@ -41,14 +41,14 @@ quiz:
   - '`hRmin`'
   - '`hprop`'
   answer: 1
-  explain: '`hRmin : ∀ r ∈ R p, c ≤ r` (RakeSieve.lean line 12); RakeSieve.lean line 53 uses this theorem.'
+  explain: '`hRmin : ∀ r ∈ R p, c ≤ r` (RakeSieve.lean line 12); RakeSieve.lean line 56 uses this theorem.'
 ---
 ## Plain English
 
 **R stands for *residue*.** R p is the set of numbers ≥ 2 that no prime ≤ p divides: what is left after crossing out the multiples of every prime up to p ([R](#/node/R)). For example, R 2 is the odd numbers from 3 up.
 
-**Theorem (`results_three_le_of_mem_R_two`, Results.lean lines 8–9).** Every r ∈ R 2 satisfies 3 ≤ r.
+**Theorem (`results_three_le_of_mem_R_two`, Results.lean lines 14–15).** Every r ∈ R 2 satisfies 3 ≤ r.
 
-Together with [3 ∈ R 2](#/node/results_three_mem_R_two), this says 3 is the minimum of [R](#/node/R) 2. The sieve's start state needs both: its candidate must be in R p (`hCinR`) and below everything else in R p (`hRmin`). See the [RakeSieve](#/node/RakeSieve) structure and RakeSieve.lean lines 48–53.
+Together with [3 ∈ R 2](#/node/results_three_mem_R_two), this says 3 is the minimum of [R](#/node/R) 2. The sieve's start state needs both: its candidate must be in R p (`hCinR`) and below everything else in R p (`hRmin`). See the [RakeSieve](#/node/RakeSieve) structure and RakeSieve.lean lines 51–56.
 
 The proof: anything in R 2 is ≥ 2; if it were below 3 it would be 2, but 2 divides 2, so 2 is not in R 2.

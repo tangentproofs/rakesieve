@@ -26,8 +26,8 @@ quiz:
   - theorem
   - def
   answer: 0
-  explain: Declared with `theorem` on PrimeGen.lean line 35.
+  explain: Declared with `theorem` on PrimeGen.lean line 34.
 ---
 ## Plain English
 
-`MinPrimeGt.p' m : Nat.Prime m.p` (PrimeGen.lean line 35): the first half of `hpgt`. See [MinPrimeGt](#/node/MinPrimeGt).
+`MinPrimeGt.p' m : Nat.Prime m.p` (PrimeGen.lean line 34): the first half of `hpgt`. See [MinPrimeGt](#/node/MinPrimeGt).

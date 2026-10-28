@@ -26,7 +26,7 @@ quiz:
   - RakeSieve.next, for `hRmin`
   - SimpleGen
   answer: 0
-  explain: RakeSieve.lean line 111.
+  explain: RakeSieve.lean line 125.
 ---
 ## Plain English
 

@@ -14,7 +14,7 @@ quiz:
   - n = x
   - n = i·x
   answer: 0
-  explain: Rake.lean line 78 builds n := (i mod q) + x·q.
+  explain: Rake.lean line 85 builds n := (i mod q) + x·q.
 - q: Does the theorem depend on sortedness?
   type: choice
   choices:
@@ -32,4 +32,4 @@ quiz:
 ---
 ## Plain English
 
-**Theorem (`Rake.term_iff`, Rake.lean lines 48–99).** m = r.term n for some n **iff** m = k + x·d for some k ∈ ks and some x. This turns questions about the term function into questions about the constants list, and every later rake proof uses it. See [Rake.term](#/node/Rake.term).
+**Theorem (`Rake.term_iff`, Rake.lean lines 55–106).** m = r.term n for some n **iff** m = k + x·d for some k ∈ ks and some x. This turns questions about the term function into questions about the constants list, and every later rake proof uses it. See [Rake.term](#/node/Rake.term).

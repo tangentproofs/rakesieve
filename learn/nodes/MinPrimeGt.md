@@ -31,4 +31,4 @@ quiz:
 ---
 ## Plain English
 
-A `MinPrimeGt n` (PrimeGen.lean lines 31–34) has a number p, a proof `hpgt` that p is prime and n < p ([PrimeGt](#/node/PrimeGt)), and a proof `hmin` that no q < p is a prime above n. So p is *the* next prime after n. [min_prime_gt](#/node/min_prime_gt) builds one with `Nat.find`; [RakeSieve.next](#/node/RakeSieve.next) builds one from the sieve's candidate.
+A `MinPrimeGt n` (PrimeGen.lean lines 30–33) has a number p, a proof `hpgt` that p is prime and n < p ([PrimeGt](#/node/PrimeGt)), and a proof `hmin` that no q < p is a prime above n. So p is *the* next prime after n. [min_prime_gt](#/node/min_prime_gt) builds one with `Nat.find`; [RakeSieve.next](#/node/RakeSieve.next) builds one from the sieve's candidate.

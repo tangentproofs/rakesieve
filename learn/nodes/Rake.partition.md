@@ -29,11 +29,11 @@ quiz:
   - j = 0 would leave no sequences
   - for speed
   answer: 0
-  explain: The docstring, Rake.lean lines 227–231.
+  explain: The docstring, Rake.lean lines 234–238.
 ---
 ## Plain English
 
-`r.partition j` (Rake.lean lines 232–239) replaces step d by d·j and the constants by k + i·d for every constant k and i = 0, …, j−1. Each old sequence k + d·n splits into j sequences by n mod j.
+`r.partition j` (Rake.lean lines 239–246) replaces step d by d·j and the constants by k + i·d for every constant k and i = 0, …, j−1. Each old sequence k + d·n splits into j sequences by n mod j.
 
 [partition_term_iff](#/node/Rake.partition_term_iff) proves the terms are unchanged. After partitioning by j, the step d·j is a multiple of j, so a sequence k + d·j·n is all multiples of j if j ∣ k, and none otherwise. That is what makes [Rake.rem](#/node/Rake.rem) work.
 

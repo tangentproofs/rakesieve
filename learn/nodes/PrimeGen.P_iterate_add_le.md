@@ -21,7 +21,7 @@ quiz:
   - contradiction
   - '`decide`'
   answer: 0
-  explain: PrimeGen.lean lines 102–108.
+  explain: PrimeGen.lean lines 58–64.
 - q: Does it need `hP'`?
   type: choice
   choices:
@@ -32,6 +32,6 @@ quiz:
 ---
 ## Plain English
 
-**Theorem (`PrimeGen.P_iterate_add_le`, PrimeGen.lean lines 100–108).** For any state g and k, P g + k ≤ P (next^[k] g), where next^[k] is next applied k times.
+**Theorem (`PrimeGen.P_iterate_add_le`, PrimeGen.lean lines 56–64).** For any state g and k, P g + k ≤ P (next^[k] g), where next^[k] is next applied k times.
 
 Induction on k, using `hP_lt` at each step. Used by [exists_prime_gt_of_primeGen](#/node/exists_prime_gt_of_primeGen).

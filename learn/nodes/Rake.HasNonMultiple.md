@@ -1,8 +1,8 @@
 ---
 id: Rake.HasNonMultiple
 title: 'HasNonMultiple: some term is not a multiple of j'
-summary: 'This innocent hypothesis is where Euclid enters the sieve: proving it at each step is what needs Mathlib''s
-  infinitude of primes.'
+summary: This innocent hypothesis is where Euclid's idea enters the sieve. The RakeSieve proves it at every step
+  with its own survivor, c + d, instead of importing infinitude of primes.
 review: draft
 authors:
 - grok-bot
@@ -24,11 +24,12 @@ quiz:
 - q: How does the RakeSieve prove it?
   type: choice
   choices:
+  - with its own term c + d, one period past c
   - with a prime above c from Mathlib
   - by `decide`
   answer: 0
-  explain: RakeSieve.lean line 71.
+  explain: '`RakeSieve.survivor` (RakeSieve.lean lines 72–82).'
 ---
 ## Plain English
 
-`HasNonMultiple r j := ∃ n, ¬ j ∣ n ∧ ∃ m, r.term m = n` (Rake.lean line 364): the rake r has a term not divisible by j. [Rake.rem](#/node/Rake.rem)'s theorems need it; [RakeMap.rem](#/node/RakeMap.rem) asks for it as an argument; [RakeSieve.next](#/node/RakeSieve.next) proves it with a prime from `Nat.exists_infinite_primes`.
+`HasNonMultiple r j := ∃ n, ¬ j ∣ n ∧ ∃ m, r.term m = n` (Rake.lean line 371): the rake r has a term not divisible by j. [Rake.rem](#/node/Rake.rem)'s theorems need it; [RakeMap.rem](#/node/RakeMap.rem) asks for it as an argument; [RakeSieve.next](#/node/RakeSieve.next) proves it with [RakeSieve.survivor](#/node/RakeSieve.survivor): the term c + d is not a multiple of c.

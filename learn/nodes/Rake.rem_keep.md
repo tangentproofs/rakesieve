@@ -20,7 +20,7 @@ quiz:
   - No (it builds one from n itself)
   - 'Yes'
   answer: 0
-  explain: 'Rake.lean line 442: `have hnm: HasNonMultiple r j := by use n`.'
+  explain: 'Rake.lean line 449: `have hnm: HasNonMultiple r j := by use n`.'
 - q: Why is it important for the sieve?
   type: choice
   choices:
@@ -31,4 +31,4 @@ quiz:
 ---
 ## Plain English
 
-**Theorem (`Rake.rem_keep`, Rake.lean lines 433–457).** If n is a term of r and j ∤ n, then n is a term of r.rem. It uses [partition_term_iff](#/node/Rake.partition_term_iff) to find n in the partitioned rake and checks that its constant passes the filter. See [Rake.rem](#/node/Rake.rem).
+**Theorem (`Rake.rem_keep`, Rake.lean lines 440–464).** If n is a term of r and j ∤ n, then n is a term of r.rem. It uses [partition_term_iff](#/node/Rake.partition_term_iff) to find n in the partitioned rake and checks that its constant passes the filter. See [Rake.rem](#/node/Rake.rem).

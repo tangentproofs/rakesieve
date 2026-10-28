@@ -27,7 +27,7 @@ quiz:
   - '`results_three_mem_R_two`'
   - '`results_exists_prime_gt_of_rakeSieve`'
   answer: 0
-  explain: See Results.lean lines 5–6.
+  explain: See Results.lean lines 11–12.
 ---
 ## Plain English
 

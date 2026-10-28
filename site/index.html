@@ -53,11 +53,13 @@
         <tr><th>Theorem</th><th>Meaning</th></tr>
       </thead>
       <tbody>
+        <tr><td><code>results_rakeSieve_never_empty</code></td><td>In every state, crossing out the candidate's multiples leaves a term (the survivor <code>c + d</code>)</td></tr>
+        <tr><td><code>results_rakeSieve_step</code></td><td>Each step emits the next prime, none skipped</td></tr>
+        <tr><td><code>results_rakeSieve_emits_every_prime</code></td><td>Started at <code>RakeSieve.init</code>, the sieve emits every prime</td></tr>
+        <tr><td><code>results_exists_prime_gt_of_rakeSieve</code></td><td>Corollary: infinitely many primes, with no use of Mathlib's infinitude of primes (checked by <code>NoEuclidCheck.lean</code>)</td></tr>
+        <tr><td><code>results_exists_prime_gt_of_primeGen</code></td><td>Conditional: any <code>PrimeGen</code> yields primes past any <code>n</code></td></tr>
         <tr><td><code>results_three_mem_R_two</code></td><td><code>3 ∈ R 2</code> (base rake after sieving 2)</td></tr>
         <tr><td><code>results_three_le_of_mem_R_two</code></td><td>Every member of <code>R 2</code> is ≥ 3</td></tr>
-        <tr><td><code>results_exists_prime_gt_of_primeGen</code></td><td>Any <code>PrimeGen</code> yields primes past any <code>n</code> (infinitude)</td></tr>
-        <tr><td><code>results_exists_prime_gt_of_simpleGen</code></td><td>Infinitude via <code>SimpleGen</code></td></tr>
-        <tr><td><code>results_exists_prime_gt_of_rakeSieve</code></td><td>Infinitude via <code>RakeSieve</code> as a <code>PrimeGen</code></td></tr>
       </tbody>
     </table>
 

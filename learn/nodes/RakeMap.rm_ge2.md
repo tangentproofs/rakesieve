@@ -28,7 +28,7 @@ quiz:
   - removing multiples of 2
   - removing multiples of 3
   answer: 0
-  explain: '`rm_ge2 |>.rem 2` (RakeSieve.lean line 20).'
+  explain: '`rm_ge2 |>.rem 2` (RakeSieve.lean line 23).'
 ---
 ## Plain English
 

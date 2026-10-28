@@ -39,4 +39,4 @@ quiz:
 
 `PrimeSieve α` is a structure with one field, `state : α` (PrimeSieve.lean lines 211–212), for a type α that has [PrimeSieveState](#/node/PrimeSieveState) and [PrimeSieveDriver](#/node/PrimeSieveDriver) instances (the section `variable` line, PrimeSieve.lean line 210).
 
-Its step is [PrimeSieve.next](#/node/PrimeSieve.next), which runs the sieve once with the proofs supplied automatically, and the [driver instance](#/node/instPrimeGenPrimeSieve) makes it a [PrimeGen](#/node/PrimeGen). The main theorem uses `PrimeSieve RakeSieve` with state `RakeSieve.init`.
+Its step is [PrimeSieve.next](#/node/PrimeSieve.next), which runs the sieve once with the proofs supplied automatically, and the [driver instance](#/node/instPrimeGenPrimeSieve) makes it a [PrimeGen](#/node/PrimeGen). The every-prime headline and the infinitude corollary use `PrimeSieve RakeSieve` with state `RakeSieve.init`.

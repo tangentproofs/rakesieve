@@ -32,4 +32,4 @@ quiz:
 ---
 ## Plain English
 
-**Theorem (`Rake.rem_drop`, Rake.lean lines 411–431).** If r has a non-multiple of j, then no multiple of j is a term of r.rem. See [Rake.rem](#/node/Rake.rem).
+**Theorem (`Rake.rem_drop`, Rake.lean lines 418–438).** If r has a non-multiple of j, then no multiple of j is a term of r.rem. See [Rake.rem](#/node/Rake.rem).
