@@ -1,9 +1,8 @@
 ---
 id: RakeSieve.next
 title: 'RakeSieve.next: remove the multiples of c, take the first term'
-summary: '**The surprise:** the step needs Mathlib''s ''there is always a bigger prime'' just to know the rake will
-  not come out empty. The sieve''s own correctness rests on Euclid, which is why its infinitude theorem is not an
-  independent proof.'
+summary: The step needs Mathlib's 'there is always a bigger prime' just to know the rake will not come out empty.
+  The sieve's own correctness rests on Euclid, which is why its infinitude theorem is not an independent proof.
 review: draft
 authors:
 - grok-bot

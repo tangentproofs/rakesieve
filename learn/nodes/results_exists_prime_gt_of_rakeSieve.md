@@ -1,9 +1,8 @@
 ---
 id: results_exists_prime_gt_of_rakeSieve
 title: 'Main theorem: the RakeSieve never runs out of primes'
-summary: '**The surprise:** the statement never mentions the sieve. It is word for word Euclid''s theorem, ∀ n,
-  ∃ prime p > n, and the proof calls Mathlib''s own proof of Euclid inside each sieve step. The sieve only appears
-  in the proof.'
+summary: The statement never mentions the sieve. It is word for word Euclid's theorem, ∀ n, ∃ prime p > n, and the
+  proof calls Mathlib's own proof of Euclid inside each sieve step. The sieve only appears in the proof.
 review: draft
 authors:
 - grok-bot

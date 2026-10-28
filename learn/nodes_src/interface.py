@@ -7,7 +7,7 @@ def q(text, choices, answer, explain):
     return {"q": text, "type": "choice", "choices": choices, "answer": answer, "explain": explain}
 
 node("NPrime", "NPrime: a natural number packaged with a proof that it is prime",
- "**The surprise:** a value of this type cannot be a non-prime. Every prime a generator hands out carries its own certificate, so 'the output is prime' never has to be proved again.",
+ "A value of this type cannot be a non-prime. Every prime a generator hands out carries its own certificate, so 'the output is prime' never has to be proved again.",
  r"""
 ## Plain English
 
@@ -25,7 +25,7 @@ Because [PrimeGen](#/node/PrimeGen)'s `P` returns an `NPrime`, every generator's
     "`.prop` is the proof component of a subtype value; `exists_prime_gt_of_primeGen` uses it (PrimeGen.lean line 117).")])
 
 node("PrimeGen", "PrimeGen: what it means to generate primes in order",
- "**The surprise:** the spec of a prime generator is only two lines, 'no prime is skipped' and 'the prime goes up', and the second line was added only in September 2026 because the first alone allows a generator stuck on one prime.",
+ "The spec of a prime generator is only two lines, 'no prime is skipped' and 'the prime goes up', and the second line was added only in September 2026 because the first alone allows a generator stuck on one prime.",
  r"""
 ## Plain English
 
@@ -49,7 +49,7 @@ The start state is deliberately not part of the class (the docstring explains: u
     "There is no prime strictly between p and p, so `hP'` holds, but `p < p` fails, so `hP_lt` does not.")])
 
 node("nosk'", "nosk': no prime strictly between P and C",
- "**The surprise:** the apostrophe-named one-liner is the heart of 'next prime': it is the claim that nothing was skipped, and a sieve step is only allowed to run once it has been proved.",
+ "The apostrophe-named one-liner is the heart of 'next prime': it is the claim that nothing was skipped, and a sieve step is only allowed to run once it has been proved.",
  r"""
 ## Plain English
 
@@ -62,7 +62,7 @@ node("nosk'", "nosk': no prime strictly between P and C",
   q("Does `nosk' P C` say C is prime?", ["Yes", "No, it only says no prime lies strictly between"], 1, "Primality of C is a separate argument `hC` of `PrimeSieveState.next`.")])
 
 node("R", "R P: the numbers that survive sieving by every prime up to P",
- "**The surprise:** the whole sieve is driven by this one set. Its least element is always the next prime, and sieving by a new prime p is exactly the step from R (previous prime) to R p.",
+ "The whole sieve is driven by this one set. Its least element is always the next prime, and sieving by a new prime p is exactly the step from R (previous prime) to R p.",
  r"""
 ## Plain English
 
@@ -83,7 +83,7 @@ Note that R P is defined for any number P, prime or not, and contains composites
   q("Does R P contain only primes?", ["Yes", "No, e.g. 25 ∈ R 3"], 1, "25 = 5·5 has no prime factor ≤ 3.")])
 
 node("PrimeSieveState", "PrimeSieveState: a sieve's state, its prime, its candidate, its step",
- "**The surprise:** the step function demands proofs as inputs: you may only advance a sieve after proving the candidate is prime and nothing was skipped. The interface makes an unjustified step impossible to write.",
+ "The step function demands proofs as inputs: you may only advance a sieve after proving the candidate is prime and nothing was skipped. The interface makes an unjustified step impossible to write.",
  r"""
 ## Plain English
 
@@ -103,7 +103,7 @@ On its own this says nothing about whether C really is the next prime. That job 
     "`PrimeSieveDriver` adds `hCinR` and `hRmin` (PrimeSieve.lean lines 124–126).")])
 
 node("PrimeSieveDriver", "PrimeSieveDriver: the candidate is the least survivor",
- "**The surprise:** two lines, 'C is in R P' and 'C is below everything in R P', are all a sieve needs to promise. From them alone the library proves C is prime and nothing was skipped, for every sieve.",
+ "Two lines, 'C is in R P' and 'C is below everything in R P', are all a sieve needs to promise. From them alone the library proves C is prime and nothing was skipped, for every sieve.",
  r"""
 ## Plain English
 
@@ -122,7 +122,7 @@ From them the library derives [c_prime](#/node/c_prime) (C is prime), [no_skippe
     "The `RakeSieve` structure carries `hCinR` and `hRmin` (RakeSieve.lean lines 11–12); the driver instance just reads them (lines 130–132).")])
 
 node("PrimeSieve", "PrimeSieve: a wrapper that turns a sieve state into a generator",
- "**The surprise:** it holds nothing but the state. The wrapper exists only so Lean's instance search can attach one generic proof, 'this is a prime generator', to every sieve at once.",
+ "It holds nothing but the state. The wrapper exists only so Lean's instance search can attach one generic proof, 'this is a prime generator', to every sieve at once.",
  r"""
 ## Plain English
 

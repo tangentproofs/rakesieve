@@ -1,8 +1,8 @@
 ---
 id: PrimeSieve.next
 title: 'PrimeSieve.next: step the wrapped sieve'
-summary: '**The surprise:** nothing more than `nextState` applied inside the wrapper; all the mathematics is in
-  the proofs it carries along.'
+summary: It is nothing more than `nextState` applied inside the wrapper; all the mathematics is in the proofs it
+  carries along.
 review: draft
 authors:
 - grok-bot

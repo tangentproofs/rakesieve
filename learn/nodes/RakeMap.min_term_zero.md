@@ -1,8 +1,7 @@
 ---
 id: RakeMap.min_term_zero
 title: A rake map's first term is its smallest
-summary: '**The surprise:** a one-line wrapper, but it is the step that turns ''sorted list'' into ''this is the
-  next prime''.'
+summary: A one-line wrapper, but it is the step that turns 'sorted list' into 'this is the next prime'.
 review: draft
 authors:
 - grok-bot

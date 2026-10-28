@@ -1,8 +1,8 @@
 ---
 id: c_prime
 title: The candidate is prime
-summary: '**The surprise:** no sieve ever tests the candidate for primality. Its primality is a theorem: a prime
-  factor would be either ≤ P (sieved out) or between P and C (impossible).'
+summary: 'No sieve ever tests the candidate for primality. Its primality is a theorem: a prime factor would be either
+  ≤ P (sieved out) or between P and C (impossible).'
 review: draft
 authors:
 - grok-bot

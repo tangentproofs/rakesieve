@@ -1,8 +1,8 @@
 ---
 id: min_prime_gt
 title: 'min_prime_gt n: the least prime above n, found by Nat.find'
-summary: '**The surprise:** it is computable in principle, since Nat.find just counts upward, but only because Euclid
-  guarantees the search stops.'
+summary: It is computable in principle, since Nat.find just counts upward, but only because Euclid guarantees the
+  search stops.
 review: draft
 authors:
 - grok-bot

@@ -1,8 +1,8 @@
 ---
 id: Rake
 title: 'Rake: several arithmetic sequences sharing one step'
-summary: '**The surprise:** a rake is a picture of a residue system: the constants are the ''teeth'' and the shared
-  step d is the spacing, so {3, 5} with d = 6 lists everything coprime to 6 that is ≥ 3.'
+summary: 'A rake is a picture of a residue system: the constants are the ''teeth'' and the shared step d is the
+  spacing, so {3, 5} with d = 6 lists everything coprime to 6 that is ≥ 3.'
 review: draft
 authors:
 - grok-bot

@@ -1,9 +1,8 @@
 ---
 id: results_exists_prime_gt_of_simpleGen
 title: Euclid via the brute-force generator
-summary: '**The surprise:** the ''simple'' generator finds the next prime by asking Mathlib for the least prime
-  above p, which already presupposes there is one. So this is Euclid proved from Euclid, a sanity check of the PrimeGen
-  interface.'
+summary: The 'simple' generator finds the next prime by asking Mathlib for the least prime above p, which already
+  presupposes there is one. So this is Euclid proved from Euclid, a sanity check of the PrimeGen interface.
 review: draft
 authors:
 - grok-bot

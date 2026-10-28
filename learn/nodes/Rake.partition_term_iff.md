@@ -1,8 +1,8 @@
 ---
 id: Rake.partition_term_iff
 title: Partitioning keeps exactly the same terms
-summary: '**The surprise:** the ''easy'' direction, that old terms survive the split, is the long one, a calc chain
-  of mod and div rewrites over nearly 60 lines.'
+summary: The 'easy' direction, that old terms survive the split, is the long one, a calc chain of mod and div rewrites
+  over nearly 60 lines.
 review: draft
 authors:
 - grok-bot

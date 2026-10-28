@@ -1,8 +1,8 @@
 ---
 id: main
 title: 'main: print the first five primes from the RakeSieve'
-summary: '**The surprise:** the verified sieve is also a runnable program; `#eval main` prints its first five primes
-  when the file is compiled. That is a demo, not a proof.'
+summary: The verified sieve is also a runnable program; `#eval main` prints its first five primes when the file
+  is compiled. That is a demo, not a proof.
 review: draft
 authors:
 - grok-bot

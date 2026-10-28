@@ -1,9 +1,9 @@
 ---
 id: instPrimeGenPrimeSieve
 title: 'The sieve driver: every PrimeSieve is a prime generator'
-summary: '**The surprise:** the sieve''s correctness theorem is not a named theorem at all. It is this instance:
-  any sieve state whose candidate is the least survivor gives, step by step, the next prime with none skipped. It
-  is proved once, for every such sieve.'
+summary: 'The sieve''s correctness theorem is not a named theorem at all. It is this instance: any sieve state whose
+  candidate is the least survivor gives, step by step, the next prime with none skipped. It is proved once, for
+  every such sieve.'
 review: draft
 authors:
 - grok-bot

@@ -1,8 +1,8 @@
 ---
 id: RakeMap.rm_ge2
 title: 'rm_ge2: the rake 2 + n describes the numbers ≥ 2'
-summary: '**The surprise:** the first certified fact in the sieve''s chain: the single sequence 2 + n lists exactly
-  the numbers from 2 up.'
+summary: 'The first certified fact in the sieve''s chain: the single sequence 2 + n lists exactly the numbers from
+  2 up.'
 review: draft
 authors:
 - grok-bot

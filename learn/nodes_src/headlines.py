@@ -8,7 +8,7 @@ def q(text, choices, answer, explain):
     return {"q": text, "type": "choice", "choices": choices, "answer": answer, "explain": explain}
 
 node("results_exists_prime_gt_of_rakeSieve", "Main theorem: the RakeSieve never runs out of primes",
- "**The surprise:** the statement never mentions the sieve. It is word for word Euclid's theorem, ∀ n, ∃ prime p > n, and the proof calls Mathlib's own proof of Euclid inside each sieve step. The sieve only appears in the proof.",
+ "The statement never mentions the sieve. It is word for word Euclid's theorem, ∀ n, ∃ prime p > n, and the proof calls Mathlib's own proof of Euclid inside each sieve step. The sieve only appears in the proof.",
  r"""
 ## Plain English
 
@@ -60,7 +60,7 @@ The proof is one line (Results.lean line 21). The outline below follows it, then
    {"text": "Its first term is its least term, because the rake is sorted, so the new candidate is the minimum of R c", "lean": "exact rs.min_term_zero k }", "link": "RakeMap.min_term_zero"}]}}])
 
 node("instPrimeGenPrimeSieve", "The sieve driver: every PrimeSieve is a prime generator",
- "**The surprise:** the sieve's correctness theorem is not a named theorem at all. It is this instance: any sieve state whose candidate is the least survivor gives, step by step, the next prime with none skipped. It is proved once, for every such sieve.",
+ "The sieve's correctness theorem is not a named theorem at all. It is this instance: any sieve state whose candidate is the least survivor gives, step by step, the next prime with none skipped. It is proved once, for every such sieve.",
  r"""
 ## Plain English
 
@@ -108,7 +108,7 @@ Starting from [RakeSieve.init](#/node/RakeSieve.init), whose prime is 2, these t
    {"text": "Strict increase: the new P is C, and C > P", "lean": "have hgt := c_gt_p α s.state", "link": "c_gt_p"}]}}])
 
 node("results_exists_prime_gt_of_primeGen", "Any prime generator proves Euclid (CONDITIONAL)",
- "**The surprise:** this one *is* a genuine proof of infinitude, but conditional: if you hand it any prime generator at all, primes go on forever. Only strict increase is used; the 'no skipped prime' half is not needed.",
+ "This one *is* a genuine proof of infinitude, but conditional: if you hand it any prime generator at all, primes go on forever. Only strict increase is used; the 'no skipped prime' half is not needed.",
  r"""
 ## Plain English
 
@@ -138,7 +138,7 @@ Only `hP_lt` (strict increase) is used. The docstring of [exists_prime_gt_of_pri
    {"text": "Arithmetic: 2 + (n + 1) > n", "lean": "omega"}]}}])
 
 node("results_exists_prime_gt_of_simpleGen", "Euclid via the brute-force generator",
- "**The surprise:** the 'simple' generator finds the next prime by asking Mathlib for the least prime above p, which already presupposes there is one. So this is Euclid proved from Euclid, a sanity check of the PrimeGen interface.",
+ "The 'simple' generator finds the next prime by asking Mathlib for the least prime above p, which already presupposes there is one. So this is Euclid proved from Euclid, a sanity check of the PrimeGen interface.",
  r"""
 ## Plain English
 
@@ -163,7 +163,7 @@ Its value is as a reference point: it shows the [PrimeGen](#/node/PrimeGen) inte
    {"text": "Apply the general fact about prime generators", "lean": "exists_prime_gt_of_primeGen", "link": "exists_prime_gt_of_primeGen"}]}}])
 
 node("results_three_mem_R_two", "3 survives sieving by 2",
- "**The surprise:** a fact this small is a headline because it is the sieve's base case: after crossing out multiples of 2, the number 3 is still there. Lean checks it by computation (`decide`), not by reasoning.",
+ "A fact this small is a headline because it is the sieve's base case: after crossing out multiples of 2, the number 3 is still there. Lean checks it by computation (`decide`), not by reasoning.",
  r"""
 ## Plain English
 
@@ -188,7 +188,7 @@ Why it matters: the RakeSieve starts with prime p = 2 and candidate c = 3 ([Rake
    {"text": "2 does not divide 3, by computation", "lean": "decide"}]}}])
 
 node("results_three_le_of_mem_R_two", "Nothing in R 2 is smaller than 3",
- "**The surprise:** with the previous theorem this pins down the sieve's first candidate: 3 is the *least* survivor after sieving by 2. That is exactly what the sieve needs to know 3 is the next prime.",
+ "With the previous theorem this pins down the sieve's first candidate: 3 is the *least* survivor after sieving by 2. That is exactly what the sieve needs to know 3 is the next prime.",
  r"""
 ## Plain English
 

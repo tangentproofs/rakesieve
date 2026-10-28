@@ -1,8 +1,8 @@
 ---
 id: Rake.term
 title: 'Rake.term: read the n-th term round-robin'
-summary: '**The surprise:** terms are not listed in increasing order in general; they cycle through the teeth. Only
-  the first term is guaranteed to be the smallest, and that is all the sieve needs.'
+summary: Terms are not listed in increasing order in general; they cycle through the teeth. Only the first term
+  is guaranteed to be the smallest, and that is all the sieve needs.
 review: draft
 authors:
 - grok-bot

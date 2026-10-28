@@ -1,8 +1,8 @@
 ---
 id: results_three_le_of_mem_R_two
 title: Nothing in R 2 is smaller than 3
-summary: '**The surprise:** with the previous theorem this pins down the sieve''s first candidate: 3 is the *least*
-  survivor after sieving by 2. That is exactly what the sieve needs to know 3 is the next prime.'
+summary: 'With the previous theorem this pins down the sieve''s first candidate: 3 is the *least* survivor after
+  sieving by 2. That is exactly what the sieve needs to know 3 is the next prime.'
 review: draft
 authors:
 - grok-bot

@@ -1,8 +1,8 @@
 ---
 id: Rake.partition
 title: 'Rake.partition: split each sequence into j sequences'
-summary: '**The surprise:** the rake grows j-fold but produces exactly the same numbers; it only changes how they
-  are grouped, so that divisibility by j can be read off the constants.'
+summary: The rake grows j-fold but produces exactly the same numbers; it only changes how they are grouped, so that
+  divisibility by j can be read off the constants.
 review: draft
 authors:
 - grok-bot

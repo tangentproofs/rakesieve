@@ -1,8 +1,8 @@
 ---
 id: Rake.sorted_min_term_zero
 title: In a sorted rake, the first term is the smallest
-summary: '**The surprise:** even though a rake''s terms can come out of order, this one fact survives every case,
-  and it is the only ordering fact the sieve needs.'
+summary: Even though a rake's terms can come out of order, this one fact survives every case, and it is the only
+  ordering fact the sieve needs.
 review: draft
 authors:
 - grok-bot

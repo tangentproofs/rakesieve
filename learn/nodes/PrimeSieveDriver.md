@@ -1,8 +1,8 @@
 ---
 id: PrimeSieveDriver
 title: 'PrimeSieveDriver: the candidate is the least survivor'
-summary: '**The surprise:** two lines, ''C is in R P'' and ''C is below everything in R P'', are all a sieve needs
-  to promise. From them alone the library proves C is prime and nothing was skipped, for every sieve.'
+summary: Two lines, 'C is in R P' and 'C is below everything in R P', are all a sieve needs to promise. From them
+  alone the library proves C is prime and nothing was skipped, for every sieve.
 review: draft
 authors:
 - grok-bot

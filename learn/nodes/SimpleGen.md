@@ -1,8 +1,8 @@
 ---
 id: SimpleGen
 title: 'SimpleGen: the obvious prime generator'
-summary: '**The surprise:** it is the specification as a program, ''the next prime is the least prime above this
-  one'', and it exists so the RakeSieve has something to be compared with.'
+summary: It is the specification as a program, 'the next prime is the least prime above this one', and it exists
+  so the RakeSieve has something to be compared with.
 review: draft
 authors:
 - grok-bot

@@ -1,8 +1,7 @@
 ---
 id: Rake.zer
 title: 'Rake.zer: the placeholder rake {0}'
-summary: '**The surprise:** it exists only so `rem` always returns something; the sieve proves it is never actually
-  reached.'
+summary: It exists only so `rem` always returns something; the sieve proves it is never actually reached.
 review: draft
 authors:
 - grok-bot

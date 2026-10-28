@@ -1,8 +1,8 @@
 ---
 id: results_exists_prime_gt_of_primeGen
 title: Any prime generator proves Euclid (CONDITIONAL)
-summary: '**The surprise:** this one *is* a genuine proof of infinitude, but conditional: if you hand it any prime
-  generator at all, primes go on forever. Only strict increase is used; the ''no skipped prime'' half is not needed.'
+summary: 'This one *is* a genuine proof of infinitude, but conditional: if you hand it any prime generator at all,
+  primes go on forever. Only strict increase is used; the ''no skipped prime'' half is not needed.'
 review: draft
 authors:
 - grok-bot

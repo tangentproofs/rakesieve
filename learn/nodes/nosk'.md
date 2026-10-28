@@ -1,8 +1,8 @@
 ---
 id: nosk'
 title: 'nosk'': no prime strictly between P and C'
-summary: '**The surprise:** the apostrophe-named one-liner is the heart of ''next prime'': it is the claim that
-  nothing was skipped, and a sieve step is only allowed to run once it has been proved.'
+summary: 'The apostrophe-named one-liner is the heart of ''next prime'': it is the claim that nothing was skipped,
+  and a sieve step is only allowed to run once it has been proved.'
 review: draft
 authors:
 - grok-bot

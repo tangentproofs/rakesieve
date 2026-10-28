@@ -1,8 +1,8 @@
 ---
 id: results_three_mem_R_two
 title: 3 survives sieving by 2
-summary: '**The surprise:** a fact this small is a headline because it is the sieve''s base case: after crossing
-  out multiples of 2, the number 3 is still there. Lean checks it by computation (`decide`), not by reasoning.'
+summary: 'A fact this small is a headline because it is the sieve''s base case: after crossing out multiples of
+  2, the number 3 is still there. Lean checks it by computation (`decide`), not by reasoning.'
 review: draft
 authors:
 - grok-bot

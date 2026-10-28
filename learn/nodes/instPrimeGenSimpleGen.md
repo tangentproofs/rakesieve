@@ -1,8 +1,8 @@
 ---
 id: instPrimeGenSimpleGen
 title: SimpleGen is a prime generator
-summary: '**The surprise:** both obligations fall straight out of the MinPrimeGt fields: ''nothing smaller'' is
-  `hmin`, ''bigger'' is `hpgt`.'
+summary: 'Both obligations fall straight out of the MinPrimeGt fields: ''nothing smaller'' is `hmin`, ''bigger''
+  is `hpgt`.'
 review: draft
 authors:
 - grok-bot

@@ -1,8 +1,8 @@
 ---
 id: Rake.rem
 title: 'Rake.rem: remove all multiples of j'
-summary: '**The surprise:** removal never looks at a single number. It partitions by j and drops the sequences whose
-  constant is a multiple of j: one test per sequence covers infinitely many numbers.'
+summary: 'Removal never looks at a single number. It partitions by j and drops the sequences whose constant is a
+  multiple of j: one test per sequence covers infinitely many numbers.'
 review: draft
 authors:
 - grok-bot

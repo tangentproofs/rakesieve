@@ -1,8 +1,8 @@
 ---
 id: MinPrimeGt
 title: 'MinPrimeGt n: the least prime above n, with proof'
-summary: '**The surprise:** ''the next prime'' is a structure, not a number: the number, a proof it is a prime above
-  n, and a proof nothing smaller is.'
+summary: '''The next prime'' is a structure, not a number: the number, a proof it is a prime above n, and a proof
+  nothing smaller is.'
 review: draft
 authors:
 - grok-bot

@@ -1,8 +1,8 @@
 ---
 id: r_next_prop
 title: 'r_next for predicates: how a sieve tracks R step by step'
-summary: '**The surprise:** the RakeSieve never computes R directly. It carries a predicate, adds ''∧ not a multiple
-  of c'' at each step, and this lemma certifies that the predicate still means exactly R.'
+summary: The RakeSieve never computes R directly. It carries a predicate, adds '∧ not a multiple of c' at each step,
+  and this lemma certifies that the predicate still means exactly R.
 review: draft
 authors:
 - grok-bot

@@ -1,8 +1,8 @@
 ---
 id: RakeMap
 title: 'RakeMap: a rake together with the property its terms have'
-summary: '**The surprise:** the docstring calls it a ''1-to-1 mapping'', but the Lean only says the rake''s terms
-  are exactly the numbers with the property; one-to-one is never stated or needed.'
+summary: The docstring calls it a '1-to-1 mapping', but the Lean only says the rake's terms are exactly the numbers
+  with the property; one-to-one is never stated or needed.
 review: draft
 authors:
 - grok-bot

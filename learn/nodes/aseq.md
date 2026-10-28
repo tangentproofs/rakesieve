@@ -1,7 +1,7 @@
 ---
 id: aseq
 title: 'aseq k d: build the sequence k + d·n'
-summary: '**The surprise:** a one-line constructor, marked @[simp] so Lean unfolds it automatically in proofs.'
+summary: It is a one-line constructor, marked @[simp] so Lean unfolds it automatically in proofs.
 review: draft
 authors:
 - grok-bot

@@ -1,8 +1,8 @@
 ---
 id: PrimeSieve
 title: 'PrimeSieve: a wrapper that turns a sieve state into a generator'
-summary: '**The surprise:** it holds nothing but the state. The wrapper exists only so Lean''s instance search can
-  attach one generic proof, ''this is a prime generator'', to every sieve at once.'
+summary: It holds nothing but the state. The wrapper exists only so Lean's instance search can attach one generic
+  proof, 'this is a prime generator', to every sieve at once.
 review: draft
 authors:
 - grok-bot

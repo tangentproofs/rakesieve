@@ -1,8 +1,8 @@
 ---
 id: RakeMap.rem
 title: 'RakeMap.rem: remove multiples of j, keeping the certificate'
-summary: '**The surprise:** it cannot be called without proof that something will survive, which is why the RakeSieve
-  needs Euclid at every step.'
+summary: It cannot be called without proof that something will survive, which is why the RakeSieve needs Euclid
+  at every step.
 review: draft
 authors:
 - grok-bot

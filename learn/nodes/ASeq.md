@@ -1,8 +1,8 @@
 ---
 id: ASeq
 title: 'ASeq: an arithmetic sequence k + d·n'
-summary: '**The surprise:** the basic object is just two numbers. The odd numbers are (1, 2), all numbers ≥ 2 are
-  (2, 1), and the whole sieve is built by composing such pairs.'
+summary: The basic object is just two numbers. The odd numbers are (1, 2), all numbers ≥ 2 are (2, 1), and the whole
+  sieve is built by composing such pairs.
 review: draft
 authors:
 - grok-bot

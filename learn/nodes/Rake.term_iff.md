@@ -1,8 +1,8 @@
 ---
 id: Rake.term_iff
 title: Which numbers a rake produces
-summary: '**The surprise:** most of the proof is index arithmetic with mod and div, to show the round-robin order
-  hits every k + x·d exactly where expected.'
+summary: Most of the proof is index arithmetic with mod and div, to show the round-robin order hits every k + x·d
+  exactly where expected.
 review: draft
 authors:
 - grok-bot

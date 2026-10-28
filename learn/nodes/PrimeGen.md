@@ -1,9 +1,8 @@
 ---
 id: PrimeGen
 title: 'PrimeGen: what it means to generate primes in order'
-summary: '**The surprise:** the spec of a prime generator is only two lines, ''no prime is skipped'' and ''the prime
-  goes up'', and the second line was added only in September 2026 because the first alone allows a generator stuck
-  on one prime.'
+summary: The spec of a prime generator is only two lines, 'no prime is skipped' and 'the prime goes up', and the
+  second line was added only in September 2026 because the first alone allows a generator stuck on one prime.
 review: draft
 authors:
 - grok-bot

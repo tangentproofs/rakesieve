@@ -1,8 +1,7 @@
 ---
 id: ex_prime_gt
 title: There is a prime above c (from Mathlib)
-summary: '**The surprise:** this is where the simple generator borrows Euclid outright: a direct call to Mathlib''s
-  `Nat.exists_infinite_primes`.'
+summary: 'This is where the simple generator borrows Euclid outright: a direct call to Mathlib''s `Nat.exists_infinite_primes`.'
 review: draft
 authors:
 - grok-bot

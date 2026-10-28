@@ -1,9 +1,8 @@
 ---
 id: r_next
 title: 'Sieving by the next prime: R p₁ = R p₀ minus multiples of p₁'
-summary: '**The surprise:** this is the sieve of Eratosthenes as one equation. Crossing out the multiples of the
-  next prime is exactly the move from ''no prime factor ≤ p₀'' to ''no prime factor ≤ p₁'', because no prime lies
-  in between.'
+summary: This is the sieve of Eratosthenes as one equation. Crossing out the multiples of the next prime is exactly
+  the move from 'no prime factor ≤ p₀' to 'no prime factor ≤ p₁', because no prime lies in between.
 review: draft
 authors:
 - grok-bot

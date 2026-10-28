@@ -1,8 +1,8 @@
 ---
 id: no_skipped_prime
 title: No prime lies between P and the candidate
-summary: '**The surprise:** the proof is three lines of idea: a prime above P has no small prime factor, so it survives
-  the sieve, so it is at least the least survivor C.'
+summary: 'The proof is three lines of idea: a prime above P has no small prime factor, so it survives the sieve,
+  so it is at least the least survivor C.'
 review: draft
 authors:
 - grok-bot

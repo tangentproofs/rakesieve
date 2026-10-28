@@ -1,8 +1,8 @@
 ---
 id: RakeSieve.instPrimeSieveStateRakeSieve
 title: The RakeSieve is a sieve state
-summary: '**The surprise:** the proof that the candidate grows reuses the generic r_gt_p: the new candidate is in
-  R of the new prime, so it exceeds the new prime, which is the old candidate.'
+summary: 'The proof that the candidate grows reuses the generic r_gt_p: the new candidate is in R of the new prime,
+  so it exceeds the new prime, which is the old candidate.'
 review: draft
 authors:
 - grok-bot

@@ -1,8 +1,7 @@
 ---
 id: RakeMap.pred
 title: 'RakeMap.pred: the property a rake map describes'
-summary: '**The surprise:** it ignores its argument''s contents entirely; the predicate lives in the type, and this
-  just reads it back.'
+summary: It ignores its argument's contents entirely; the predicate lives in the type, and this just reads it back.
 review: draft
 authors:
 - grok-bot

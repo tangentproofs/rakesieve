@@ -1,8 +1,8 @@
 ---
 id: nextState
 title: 'nextState: one sieve step, with the proofs filled in'
-summary: '**The surprise:** the step a user calls takes no proofs, because the library proves the step''s preconditions
-  itself, for every driven sieve, every time.'
+summary: The step a user calls takes no proofs, because the library proves the step's preconditions itself, for
+  every driven sieve, every time.
 review: draft
 authors:
 - grok-bot

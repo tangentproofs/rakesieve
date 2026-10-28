@@ -1,7 +1,7 @@
 ---
 id: Rake.ge2
 title: 'Rake.ge2: every number from 2 up'
-summary: '**The surprise:** the sieve''s raw material is one sequence, 2 + 1·n.'
+summary: The sieve's raw material is one sequence, 2 + 1·n.
 review: draft
 authors:
 - grok-bot

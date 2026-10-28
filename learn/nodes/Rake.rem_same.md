@@ -1,7 +1,7 @@
 ---
 id: Rake.rem_same
 title: rem adds no new terms
-summary: '**The surprise:** the soundness half: whatever the reshuffling, rem only ever removes.'
+summary: 'This is the soundness half: whatever the reshuffling, rem only ever removes.'
 review: draft
 authors:
 - grok-bot

@@ -1,8 +1,8 @@
 ---
 id: List.Sorted
 title: 'List.Sorted: a local stand-in for ''sorted by r'''
-summary: '**The surprise:** the library defines its own `List.Sorted` as `List.Pairwise`, a small shim kept so the
-  code survives Mathlib renaming its sorted-list API.'
+summary: The library defines its own `List.Sorted` as `List.Pairwise`, a small shim kept so the code survives Mathlib
+  renaming its sorted-list API.
 review: draft
 authors:
 - grok-bot

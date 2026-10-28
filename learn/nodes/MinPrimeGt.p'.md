@@ -1,7 +1,7 @@
 ---
 id: MinPrimeGt.p'
 title: 'MinPrimeGt.p'': the next prime is prime'
-summary: '**The surprise:** a one-line projection, handy enough to get its own name.'
+summary: It is a one-line projection, handy enough to get its own name.
 review: draft
 authors:
 - grok-bot

@@ -1,8 +1,7 @@
 ---
 id: ASeq.term
 title: 'ASeq.term: the n-th term, k + d·n'
-summary: '**The surprise:** an ASeq can be used as a function (s n) because of a coercion that points at this one
-  line.'
+summary: An ASeq can be used as a function (s n) because of a coercion that points at this one line.
 review: draft
 authors:
 - grok-bot

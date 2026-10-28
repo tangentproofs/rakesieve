@@ -1,8 +1,8 @@
 ---
 id: R
 title: 'R P: the numbers that survive sieving by every prime up to P'
-summary: '**The surprise:** the whole sieve is driven by this one set. Its least element is always the next prime,
-  and sieving by a new prime p is exactly the step from R (previous prime) to R p.'
+summary: The whole sieve is driven by this one set. Its least element is always the next prime, and sieving by a
+  new prime p is exactly the step from R (previous prime) to R p.
 review: draft
 authors:
 - grok-bot

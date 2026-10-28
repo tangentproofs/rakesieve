@@ -1,8 +1,8 @@
 ---
 id: Rake.HasNonMultiple
 title: 'HasNonMultiple: some term is not a multiple of j'
-summary: '**The surprise:** this innocent hypothesis is where Euclid enters the sieve: proving it at each step is
-  what needs Mathlib''s infinitude of primes.'
+summary: 'This innocent hypothesis is where Euclid enters the sieve: proving it at each step is what needs Mathlib''s
+  infinitude of primes.'
 review: draft
 authors:
 - grok-bot

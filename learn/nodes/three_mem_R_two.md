@@ -1,8 +1,8 @@
 ---
 id: three_mem_R_two
 title: 3 ∈ R 2 (the lemma behind the headline)
-summary: '**The surprise:** shared by every sieve: it lives in PrimeSieve.lean, not in the RakeSieve, so any future
-  sieve can start from it.'
+summary: Shared by every sieve, it lives in PrimeSieve.lean, not in the RakeSieve, so any future sieve can start
+  from it.
 review: draft
 authors:
 - grok-bot

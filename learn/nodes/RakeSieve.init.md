@@ -1,8 +1,8 @@
 ---
 id: RakeSieve.init
 title: 'RakeSieve.init: prime 2, odd numbers ≥ 3, candidate 3'
-summary: '**The surprise:** the starting rake is built by the same operation as every later step: begin with 2 +
-  n (all numbers ≥ 2) and remove the multiples of 2, leaving the single sequence 3 + 2n.'
+summary: 'The starting rake is built by the same operation as every later step: begin with 2 + n (all numbers ≥
+  2) and remove the multiples of 2, leaving the single sequence 3 + 2n.'
 review: draft
 authors:
 - grok-bot

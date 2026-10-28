@@ -1,8 +1,8 @@
 ---
 id: PrimeGen.P_iterate_add_le
 title: After k steps the prime has grown by at least k
-summary: '**The surprise:** strict increase on natural numbers is already a growth guarantee: each step adds at
-  least 1, so k steps add at least k.'
+summary: 'Strict increase on natural numbers is already a growth guarantee: each step adds at least 1, so k steps
+  add at least k.'
 review: draft
 authors:
 - grok-bot

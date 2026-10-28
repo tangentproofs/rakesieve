@@ -1,8 +1,8 @@
 ---
 id: three_le_of_mem_R_two
 title: Nothing in R 2 is below 3 (the lemma behind the headline)
-summary: '**The surprise:** with 3 ∈ R 2 it makes 3 the minimum of R 2, which is exactly what the start state must
-  prove about its candidate.'
+summary: With 3 ∈ R 2 it makes 3 the minimum of R 2, which is exactly what the start state must prove about its
+  candidate.
 review: draft
 authors:
 - grok-bot

@@ -7,7 +7,7 @@ def q(text, choices, answer, explain):
     return {"q": text, "type": "choice", "choices": choices, "answer": answer, "explain": explain}
 
 node("ASeq", "ASeq: an arithmetic sequence k + d·n",
- "**The surprise:** the basic object is just two numbers. The odd numbers are (1, 2), all numbers ≥ 2 are (2, 1), and the whole sieve is built by composing such pairs.",
+ "The basic object is just two numbers. The odd numbers are (1, 2), all numbers ≥ 2 are (2, 1), and the whole sieve is built by composing such pairs.",
  r"""
 ## Plain English
 
@@ -22,7 +22,7 @@ ASeq.lean also proves that composing sequences composes their terms (`ASeq.compo
   q("Can d be 0?", ["Yes: then every term equals k", "No, the type forbids it"], 0, "`d : Nat` allows 0; `Rake.partition` comments on why d = 0 is awkward.")])
 
 node("aseq", "aseq k d: build the sequence k + d·n",
- "**The surprise:** a one-line constructor, marked @[simp] so Lean unfolds it automatically in proofs.",
+ "It is a one-line constructor, marked @[simp] so Lean unfolds it automatically in proofs.",
  r"""
 ## Plain English
 
@@ -33,7 +33,7 @@ node("aseq", "aseq k d: build the sequence k + d·n",
   q("Its arguments are…", ["constant, then step", "step, then constant"], 0, "`aseq (k:Nat) (d:Nat)`.")])
 
 node("ASeq.term", "ASeq.term: the n-th term, k + d·n",
- "**The surprise:** an ASeq can be used as a function (s n) because of a coercion that points at this one line.",
+ "An ASeq can be used as a function (s n) because of a coercion that points at this one line.",
  r"""
 ## Plain English
 
@@ -44,7 +44,7 @@ node("ASeq.term", "ASeq.term: the n-th term, k + d·n",
   q("Do terms ever decrease?", ["No, d·n grows with n (or stays fixed if d = 0)", "Yes"], 0, "d is a natural number.")])
 
 node("List.Sorted", "List.Sorted: a local stand-in for 'sorted by r'",
- "**The surprise:** the library defines its own `List.Sorted` as `List.Pairwise`, a small shim kept so the code survives Mathlib renaming its sorted-list API.",
+ "The library defines its own `List.Sorted` as `List.Pairwise`, a small shim kept so the code survives Mathlib renaming its sorted-list API.",
  r"""
 ## Plain English
 
@@ -55,7 +55,7 @@ node("List.Sorted", "List.Sorted: a local stand-in for 'sorted by r'",
   q("Why define it locally?", ["it is an abbreviation for `List.Pairwise`, kept stable across Mathlib versions", "Mathlib has no lists"], 0, "Rake.lean lines 9–13.")])
 
 node("Rake", "Rake: several arithmetic sequences sharing one step",
- "**The surprise:** a rake is a picture of a residue system: the constants are the 'teeth' and the shared step d is the spacing, so {3, 5} with d = 6 lists everything coprime to 6 that is ≥ 3.",
+ "A rake is a picture of a residue system: the constants are the 'teeth' and the shared step d is the spacing, so {3, 5} with d = 6 lists everything coprime to 6 that is ≥ 3.",
  r"""
 ## Plain English
 
@@ -73,7 +73,7 @@ Why "rake": each sieve step multiplies the step d by the new prime p and the num
  caveats=["The README's growth figures and efficiency remarks are not formalized."])
 
 node("Rake.ge2", "Rake.ge2: every number from 2 up",
- "**The surprise:** the sieve's raw material is one sequence, 2 + 1·n.",
+ "The sieve's raw material is one sequence, 2 + 1·n.",
  r"""
 ## Plain English
 
@@ -84,7 +84,7 @@ node("Rake.ge2", "Rake.ge2: every number from 2 up",
   q("Is it sorted?", ["Yes, by default", "No"], 0, "`sorted` defaults to true with automatic proofs for a one-element list.")])
 
 node("Rake.term", "Rake.term: read the n-th term round-robin",
- "**The surprise:** terms are not listed in increasing order in general; they cycle through the teeth. Only the first term is guaranteed to be the smallest, and that is all the sieve needs.",
+ "Terms are not listed in increasing order in general; they cycle through the teeth. Only the first term is guaranteed to be the smallest, and that is all the sieve needs.",
  r"""
 ## Plain English
 
@@ -97,7 +97,7 @@ node("Rake.term", "Rake.term: read the n-th term round-robin",
   q("Which term is the minimum of a sorted rake?", ["term 0", "the last constant"], 0, "`sorted_min_term_zero`.")])
 
 node("Rake.term_iff", "Which numbers a rake produces",
- "**The surprise:** most of the proof is index arithmetic with mod and div, to show the round-robin order hits every k + x·d exactly where expected.",
+ "Most of the proof is index arithmetic with mod and div, to show the round-robin order hits every k + x·d exactly where expected.",
  r"""
 ## Plain English
 
@@ -108,7 +108,7 @@ node("Rake.term_iff", "Which numbers a rake produces",
   q("Why is it useful?", ["it reduces term questions to questions about ks", "it computes primes"], 0, "Used in the partition and rem proofs.")])
 
 node("Rake.sorted_min_term_zero", "In a sorted rake, the first term is the smallest",
- "**The surprise:** even though a rake's terms can come out of order, this one fact survives every case, and it is the only ordering fact the sieve needs.",
+ "Even though a rake's terms can come out of order, this one fact survives every case, and it is the only ordering fact the sieve needs.",
  r"""
 ## Plain English
 
@@ -121,7 +121,7 @@ term 0 is the first constant plus 0; any other term is some constant (≥ the fi
   q("Where is it used in the sieve?", ["to show the candidate is ≤ every survivor", "to show it is prime"], 0, "RakeSieve.lean line 111.")])
 
 node("Rake.partition", "Rake.partition: split each sequence into j sequences",
- "**The surprise:** the rake grows j-fold but produces exactly the same numbers; it only changes how they are grouped, so that divisibility by j can be read off the constants.",
+ "The rake grows j-fold but produces exactly the same numbers; it only changes how they are grouped, so that divisibility by j can be read off the constants.",
  r"""
 ## Plain English
 
@@ -136,7 +136,7 @@ The result is marked `sorted := false`.
   q("Why must j be positive?", ["j = 0 would leave no sequences", "for speed"], 0, "The docstring, Rake.lean lines 227–231.")])
 
 node("Rake.partition_term_iff", "Partitioning keeps exactly the same terms",
- "**The surprise:** the 'easy' direction, that old terms survive the split, is the long one, a calc chain of mod and div rewrites over nearly 60 lines.",
+ "The 'easy' direction, that old terms survive the split, is the long one, a calc chain of mod and div rewrites over nearly 60 lines.",
  r"""
 ## Plain English
 
@@ -147,7 +147,7 @@ node("Rake.partition_term_iff", "Partitioning keeps exactly the same terms",
   q("Is it an iff for every n?", ["Yes", "Only for primes"], 0, "`∀n, … ↔ …`.")])
 
 node("Rake.rem", "Rake.rem: remove all multiples of j",
- "**The surprise:** removal never looks at a single number. It partitions by j and drops the sequences whose constant is a multiple of j: one test per sequence covers infinitely many numbers.",
+ "Removal never looks at a single number. It partitions by j and drops the sequences whose constant is a multiple of j: one test per sequence covers infinitely many numbers.",
  r"""
 ## Plain English
 
@@ -165,7 +165,7 @@ A comment notes that a smarter version would use gcd(d, j), but in the sieve j i
   q("Why do the theorems assume `HasNonMultiple`?", ["to rule out the `zer` case", "for speed"], 0, "`rem_def` (Rake.lean lines 370–409) shows the zer case cannot happen under that assumption.")])
 
 node("Rake.HasNonMultiple", "HasNonMultiple: some term is not a multiple of j",
- "**The surprise:** this innocent hypothesis is where Euclid enters the sieve: proving it at each step is what needs Mathlib's infinitude of primes.",
+ "This innocent hypothesis is where Euclid enters the sieve: proving it at each step is what needs Mathlib's infinitude of primes.",
  r"""
 ## Plain English
 
@@ -176,7 +176,7 @@ node("Rake.HasNonMultiple", "HasNonMultiple: some term is not a multiple of j",
   q("How does the RakeSieve prove it?", ["with a prime above c from Mathlib", "by `decide`"], 0, "RakeSieve.lean line 71.")])
 
 node("Rake.rem_drop", "After rem, no multiple of j remains",
- "**The surprise:** the proof is pure divisibility: a surviving constant k has j ∤ k, and j divides d·j·x, so j cannot divide k + d·j·x.",
+ "The proof is pure divisibility: a surviving constant k has j ∤ k, and j divides d·j·x, so j cannot divide k + d·j·x.",
  r"""
 ## Plain English
 
@@ -187,7 +187,7 @@ node("Rake.rem_drop", "After rem, no multiple of j remains",
   q("Is it the 'drop' or 'keep' half?", ["drop", "keep"], 0, "As the name says: it drops the multiples.")])
 
 node("Rake.rem_keep", "After rem, every non-multiple survives",
- "**The surprise:** this is the half that makes the sieve *complete*: nothing that should survive is lost, which is what keeps every prime in play.",
+ "This is the half that makes the sieve *complete*: nothing that should survive is lost, which is what keeps every prime in play.",
  r"""
 ## Plain English
 
@@ -198,7 +198,7 @@ node("Rake.rem_keep", "After rem, every non-multiple survives",
   q("Why is it important for the sieve?", ["no prime is lost", "it speeds things up"], 0, "Primes above the current one are never multiples of it.")])
 
 node("Rake.rem_same", "rem adds no new terms",
- "**The surprise:** the soundness half: whatever the reshuffling, rem only ever removes.",
+ "This is the soundness half: whatever the reshuffling, rem only ever removes.",
  r"""
 ## Plain English
 
@@ -209,7 +209,7 @@ node("Rake.rem_same", "rem adds no new terms",
   q("Is HasNonMultiple assumed?", ["Yes", "No"], 0, "Otherwise `zer` produces 0, which need not be a term of r.")])
 
 node("RakeMap", "RakeMap: a rake together with the property its terms have",
- "**The surprise:** the docstring calls it a '1-to-1 mapping', but the Lean only says the rake's terms are exactly the numbers with the property; one-to-one is never stated or needed.",
+ "The docstring calls it a '1-to-1 mapping', but the Lean only says the rake's terms are exactly the numbers with the property; one-to-one is never stated or needed.",
  r"""
 ## Plain English
 
@@ -226,7 +226,7 @@ So the rake is an exact, sorted description of the set { n | pred n }. Operation
  caveats=["The docstring's '1-to-1 mapping' and the field name `hbij` suggest a bijection; the field states only that the set of terms equals { n | pred n }. Nothing in the sieve needs injectivity."])
 
 node("RakeMap.pred", "RakeMap.pred: the property a rake map describes",
- "**The surprise:** it ignores its argument's contents entirely; the predicate lives in the type, and this just reads it back.",
+ "It ignores its argument's contents entirely; the predicate lives in the type, and this just reads it back.",
  r"""
 ## Plain English
 
@@ -237,7 +237,7 @@ node("RakeMap.pred", "RakeMap.pred: the property a rake map describes",
   q("Where is it used?", ["RakeSieve.init and next set `prop := rm.pred`", "nowhere"], 0, "RakeSieve.lean lines 23 and 97.")])
 
 node("RakeMap.rm_ge2", "rm_ge2: the rake 2 + n describes the numbers ≥ 2",
- "**The surprise:** the first certified fact in the sieve's chain: the single sequence 2 + n lists exactly the numbers from 2 up.",
+ "The first certified fact in the sieve's chain: the single sequence 2 + n lists exactly the numbers from 2 up.",
  r"""
 ## Plain English
 
@@ -248,7 +248,7 @@ node("RakeMap.rm_ge2", "rm_ge2: the rake 2 + n describes the numbers ≥ 2",
   q("What comes next in the sieve?", ["removing multiples of 2", "removing multiples of 3"], 0, "`rm_ge2 |>.rem 2` (RakeSieve.lean line 20).")])
 
 node("RakeMap.rem", "RakeMap.rem: remove multiples of j, keeping the certificate",
- "**The surprise:** it cannot be called without proof that something will survive, which is why the RakeSieve needs Euclid at every step.",
+ "It cannot be called without proof that something will survive, which is why the RakeSieve needs Euclid at every step.",
  r"""
 ## Plain English
 
@@ -261,7 +261,7 @@ The comment above it suggests a future version returning `Option Rake` instead o
   q("Why sort at the end?", ["partition and filter make the constants unsorted, and RakeMap requires sorted", "for speed"], 0, "`hord` must hold.")])
 
 node("RakeMap.min_term_zero", "A rake map's first term is its smallest",
- "**The surprise:** a one-line wrapper, but it is the step that turns 'sorted list' into 'this is the next prime'.",
+ "A one-line wrapper, but it is the step that turns 'sorted list' into 'this is the next prime'.",
  r"""
 ## Plain English
 
@@ -272,7 +272,7 @@ node("RakeMap.min_term_zero", "A rake map's first term is its smallest",
   q("Where is it used?", ["RakeSieve.next, for `hRmin`", "SimpleGen"], 0, "RakeSieve.lean line 111.")])
 
 node("main", "main: print the first five primes from the RakeSieve",
- "**The surprise:** the verified sieve is also a runnable program; `#eval main` prints its first five primes when the file is compiled. That is a demo, not a proof.",
+ "The verified sieve is also a runnable program; `#eval main` prints its first five primes when the file is compiled. That is a demo, not a proof.",
  r"""
 ## Plain English
 
@@ -285,7 +285,7 @@ The output is not checked by any assertion, and this site did not run it (no Lea
   q("Which generator does it run?", ["PrimeSieve RakeSieve", "SimpleGen"], 0, "Main.lean line 5.")])
 
 node("Rake.zer", "Rake.zer: the placeholder rake {0}",
- "**The surprise:** it exists only so `rem` always returns something; the sieve proves it is never actually reached.",
+ "It exists only so `rem` always returns something; the sieve proves it is never actually reached.",
  r"""
 ## Plain English
 

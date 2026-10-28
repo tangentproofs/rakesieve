@@ -1,8 +1,8 @@
 ---
 id: RakeSieve.instPrimeSieveDriverRakeSieve
 title: The RakeSieve satisfies the driver
-summary: '**The surprise:** there is nothing to prove here. Every RakeSieve state already carries `hCinR` and `hRmin`
-  as fields, so the driver instance just reads them off.'
+summary: There is nothing to prove here. Every RakeSieve state already carries `hCinR` and `hRmin` as fields, so
+  the driver instance just reads them off.
 review: draft
 authors:
 - grok-bot

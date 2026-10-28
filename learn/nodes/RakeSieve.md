@@ -1,8 +1,8 @@
 ---
 id: RakeSieve
 title: 'RakeSieve: a sieve state that carries its own correctness proof'
-summary: '**The surprise:** each state is data plus three proofs: its rake lists exactly R p, its candidate is in
-  R p, and its candidate is below everything in R p. A wrong state cannot even be constructed.'
+summary: 'Each state is data plus three proofs: its rake lists exactly R p, its candidate is in R p, and its candidate
+  is below everything in R p. A wrong state cannot even be constructed.'
 review: draft
 authors:
 - grok-bot

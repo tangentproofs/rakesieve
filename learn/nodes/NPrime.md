@@ -1,8 +1,8 @@
 ---
 id: NPrime
 title: 'NPrime: a natural number packaged with a proof that it is prime'
-summary: '**The surprise:** a value of this type cannot be a non-prime. Every prime a generator hands out carries
-  its own certificate, so ''the output is prime'' never has to be proved again.'
+summary: A value of this type cannot be a non-prime. Every prime a generator hands out carries its own certificate,
+  so 'the output is prime' never has to be proved again.
 review: draft
 authors:
 - grok-bot

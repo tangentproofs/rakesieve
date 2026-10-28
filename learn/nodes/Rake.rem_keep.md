@@ -1,8 +1,8 @@
 ---
 id: Rake.rem_keep
 title: After rem, every non-multiple survives
-summary: '**The surprise:** this is the half that makes the sieve *complete*: nothing that should survive is lost,
-  which is what keeps every prime in play.'
+summary: 'This is the half that makes the sieve *complete*: nothing that should survive is lost, which is what keeps
+  every prime in play.'
 review: draft
 authors:
 - grok-bot

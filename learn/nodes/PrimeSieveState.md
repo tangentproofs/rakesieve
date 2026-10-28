@@ -1,8 +1,8 @@
 ---
 id: PrimeSieveState
 title: 'PrimeSieveState: a sieve''s state, its prime, its candidate, its step'
-summary: '**The surprise:** the step function demands proofs as inputs: you may only advance a sieve after proving
-  the candidate is prime and nothing was skipped. The interface makes an unjustified step impossible to write.'
+summary: 'The step function demands proofs as inputs: you may only advance a sieve after proving the candidate is
+  prime and nothing was skipped. The interface makes an unjustified step impossible to write.'
 review: draft
 authors:
 - grok-bot

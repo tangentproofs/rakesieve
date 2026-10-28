@@ -1,7 +1,7 @@
 ---
 id: PrimeGt
 title: 'PrimeGt n p: p is a prime above n'
-summary: '**The surprise:** a two-word abbreviation that the whole library leans on: ''prime and bigger than n''.'
+summary: 'It is a two-word abbreviation that the whole library leans on: ''prime and bigger than n''.'
 review: draft
 authors:
 - grok-bot

@@ -1,8 +1,8 @@
 ---
 id: exists_prime_gt_of_primeGen
 title: A generator whose primes strictly increase passes every n
-summary: '**The surprise:** no number theory at all, just counting: the prime goes up by at least one per step and
-  starts at 2 or more, so after n + 1 steps it exceeds n.'
+summary: 'It needs no number theory at all, just counting: the prime goes up by at least one per step and starts
+  at 2 or more, so after n + 1 steps it exceeds n.'
 review: draft
 authors:
 - grok-bot

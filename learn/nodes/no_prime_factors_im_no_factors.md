@@ -1,8 +1,8 @@
 ---
 id: no_prime_factors_im_no_factors
 title: No prime factor below c means c is prime
-summary: '**The surprise:** the library proves this small classical fact by hand rather than finding it in Mathlib:
-  a number ≥ 2 with no prime factor below it has no factor at all but 1 and itself.'
+summary: 'The library proves this small classical fact by hand rather than finding it in Mathlib: a number ≥ 2 with
+  no prime factor below it has no factor at all but 1 and itself.'
 review: draft
 authors:
 - grok-bot

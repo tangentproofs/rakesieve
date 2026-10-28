@@ -1,8 +1,8 @@
 ---
 id: r_gt_p
 title: Everything in R P is bigger than P
-summary: '**The surprise:** this is why sieving works at all: a number ≤ P that is at least 2 has a prime factor
-  ≤ P, so it cannot survive. Every survivor, including the next candidate, is beyond P.'
+summary: 'This is why sieving works at all: a number ≤ P that is at least 2 has a prime factor ≤ P, so it cannot
+  survive. Every survivor, including the next candidate, is beyond P.'
 review: draft
 authors:
 - grok-bot

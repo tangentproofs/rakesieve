@@ -1,8 +1,8 @@
 ---
 id: Rake.rem_drop
 title: After rem, no multiple of j remains
-summary: '**The surprise:** the proof is pure divisibility: a surviving constant k has j ∤ k, and j divides d·j·x,
-  so j cannot divide k + d·j·x.'
+summary: 'The proof is pure divisibility: a surviving constant k has j ∤ k, and j divides d·j·x, so j cannot divide
+  k + d·j·x.'
 review: draft
 authors:
 - grok-bot

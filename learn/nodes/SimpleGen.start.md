@@ -1,8 +1,7 @@
 ---
 id: SimpleGen.start
 title: 'SimpleGen.start: begin at 2'
-summary: '**The surprise:** the one place the simple generator says where primes begin; the PrimeGen class itself
-  does not.'
+summary: This is the one place the simple generator says where primes begin; the PrimeGen class itself does not.
 review: draft
 authors:
 - grok-bot

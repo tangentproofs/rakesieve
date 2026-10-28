@@ -96,7 +96,7 @@ function graphPage() {
     <div class="graph-wrap">
       <div>
         <h1>RakeSieve: a prime sieve checked in Lean 4</h1>
-        <p class="eli5"><b>The surprise:</b> the main theorem's <i>statement</i> never mentions the sieve. It is word for word Euclid's "there is always a bigger prime", and the proof even calls Mathlib's own proof of Euclid along the way. The real verified content is elsewhere: every state of the sieve carries a proof that its list of arithmetic sequences produces <i>exactly</i> the numbers with no prime factor up to the current prime, so its smallest term is always the next prime. <a href="#/review">Read the review →</a></p>
+        <p class="eli5">The main theorem's <i>statement</i> never mentions the sieve. It is word for word Euclid's "there is always a bigger prime", and the proof even calls Mathlib's own proof of Euclid along the way. The real verified content is elsewhere: every state of the sieve carries a proof that its list of arithmetic sequences produces <i>exactly</i> the numbers with no prime factor up to the current prime, so its smallest term is always the next prime. <a href="#/review">Read the review →</a></p>
         <p class="muted">The Lean is by Michal Wallace (tangentstorm). The job here is different: <b>you</b> are the checker.
         A node turns green when you tick <b>I understand</b> (lightest), pass its quiz (middle) or do both (darkest), and it counts as understood once everything its statement mentions is too, just as Lean won't accept a statement whose ingredients it doesn't know.</p>
         <p><a class="start-link" href="#/start">Start here: what the theorem says →</a>
