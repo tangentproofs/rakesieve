@@ -14,14 +14,14 @@ quiz:
   - no prime strictly between consecutive outputs; outputs strictly increase
   - the state is finite; next terminates
   answer: 1
-  explain: '`hP''` and `hP_lt` (PrimeGen.lean lines 23 and 26). Primality of the output is built into the type `NPrime`.'
+  explain: '`hP''` and `hP_lt` (PrimeGen.lean lines 22 and 25). Primality of the output is built into the type `NPrime`.'
 - q: Does `PrimeGen` say the generator starts at 2?
   type: choice
   choices:
   - 'Yes'
   - No, the start state is chosen separately
   answer: 1
-  explain: There is no `init` field; the docstring says it was intentionally left out (PrimeGen.lean lines 16–18).
+  explain: There is no `init` field; the docstring says it was intentionally left out (PrimeGen.lean lines 15–17).
 - q: A 'generator' with `next g = g` satisfies which condition?
   type: choice
   choices:
@@ -34,7 +34,7 @@ quiz:
 ---
 ## Plain English
 
-A `PrimeGen` on a type α of states (PrimeGen.lean lines 19–26) provides:
+A `PrimeGen` on a type α of states (PrimeGen.lean lines 18–25) provides:
 
 - `P : α → NPrime`, the prime at the current state ([NPrime](#/node/NPrime));
 - `next : α → α`, the step to the next state;

@@ -14,7 +14,7 @@ quiz:
   - the list of primes
   - the candidate
   answer: 0
-  explain: '`h₁ := rs.pred`, with `rs = rs₀.rm.rem c''.p …` (RakeSieve.lean lines 87–94).'
+  explain: '`h₁ := rs.pred`, with `rs = rs₀.rm.rem c''.p …` (RakeSieve.lean lines 101–108).'
 - q: What does the lemma conclude?
   type: choice
   choices:
@@ -38,4 +38,4 @@ quiz:
 
 **Theorem (`r_next_prop`, PrimeSieve.lean lines 110–114).** Suppose h₀ n ↔ n ∈ [R](#/node/R) p₀, and h₁ n ↔ h₀ n ∧ ¬ (m.p ∣ n), where m.p is the least prime above p₀. Then h₁ n ↔ n ∈ R m.p.
 
-It is [r_next](#/node/r_next) with names for the two predicates. The comment above it (PrimeSieve.lean lines 98–109) explains the design: a sieve models R p by a bijection with its data structure, and whatever it does to sift out the next prime corresponds to adding `∧ ¬(p₁∣n)` to the predicate. The RakeSieve uses it once per step (RakeSieve.lean line 96).
+It is [r_next](#/node/r_next) with names for the two predicates. The comment above it (PrimeSieve.lean lines 98–109) explains the design: a sieve models R p by a bijection with its data structure, and whatever it does to sift out the next prime corresponds to adding `∧ ¬(p₁∣n)` to the predicate. The RakeSieve uses it once per step (RakeSieve.lean line 110).

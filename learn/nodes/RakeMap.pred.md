@@ -26,7 +26,7 @@ quiz:
   - RakeSieve.init and next set `prop := rm.pred`
   - nowhere
   answer: 0
-  explain: RakeSieve.lean lines 23 and 97.
+  explain: RakeSieve.lean lines 26 and 97.
 ---
 ## Plain English
 

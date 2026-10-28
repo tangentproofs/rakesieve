@@ -23,7 +23,7 @@ quiz:
   - three lines
   - a hundred lines
   answer: 0
-  explain: RakeSieve.lean lines 130–132.
+  explain: RakeSieve.lean lines 155–157.
 - q: Which two fields does it supply?
   type: choice
   choices:
@@ -34,4 +34,4 @@ quiz:
 ---
 ## Plain English
 
-`instance : PrimeSieveDriver RakeSieve` (RakeSieve.lean lines 130–132) sets `hCinR x := x.hCinR` and `hRmin x := x.hRmin`, after unfolding C and P. The work was done when each state was built: in [RakeSieve.init](#/node/RakeSieve.init) and in [RakeSieve.next](#/node/RakeSieve.next). See [PrimeSieveDriver](#/node/PrimeSieveDriver).
+`instance : PrimeSieveDriver RakeSieve` (RakeSieve.lean lines 155–157) sets `hCinR x := x.hCinR` and `hRmin x := x.hRmin`, after unfolding C and P. The work was done when each state was built: in [RakeSieve.init](#/node/RakeSieve.init) and in [RakeSieve.next](#/node/RakeSieve.next). See [PrimeSieveDriver](#/node/PrimeSieveDriver).

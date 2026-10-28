@@ -6,7 +6,7 @@ The reference sites (star-height and others) extract declarations from a compile
 source text instead (the owner asked for no Lean builds on our servers), as subexponential-sat was:
 
   * declarations: `def/theorem/lemma/abbrev/structure/class/instance` lines in FILES (the modules
-    listed in lakefile.lean, plus Main.lean), with namespace, line range and verbatim header text;
+    listed in lakefile.lean, plus the exe root Main.lean, read from the lakefile), with namespace, line range and verbatim header text;
   * anonymous instances get the name Lean would most likely generate (inst + class + type); the
     real auto-generated name may differ slightly, which only matters for this site's ids;
   * mentions (meaningDeps) / proof uses (proofDeps): identifier tokens of the statement (and of a
@@ -21,10 +21,33 @@ LEARN = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ROOT = os.path.dirname(LEARN)
 OUT = os.path.join(LEARN, "data")
 
-# Built modules (lakefile.lean: lean_lib PrimeGen … Results; lean_exe root Main), in import order.
-FILES = ["ASeq.lean", "Rake.lean", "RakeMap.lean", "PrimeGen.lean", "PrimeSieve.lean", "RakeSieve.lean", "Results.lean", "Main.lean"]
-HEADS = ["results_exists_prime_gt_of_rakeSieve", "instPrimeGenPrimeSieve", "results_exists_prime_gt_of_primeGen",
-         "results_exists_prime_gt_of_simpleGen", "results_three_mem_R_two", "results_three_le_of_mem_R_two"]
+
+def built_files():
+    """The modules lakefile.lean builds (every `lean_lib X` plus the exe's `root`), as files, in import
+    order. Read from the lakefile so a new or moved module (SimpleGen.lean, NoEuclidCheck.lean) is
+    scanned without editing this script."""
+    lake = open(os.path.join(ROOT, "lakefile.lean"), encoding="utf-8").read()
+    mods = re.findall(r"^lean_lib\s+«?(\w+)»?", lake, re.M) + re.findall(r"root\s*:=\s*`(\w+)", lake)
+    imports = {m: [i for i in re.findall(r"^import\s+(\S+)", open(os.path.join(ROOT, m + ".lean"), encoding="utf-8").read(), re.M) if i in mods] for m in mods}
+    order, seen = [], set()
+    def visit(m):
+        if m in seen: return
+        seen.add(m)
+        for i in imports[m]: visit(i)
+        order.append(m)
+    for m in mods: visit(m)
+    return [m + ".lean" for m in order]
+
+
+def headlines():
+    """The site's headline list lives in one place, assets/app.js (HEADLINES); the scan measures depth from it.
+    Every theorem in Results.lean must be on it, so a new headline cannot be left off the site."""
+    app = open(os.path.join(LEARN, "assets", "app.js"), encoding="utf-8").read()
+    return json.loads(re.search(r"const HEADLINES = (\[[^\]]*\]);", app).group(1))
+
+
+FILES = built_files()
+HEADS = headlines()
 
 # Mathlib / core names used in the project (checked by hand against the Mathlib docs).
 MATHLIB = """Nat Nat.Prime Nat.find Nat.find_spec Nat.find_min Nat.exists_infinite_primes Nat.prime_two
@@ -76,7 +99,7 @@ def scan(file):
         if m := re.match(r"^end\s+(\S+)\s*$", ln):
             if ns and ns[-1] == m.group(1): ns.pop()
             starts.append(("end", k)); continue
-        if re.match(r"^(section|end|open|variable|universe|set_option|#|/-|--)", ln): starts.append(("other", k)); continue
+        if re.match(r"^(section|end|open|variable|universe|set_option|elab|macro|syntax|macro_rules|attribute|initialize|#|/-|--)\b", ln) or re.match(r"^(#|/-|--)", ln): starts.append(("other", k)); continue
         if m := DECL.match(ln):
             kind, name = m.group(1), m.group(2)
             if kind == "instance" and not name:
@@ -115,11 +138,19 @@ def main():
         cands = [e for e in decls if e["name"].endswith("." + tok) and not e["anonInstance"]]
         return cands[0] if len(cands) == 1 else None
 
+    def dot(suffix):
+        cands = [e for e in decls if e["name"].endswith(suffix) and not e["anonInstance"]]
+        return cands[0] if len(cands) == 1 else None
+
     for d in decls:
         stmt, proof = cut(d["text"], d["kind"])
         # short definitions read best with their body (R, nosk', PrimeGt, aseq …); long ones show the header
         d["statement"] = d["text"].rstrip() if d["kind"] in ("def", "abbrev") and d["text"].count("\n") < 6 else stmt
         meaning_text = stmt if d["kind"] in ("theorem", "instance") else d["text"]
+
+        # names bound by the declaration's own binders, e.g. `(pred: Nat → Prop)` in `structure RakeMap`,
+        # are local variables, not references to a declaration that happens to share the name
+        bound = {b for grp in re.findall(r"[({⦃\[]\s*([^():{}\[\]⦃⦄]+?)\s*:(?!=)", stmt) for b in grp.split()}
 
         def deps(text):
             out = []
@@ -127,8 +158,12 @@ def main():
             for m in TOK.finditer(clean):
                 if m.start() and clean[m.start() - 1] == ".": continue
                 t = m.group(0)
-                for cand in (t, t.rstrip(".")):
-                    e = resolve(cand, d)
+                if t in bound: continue
+                # `s.survivor` / `rs₀.rm.rem` (dot notation on a variable): fall back to the last field,
+                # when exactly one declaration ends with it
+                for cand in (t, t.rstrip("."), "." + t.rstrip(".").rsplit(".", 1)[-1] if "." in t.rstrip(".") else None):
+                    if not cand: continue
+                    e = resolve(cand, d) if not cand.startswith(".") else dot(cand)
                     if e and e is not d and not e["anonInstance"] and e["id"] not in out: out.append(e["id"]); break
             return out
         d["meaningDeps"] = deps(meaning_text)
@@ -138,10 +173,13 @@ def main():
             n = ALIASES.get(t)
             if n and n not in ml and n not in by_full: ml.append(n)
         d["mathlib"] = ml
-    # The PrimeGen instance on PrimeSieve is what lets the headline use a RakeSieve as a prime generator;
-    # instances are found by type class search, not by name, so add those edges by hand.
-    MANUAL = {"results_exists_prime_gt_of_rakeSieve": ["instPrimeGenPrimeSieve", "RakeSieve.instPrimeSieveStateRakeSieve", "RakeSieve.instPrimeSieveDriverRakeSieve"],
-              "results_exists_prime_gt_of_simpleGen": ["instPrimeGenSimpleGen"]}
+    # Instances are found by type class search, not by name, so their edges are added by hand: anything
+    # that steps a `PrimeSieve RakeSieve` goes through the PrimeSieve driver instance and the RakeSieve's
+    # two sieve instances; SimpleGen's corollary goes through SimpleGen's PrimeGen instance.
+    VIA_SIEVE = ["instPrimeGenPrimeSieve", "RakeSieve.instPrimeSieveStateRakeSieve", "RakeSieve.instPrimeSieveDriverRakeSieve"]
+    MANUAL = {"results_exists_prime_gt_of_rakeSieve": VIA_SIEVE, "results_rakeSieve_emits_every_prime": VIA_SIEVE,
+              "results_rakeSieve_step": VIA_SIEVE[1:], "results_rakeSieve_never_empty": VIA_SIEVE[1:],
+              "simpleGen_exists_prime_gt": ["instPrimeGenSimpleGen"]}
     # `variable (α : Type) [PrimeSieveState α] [PrimeSieveDriver α]` (PrimeSieve.lean line 210) is in scope for
     # these declarations; the classes it names are part of what they mean.
     SECTION_VARS = ["(α : Type)", "[PrimeSieveState α]", "[PrimeSieveDriver α]"]
@@ -156,9 +194,12 @@ def main():
         ids[k]["variables"] = ["(r: Rake)", "{j: Nat}", "(hj: 0<j)"]
     for k, vs in MANUAL.items():
         for v in vs:
-            assert v in ids, v
+            assert k in ids and v in ids, f"MANUAL instance edge {k} -> {v}: no such declaration in {FILES}"
             if v not in ids[k]["proofDeps"]: ids[k]["proofDeps"].append(v)
     for d in decls: d["usedBy"] = sorted(e["id"] for e in decls if d["id"] in e["meaningDeps"] + e["proofDeps"])
+    results = [d["name"] for d in decls if d["file"] == "Results.lean" and d["kind"] == "theorem"]
+    missing = [h for h in HEADS if h not in ids] + [r for r in results if r not in HEADS]
+    assert not missing, f"assets/app.js HEADLINES and Results.lean disagree: {missing}"
     dist = {h: 0 for h in HEADS}
     frontier = list(dist)
     while frontier:

@@ -41,6 +41,7 @@ jobs:
         working-directory: learn
         run: |
           npm ci
+          python3 -m pip install --quiet pyyaml  # tools/write_nodes.py --check (part of npm test)
           npm test
           python3 tools/scan_decls.py
           git diff --exit-code data/ || { echo "::error::learn/data is stale; run python3 learn/tools/scan_decls.py"; exit 1; }

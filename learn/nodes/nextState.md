@@ -27,7 +27,7 @@ quiz:
   - '`RakeSieve.next`'
   - '`SimpleGen.next`'
   answer: 0
-  explain: The RakeSieve's `PrimeSieveState` instance sets `next := .next` (RakeSieve.lean line 116).
+  explain: The RakeSieve's `PrimeSieveState` instance sets `next := .next` (RakeSieve.lean line 141).
 ---
 ## Plain English
 

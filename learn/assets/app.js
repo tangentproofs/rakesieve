@@ -25,10 +25,11 @@ const reachable = decls.filter((d) => d.depth !== null);
 
 // Headline theorems, and what a reader needs to read their STATEMENTS (statement mentions only,
 // transitively, stopping at Mathlib; proof-only dependencies are left out). See assets/statement.js.
-// The five theorems of Results.lean, plus the instance that carries the sieve's real correctness guarantee
-// (no named theorem in Results.lean states it; see the review). Main first.
-const HEADLINES = ["results_exists_prime_gt_of_rakeSieve", "instPrimeGenPrimeSieve", "results_exists_prime_gt_of_primeGen",
-  "results_exists_prime_gt_of_simpleGen", "results_three_mem_R_two", "results_three_le_of_mem_R_two"];
+// The seven theorems of Results.lean (tools/scan_decls.py checks that none is missing), plus the generic
+// driver instance that every sieve step goes through. The sieve's own guarantees first, then the corollary.
+const HEADLINES = ["results_rakeSieve_never_empty", "results_rakeSieve_step", "results_rakeSieve_emits_every_prime",
+  "results_exists_prime_gt_of_rakeSieve", "instPrimeGenPrimeSieve", "results_exists_prime_gt_of_primeGen",
+  "results_three_mem_R_two", "results_three_le_of_mem_R_two"];
 const STMT = statementSet(byId, HEADLINES);
 const stmtSet = new Set(STMT.defs);
 // Short glosses for the Mathlib notions the headline statements use (taken as given, not explained here).
@@ -36,7 +37,7 @@ const MATHLIB_GLOSS = {
   "Nat.Prime": "<code>Nat.Prime p</code>: p is a prime natural number (p ≥ 2 and its only divisors are 1 and p).",
   "Nat": "<code>Nat</code> (ℕ): the natural numbers 0, 1, 2, …",
   "Set": "<code>Set Nat</code>: a set of natural numbers, written <code>{ n | … }</code>; <code>n ∈ S</code> is membership.",
-  "Nat.exists_infinite_primes": "<code>Nat.exists_infinite_primes n : ∃ p, n ≤ p ∧ Nat.Prime p</code>: Euclid's theorem as Mathlib states it. RakeSieve's proofs use it (see the review).",
+  "Nat.exists_infinite_primes": "<code>Nat.exists_infinite_primes n : ∃ p, n ≤ p ∧ Nat.Prime p</code>: Euclid's theorem as Mathlib states it. The RakeSieve headlines do not use it (see Trust); only the circular reference generator SimpleGen does.",
   "Nat.find": "<code>Nat.find h</code>: the least n satisfying a decidable property, given a proof <code>h</code> that one exists.",
 };
 
@@ -96,7 +97,7 @@ function graphPage() {
     <div class="graph-wrap">
       <div>
         <h1>RakeSieve: a prime sieve checked in Lean 4</h1>
-        <p class="eli5">The main theorem's <i>statement</i> never mentions the sieve. It is word for word Euclid's "there is always a bigger prime", and the proof even calls Mathlib's own proof of Euclid along the way. The real verified content is elsewhere: every state of the sieve carries a proof that its list of arithmetic sequences produces <i>exactly</i> the numbers with no prime factor up to the current prime, so its smallest term is always the next prime. <a href="#/review">Read the review →</a></p>
+        <p class="eli5">The sieve never runs empty, and it proves this itself. When it crosses out the multiples of its next prime c, the number c + d is always left over, where d is the product of the primes found so far. So "there are infinitely many primes" comes out as a corollary of the algorithm, with no appeal to Mathlib's proof of it. It is still Euclid's idea (c + p# in place of p# + 1), now carried by the data structure. Lean also checks that every step emits the next prime with none skipped, and that every prime is reached. <a href="#/review">Read the review →</a></p>
         <p class="muted">The Lean is by Michal Wallace (tangentstorm). The job here is different: <b>you</b> are the checker.
         A node turns green when you tick <b>I understand</b> (lightest), pass its quiz (middle) or do both (darkest), and it counts as understood once everything its statement mentions is too, just as Lean won't accept a statement whose ingredients it doesn't know.</p>
         <p><a class="start-link" href="#/start">Start here: what the theorem says →</a>
@@ -119,7 +120,7 @@ function graphPage() {
           <div>Statement-level declarations: <b>${cov.n}</b> / ${cov.total} understood</div>
           <div class="progress-bar"><div style="width:${(100 * cov.n) / cov.total}%"></div></div>
           <p class="small muted">${HEADLINES.map((h) => `<a href="#/node/${encodeURIComponent(h)}">${esc(h)}</a>: ${understood(h) ? "statement understood" : "not yet"}`).join("<br>")}</p>
-          <p class="small muted">The whole library is about 1,300 lines of Lean in 8 built files, all rendered on the <a href="src/index.html">Source</a> pages.</p>
+          <p class="small muted">The whole library is about 1,400 lines of Lean in 10 built files, all rendered on the <a href="src/index.html">Source</a> pages.</p>
         </div>
         <div class="panel legend">
           <h3>Legend</h3>
@@ -493,7 +494,7 @@ function startPage() {
     <p class="muted" style="max-width:60rem">Before any proof: the headline statement, then every definition you need to <i>read</i> it,
     simplest first. These come from the statement's own mentions, followed down to Mathlib. Whatever the <i>proof</i>
     uses comes later and is not listed here. You have marked <b>${done}</b> of ${STMT.defs.length} of these definitions understood.</p>
-    <p class="muted" style="max-width:60rem">Five theorems are exported in <code>Results.lean</code>. The first three statements below say the same thing, Euclid's theorem; they differ only in which prime generator the proof runs. The second card is not a theorem but the instance that says the RakeSieve, stepped, yields each next prime with none skipped: that is where the sieve's correctness lives (see <a href="#/review">the review</a>).</p>
+    <p class="muted" style="max-width:60rem">The headline: <b>the sieve never runs empty.</b> After it crosses out the multiples of its candidate c, the number c + d survives, where d (the rake's period) is the product of the primes sifted so far. So infinitude of primes is a corollary of the algorithm, not an input to it. This is Euclid's p# + 1 idea carried by the data structure, not an imported theorem: no Mathlib infinitude result is used (see <a href="#/trust">Trust</a>). Seven theorems are exported in <code>Results.lean</code>. The cards below show the sieve's own guarantees first (never empty, each step, every prime), then the infinitude corollary. After those come the generic driver instance that every step goes through, the conditional version for any prime generator, and the two base-case facts. The old brute-force <code>SimpleGen</code> route assumed Euclid and is now kept only as a circular reference spec (see <a href="#/review">the review</a>).</p>
     <p class="muted" style="max-width:60rem"><b>R stands for <i>residue</i>.</b> In the statements below, <code>R p</code> is the set of numbers ≥ 2 that no prime ≤ p divides: what is left after crossing out the multiples of every prime up to p. So <code>R 2</code> is the odd numbers from 3 up, and the sieve's next prime is always the least element of <code>R p</code> (<a href="#/node/R">more on R</a>).</p>
     <h2>The statements</h2>
     ${HEADLINES.map((id) => stmtCard(id, true)).join("")}

@@ -32,6 +32,6 @@ quiz:
 ---
 ## Plain English
 
-**Theorem (`exists_prime_gt_of_primeGen`, PrimeGen.lean lines 112–118).** For any [PrimeGen](#/node/PrimeGen) α, any state g₀ and any n, some prime p satisfies n < p.
+**Theorem (`exists_prime_gt_of_primeGen`, PrimeGen.lean lines 68–74).** For any [PrimeGen](#/node/PrimeGen) α, any state g₀ and any n, some prime p satisfies n < p.
 
 The witness is the generator's prime after n + 1 steps. By [PrimeGen.P_iterate_add_le](#/node/PrimeGen.P_iterate_add_le) it is at least P g₀ + n + 1 ≥ n + 3. It is prime because generator values are [NPrime](#/node/NPrime)s. This is what [results_exists_prime_gt_of_primeGen](#/node/results_exists_prime_gt_of_primeGen) exports.

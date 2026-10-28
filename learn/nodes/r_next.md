@@ -30,7 +30,7 @@ quiz:
   - nowhere
   - in SimpleGen
   answer: 0
-  explain: RakeSieve.lean line 96.
+  explain: RakeSieve.lean line 110.
 ---
 ## Plain English
 

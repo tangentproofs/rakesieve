@@ -6,9 +6,10 @@
   "scripts": {
     "validate": "node tools/build_site.mjs --check",
     "build": "node tools/build_site.mjs",
-    "test": "node tools/test_progress.mjs && node tools/test_leanlines.mjs && node tools/test_statement.mjs && node tools/test_terms.mjs && node tools/build_site.mjs --check",
+    "test": "python3 tools/write_nodes.py --check && python3 tools/srcrefs_lock.py --check && node tools/test_progress.mjs && node tools/test_leanlines.mjs && node tools/test_statement.mjs && node tools/test_terms.mjs && node tools/build_site.mjs --check",
     "serve": "node tools/build_site.mjs && python3 -m http.server -d dist 8765",
-    "decls": "python3 tools/scan_decls.py"
+    "decls": "python3 tools/scan_decls.py",
+    "refs": "python3 tools/srcrefs_lock.py --remap"
   },
   "dependencies": {
     "ajv": "^8.17.1",

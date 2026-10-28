@@ -21,7 +21,7 @@ quiz:
   - '`partition_term_keep`'
   - '`partition_term_same`'
   answer: 0
-  explain: Rake.lean lines 280–338.
+  explain: Rake.lean lines 287–345.
 - q: Is it an iff for every n?
   type: choice
   choices:
@@ -32,4 +32,4 @@ quiz:
 ---
 ## Plain English
 
-**Theorem (`Rake.partition_term_iff`, Rake.lean lines 340–344).** n is a term of r.partition j iff n is a term of r. It combines `partition_term_same` (Rake.lean lines 248–278) and `partition_term_keep` (Rake.lean lines 280–338). See [Rake.partition](#/node/Rake.partition).
+**Theorem (`Rake.partition_term_iff`, Rake.lean lines 347–351).** n is a term of r.partition j iff n is a term of r. It combines `partition_term_same` (Rake.lean lines 255–285) and `partition_term_keep` (Rake.lean lines 287–345). See [Rake.partition](#/node/Rake.partition).

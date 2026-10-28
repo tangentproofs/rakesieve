@@ -30,4 +30,4 @@ quiz:
 ---
 ## Plain English
 
-**Theorem (`Rake.rem_same`, Rake.lean lines 459–467).** Assuming HasNonMultiple, every term of r.rem is a term of r. See [Rake.rem](#/node/Rake.rem).
+**Theorem (`Rake.rem_same`, Rake.lean lines 466–474).** Assuming HasNonMultiple, every term of r.rem is a term of r. See [Rake.rem](#/node/Rake.rem).

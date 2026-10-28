@@ -27,10 +27,10 @@ quiz:
   - to show the candidate is ≤ every survivor
   - to show it is prime
   answer: 0
-  explain: RakeSieve.lean line 111.
+  explain: RakeSieve.lean line 125.
 ---
 ## Plain English
 
-**Theorem (`Rake.sorted_min_term_zero`, Rake.lean lines 185–196).** If the rake is sorted, r.term 0 ≤ r.term n for every n.
+**Theorem (`Rake.sorted_min_term_zero`, Rake.lean lines 192–203).** If the rake is sorted, r.term 0 ≤ r.term n for every n.
 
 term 0 is the first constant plus 0; any other term is some constant (≥ the first, by sortedness) plus a multiple of d. [RakeMap.min_term_zero](#/node/RakeMap.min_term_zero) restates it for rake maps, and [RakeSieve.next](#/node/RakeSieve.next) uses it to prove the new candidate is the least survivor.

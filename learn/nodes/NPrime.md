@@ -21,7 +21,7 @@ quiz:
   - '`NPrime.mk 2`'
   - '`2 : NPrime` with no proof'
   answer: 0
-  explain: See `SimpleGen.start` (PrimeGen.lean line 62) and `RakeSieve.init` (RakeSieve.lean line 22).
+  explain: See `SimpleGen.start` (SimpleGen.lean line 39) and `RakeSieve.init` (RakeSieve.lean line 25).
 - q: What does `(P g).prop` give you, for a generator state g?
   type: choice
   choices:
@@ -30,12 +30,12 @@ quiz:
   - the next state
   answer: 1
   explain: '`.prop` is the proof component of a subtype value; `exists_prime_gt_of_primeGen` uses it (PrimeGen.lean
-    line 117).'
+    line 73).'
 ---
 ## Plain English
 
-`NPrime` is the type `{ n : Nat // Nat.Prime n }` (PrimeGen.lean line 7): a pair of a natural number and a proof that it is prime. Lean can only build one by supplying the proof, for example `⟨2, Nat.prime_two⟩`.
+`NPrime` is the type `{ n : Nat // Nat.Prime n }` (PrimeGen.lean line 6): a pair of a natural number and a proof that it is prime. Lean can only build one by supplying the proof, for example `⟨2, Nat.prime_two⟩`.
 
-The library adds conveniences: two `NPrime`s are equal when their numbers are ([NPrime.eq_iff](#/node/NPrime.eq_iff)), they print as their number, and they coerce to `Nat` (PrimeGen.lean lines 9–12).
+The library adds conveniences: two `NPrime`s are equal when their numbers are ([NPrime.eq_iff](#/node/NPrime.eq_iff)), they print as their number, and they coerce to `Nat` (PrimeGen.lean lines 8–11).
 
 Because [PrimeGen](#/node/PrimeGen)'s `P` returns an `NPrime`, every generator's output is prime *by its type*.

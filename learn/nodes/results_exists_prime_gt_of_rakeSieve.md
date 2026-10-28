@@ -1,29 +1,30 @@
 ---
 id: results_exists_prime_gt_of_rakeSieve
-title: 'Main theorem: the RakeSieve never runs out of primes'
-summary: The statement never mentions the sieve. It is word for word Euclid's theorem, ∀ n, ∃ prime p > n, and the
-  proof calls Mathlib's own proof of Euclid inside each sieve step. The sieve only appears in the proof.
+title: 'Corollary: infinitely many primes, from the sieve'
+summary: 'The statement is Euclid''s theorem, but the proof imports no infinitude result: the sieve never runs empty
+  and its primes keep going up, so they pass any n. Infinitude of primes is a corollary of the algorithm, not an
+  input to it.'
 review: draft
 authors:
 - grok-bot
 caveats:
-- The statement is Euclid's theorem and says nothing about the sieve. Read it as 'the sieve, run forever, keeps
-  producing primes', not as 'the sieve is correct'.
-- 'The proof is not independent of Mathlib''s infinitude of primes: RakeSieve.next uses `Nat.exists_infinite_primes`
-  (RakeSieve.lean line 71).'
-- This site did not build the Lean. The statement and proof are read from the source text at commit 36e7360; see
-  the Trust page.
+- The statement is Euclid's theorem and says nothing about the sieve. The sieve's correctness is stated by the step
+  and every-prime headlines.
+- The mathematical idea is Euclid's (c + p# in place of p# + 1). What is new is that the sieve carries it, so the
+  proof is not circular.
+- 'This site did not build the Lean. The no-Euclid check and `#print axioms` were run on the tcode server for PR
+  #5; see the Trust page.'
 widgets:
 - type: walkthrough
-  title: How Results.lean proves it (Results.lean, lines 19-21)
+  title: How Results.lean proves it (Results.lean, lines 46-48)
   config:
     steps:
     - text: 'Start the sieve: RakeSieve.init has found the prime 2, and its rake lists exactly the odd numbers ≥
         3'
       lean: '{ state := RakeSieve.init }'
       link: RakeSieve.init
-      note: The initial state carries proofs that 3 is in R 2 and that nothing in R 2 is below 3 (the two other
-        headline theorems).
+      note: The initial state carries proofs that 3 is in R 2 (the residue left after crossing out multiples of
+        2), that nothing in R 2 is below 3, and that the rake's period, 2, has no prime factor above 2.
     - text: 'Wrap it as a PrimeSieve. The generic driver makes any PrimeSieve a PrimeGen: each step gives the next
         prime, strictly larger, none skipped'
       lean: PrimeSieve RakeSieve
@@ -36,21 +37,20 @@ widgets:
       note: The primes go up by at least 1 per step, and start at 2 or more, so after n + 1 steps the prime is at
         least n + 3.
 - type: walkthrough
-  title: What one sieve step does (RakeSieve.lean, lines 55-111)
+  title: What one sieve step does (RakeSieve.lean, lines 84-136)
   config:
     steps:
     - text: The candidate c is prime and no prime lies between p and c (supplied by the driver), so c is the least
         prime above p
       lean: 'let c'' : MinPrimeGt rs₀.p := { p:=rs₀.c, hpgt:=hpgt, hmin:=hmin}'
       link: MinPrimeGt
-    - text: 'Show that removing c''s multiples leaves something: Mathlib gives a prime q > c, and q is in R p but
-        is not a multiple of c'
-      lean: Nat.exists_infinite_primes rs₀.c.succ
-      note: This is the step that uses Mathlib's Euclid. Without it, the rake operation `rem` would have no guarantee
-        of a non-empty result.
+    - text: 'Show that removing c''s multiples leaves something: the rake''s own term c + d survives'
+      lean: 'have hsurv : ∃n m, ¬rs₀.c ∣ n ∧ rs₀.rm.term m = n := rs₀.survivor hC₀'
+      link: RakeSieve.survivor
+      note: This line used to call Mathlib's Nat.exists_infinite_primes. Now the rake supplies the witness itself.
     - text: Remove the multiples of c from the rake (partition each sequence into c sequences, drop those whose
         constant is a multiple of c, sort)
-      lean: let rs := rs₀.rm.rem c'.p (Nat.Prime.pos hC₀) this
+      lean: let rs := rs₀.rm.rem c'.p (Nat.Prime.pos hC₀) hsurv
       link: RakeMap.rem
     - text: The new candidate is the rake's first term
       lean: let c₁ := rs.rake.term 0
@@ -60,8 +60,12 @@ widgets:
       link: r_next_prop
     - text: Its first term is its least term, because the rake is sorted, so the new candidate is the minimum of
         R c
-      lean: exact rs.min_term_zero k }
+      lean: exact rs.min_term_zero k
       link: RakeMap.min_term_zero
+    - text: 'Keep the invariant: the new period is d · c, so its prime factors are those of d (all ≤ p < c) and
+        c itself'
+      lean: 'have hd : rs.rake.d = rs₀.rm.rake.d * rs₀.c := RakeMap.rem_d _ _ _ _'
+      link: RakeMap.rem_d
 quiz:
 - q: What does the *statement* of `results_exists_prime_gt_of_rakeSieve` mention?
   type: choice
@@ -71,50 +75,46 @@ quiz:
   - The list of primes the sieve produces
   - The growth rate of the rake
   answer: 1
-  explain: The statement is `∀ n, ∃ p, Nat.Prime p ∧ n < p` (Results.lean lines 19–20). RakeSieve appears only in
-    the proof term on line 21.
-- q: Which other theorem in Results.lean has exactly the same statement?
-  type: choice
-  choices:
-  - '`results_three_mem_R_two`'
-  - '`results_exists_prime_gt_of_simpleGen`'
-  - '`results_three_le_of_mem_R_two`'
-  - none
-  answer: 1
-  explain: '`results_exists_prime_gt_of_simpleGen (n : Nat) : ∃ p, Nat.Prime p ∧ n < p` has the same type; it runs
-    the brute-force `SimpleGen` instead of the RakeSieve.'
+  explain: The statement is `∀ n, ∃ p, Nat.Prime p ∧ n < p` (Results.lean lines 46–47). RakeSieve appears only in
+    the proof term on line 48.
 - q: Does the proof use Mathlib's infinitude of primes anywhere?
   type: choice
   choices:
-  - No, it is a self-contained proof of Euclid
-  - 'Yes: `RakeSieve.next` calls `Nat.exists_infinite_primes` to show the rake never becomes empty'
-  - Only through `decide`
+  - Yes, inside every sieve step
+  - 'No: each step''s survivor is c + d, built from the rake itself, and NoEuclidCheck.lean confirms that no infinitude
+    theorem is reachable'
   answer: 1
-  explain: 'RakeSieve.lean line 71: `Nat.exists_infinite_primes rs₀.c.succ` gives a prime q > c, which survives
-    the removal of c''s multiples.'
-- q: Where is the claim 'each RakeSieve step yields the next prime, none skipped' checked?
+  explain: RakeSieve.next gets its survivor from `rs₀.survivor hC₀` (RakeSieve.lean line 98).
+- q: Which classical argument does the survivor c + d echo?
   type: choice
   choices:
-  - In the statement of this theorem
-  - In the `PrimeGen (PrimeSieve α)` instance and the generic driver lemmas it uses
+  - Euclid's p# + 1
+  - Eratosthenes' p² bound
+  - Bertrand's postulate
+  answer: 0
+  explain: d is the product of the primes sifted so far, so c + d plays the part of p# + 1.
+- q: Where is the claim 'each RakeSieve step yields the next prime, none skipped' stated?
+  type: choice
+  choices:
+  - Nowhere
+  - In `results_rakeSieve_step`, and generically in the `PrimeGen (PrimeSieve α)` instance
   - Only in `Main.lean`'s `#eval`
-  - It is not checked
   answer: 1
-  explain: The `PrimeGen` class (PrimeGen.lean lines 19–26) demands `hP'` (no skipped prime) and `hP_lt` (strict
-    increase). The instance for `PrimeSieve α` proves both from `c_prime`, `no_skipped_prime` and `c_gt_p`.
+  explain: Results.lean lines 27–31 state it for every RakeSieve state.
 ---
 ## Plain English
 
-**Theorem (`results_exists_prime_gt_of_rakeSieve`, Results.lean lines 19–21).** For every natural number n there is a prime p with n < p.
+**Theorem (`results_exists_prime_gt_of_rakeSieve`, Results.lean lines 46–48).** For every natural number n there is a prime p with n < p.
 
-That is the whole statement. Nothing in it says "RakeSieve". The name says *how* it was proved: by starting the RakeSieve at [RakeSieve.init](#/node/RakeSieve.init), wrapping it as a [PrimeSieve](#/node/PrimeSieve), which is a prime generator by [the sieve driver](#/node/instPrimeGenPrimeSieve), and applying the general fact [exists_prime_gt_of_primeGen](#/node/exists_prime_gt_of_primeGen): a generator whose primes strictly increase must eventually pass any n.
+The statement never mentions the sieve. Only the proof does: start the RakeSieve at [RakeSieve.init](#/node/RakeSieve.init), wrap it as a [PrimeSieve](#/node/PrimeSieve), which is a prime generator by [the sieve driver](#/node/instPrimeGenPrimeSieve), and apply [exists_prime_gt_of_primeGen](#/node/exists_prime_gt_of_primeGen): a generator whose primes strictly increase passes any n.
 
 ### What this does and does not show
 
-- **As a statement, it is Euclid's theorem.** Mathlib already has it (`Nat.exists_infinite_primes`). Two of the five theorems in Results.lean have exactly this statement; only the proofs differ.
-- **As a proof, it is not independent of Euclid.** One sieve step, [RakeSieve.next](#/node/RakeSieve.next), must show that removing the multiples of the new prime c leaves *something* in the rake, so that the rake is never empty. It does this by asking Mathlib for a prime above c (`Nat.exists_infinite_primes`, RakeSieve.lean line 71). So the proof uses the theorem it states. This is not a flaw in the Lean (nothing is assumed that isn't proved), but the theorem should not be read as "a new proof that there are infinitely many primes".
-- **What the proof does exercise** is the sieve's correctness: to build the generator, Lean has to accept that every RakeSieve step yields the next prime with none skipped. That guarantee is the real content, and it lives in an instance rather than a named theorem; see [instPrimeGenPrimeSieve](#/node/instPrimeGenPrimeSieve) and [the review](#/review).
+- **As a statement, it is Euclid's theorem.** Mathlib already has it (`Nat.exists_infinite_primes`).
+- **As a proof, it does not use Mathlib's Euclid.** Every sieve step must know that crossing out the new prime's multiples leaves something in the rake. The rake now proves that itself, with the survivor c + d ([the never-empty headline](#/node/results_rakeSieve_never_empty)). NoEuclidCheck.lean walks the full dependency closure of this theorem, through Mathlib and core, and finds nothing from `Mathlib.Data.Nat.Prime.Infinite` or a list of known infinitude results. A control check confirms that the same walk does find Euclid in the circular [reference generator](#/node/simpleGen_exists_prime_gt).
+- **The idea is still Euclid's.** The survivor c + d works because d, the rake's period, is the product of the primes sifted so far. This is Euclid's p# + 1 carried by the data structure. It is not a new kind of proof, but it is no longer circular.
+- **The sieve's correctness has its own headlines:** [each step emits the next prime](#/node/results_rakeSieve_step) and [every prime is emitted](#/node/results_rakeSieve_emits_every_prime).
 
 ### The outline
 
-The proof is one line (Results.lean line 21). The outline below follows it, then shows what one sieve step does.
+The proof is one line (Results.lean line 48). The outline below follows it, then shows what one sieve step does.

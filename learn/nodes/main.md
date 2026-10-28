@@ -33,4 +33,4 @@ quiz:
 
 `main` (Main.lean lines 4–10) starts a `PrimeSieve RakeSieve` at [RakeSieve.init](#/node/RakeSieve.init), steps it five times and prints the primes, which should be [2, 3, 5, 7, 11]. Main.lean line 12 runs it with `#eval`. Being the `lean_exe` root, it is built by `lake build`.
 
-The output is not checked by any assertion, and this site did not run it (no Lean build). For a checked computation see the `#guard` on `primes SimpleGen.start 10` (PrimeGen.lean line 97), which is about the simple generator, not the RakeSieve.
+The output is not checked by any assertion, and this site did not run it (no Lean build). For a checked computation see the `#guard` on `primes SimpleGen.start 10` (SimpleGen.lean line 57), which is about the simple generator, not the RakeSieve.

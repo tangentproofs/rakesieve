@@ -20,18 +20,18 @@ quiz:
   - it returns the placeholder rake `zer`
   - it fails to compile
   answer: 0
-  explain: Rake.lean line 361.
+  explain: Rake.lean line 368.
 - q: Why do the theorems assume `HasNonMultiple`?
   type: choice
   choices:
   - to rule out the `zer` case
   - for speed
   answer: 0
-  explain: '`rem_def` (Rake.lean lines 370–409) shows the zer case cannot happen under that assumption.'
+  explain: '`rem_def` (Rake.lean lines 377–416) shows the zer case cannot happen under that assumption.'
 ---
 ## Plain English
 
-`r.rem hj` (Rake.lean lines 353–362, with r, j and hj from the section `variable` on line 350) partitions r by j ([Rake.partition](#/node/Rake.partition)) and keeps only the constants k with j ∤ k. If nothing is left it returns the dummy rake `zer`.
+`r.rem hj` (Rake.lean lines 360–369, with r, j and hj from the section `variable` on line 350) partitions r by j ([Rake.partition](#/node/Rake.partition)) and keeps only the constants k with j ∤ k. If nothing is left it returns the dummy rake `zer`.
 
 Three theorems pin down what it does, assuming the rake has at least one term not divisible by j ([HasNonMultiple](#/node/Rake.HasNonMultiple)):
 - [rem_drop](#/node/Rake.rem_drop): no multiple of j is a term afterwards;

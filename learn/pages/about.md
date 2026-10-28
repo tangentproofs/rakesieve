@@ -6,6 +6,6 @@ This site reads the Lean back into plain English. Each node is one Lean declarat
 
 The [Lean source](src/index.html) is on the site, highlighted, and every "File.lean lines a–b" reference opens those exact lines.
 
-Start with [the statements](#/start), or read the [review](#/review), which explains what the headline theorem does and does not say.
+Start with [the statements](#/start), or read the [review](#/review). It explains what the headline theorems say, and why the infinitude corollary no longer leans on Mathlib's infinitude of primes.
 
 **Credit.** Lean library: Michal Wallace (MIT). Explanations: drafts by Grok Bot, not yet reviewed, and possibly wrong. The Lean is the ground truth.

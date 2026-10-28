@@ -45,6 +45,13 @@ theorem term_simp (r:Rake) (n:Nat)
   · dsimp[term, i]
   · use i
 
+/-- Shifting the input by the number of sequences moves every sequence one step:
+`term (m + len) = term m + d`. This is how a rake supplies its own witnesses. -/
+theorem term_add_len (r : Rake) (m : Nat) : r.term (m + r.ks.length) = r.term m + r.d := by
+  have hmod : (m + r.ks.length) % r.ks.length = m % r.ks.length := Nat.add_mod_right m _
+  have hdiv : (m + r.ks.length) / r.ks.length = m / r.ks.length + 1 := Nat.add_div_right m r.hsize
+  simp only [term, aseq, ASeq.term, hmod, hdiv, Nat.mul_add, Nat.mul_one, Nat.add_assoc]
+
 theorem term_iff (r:Rake)
   : ∀m, (∃n, r.term n = m) ↔ (∃ k∈r.ks,  ∃x:Nat, k+x*r.d = m) := by
   intro m; apply Iff.intro

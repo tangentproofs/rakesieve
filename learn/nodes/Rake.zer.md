@@ -19,7 +19,7 @@ quiz:
   - when every constant is a multiple of j
   - never, by definition
   answer: 0
-  explain: See Rake.lean line 361.
+  explain: See Rake.lean line 368.
 - q: Does the sieve ever reach it?
   type: choice
   choices:
@@ -30,4 +30,4 @@ quiz:
 ---
 ## Plain English
 
-`zer := { d := 0, ks := [0] }` (Rake.lean line 26): the rake whose only term is 0. [Rake.rem](#/node/Rake.rem) returns it if every sequence would be removed; `rem_def` (Rake.lean lines 370–409) shows that cannot happen when the rake has a non-multiple.
+`zer := { d := 0, ks := [0] }` (Rake.lean line 26): the rake whose only term is 0. [Rake.rem](#/node/Rake.rem) returns it if every sequence would be removed; `rem_def` (Rake.lean lines 377–416) shows that cannot happen when the rake has a non-multiple.

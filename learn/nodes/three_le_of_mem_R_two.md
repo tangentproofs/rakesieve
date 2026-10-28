@@ -20,7 +20,7 @@ quiz:
   - '`hRmin`'
   - '`hprop`'
   answer: 0
-  explain: See RakeSieve.lean line 53.
+  explain: See RakeSieve.lean line 56.
 - q: Is it proved by contradiction?
   type: choice
   choices:

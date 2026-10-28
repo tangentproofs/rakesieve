@@ -10,6 +10,9 @@ structure RakeSieve where
   hprop : ∀ n:Nat, prop n ↔ n ∈ R p
   hCinR : c ∈ R p
   hRmin : ∀ r ∈ R p, c ≤ r
+  -- every prime factor of the rake's period is one of the primes sifted so far.
+  -- (the period is their product, p#.) This is what lets the rake prove it never runs empty.
+  hdfac : ∀ q, Nat.Prime q → q ∣ rm.rake.d → q ≤ p.val
   -- Q : Array RakeMap     -- queue of found primes
 
 namespace RakeSieve
@@ -50,7 +53,33 @@ def init : RakeSieve :=
       simpa [p] using three_mem_R_two
     hRmin := by
       -- generic base-case fact: 3 is least in R 2
-      simpa [p] using three_le_of_mem_R_two }
+      simpa [p] using three_le_of_mem_R_two
+    hdfac := by
+      -- the period of the start rake is 1 * 2 = 2, whose only prime factor is 2.
+      intro q _ hqd
+      have hd : rm.rake.d = 2 := (RakeMap.rem_d _ _ _ _).trans rfl
+      rw [hd] at hqd
+      exact Nat.le_of_dvd (by decide) hqd }
+
+/--
+The rake never runs empty: removing the multiples of the candidate `c` always leaves a term.
+
+The witness comes from the rake itself, not from Mathlib's infinitude of primes. `c` is a term
+of the rake, say at index `m₀`; one period later, at `m₀ + len`, the rake produces `c + d`.
+Every prime factor of `d` is ≤ p < c (`hdfac`), so the prime `c` does not divide `d`, hence
+does not divide `c + d`. (This is Euclid's argument, with `c + p#` playing the part of
+`p# + 1`, but it is carried by the data structure: no infinitude theorem is imported.) -/
+theorem survivor (s : RakeSieve) (hC : Nat.Prime s.c) :
+    ∃ n m, ¬ s.c ∣ n ∧ s.rm.term m = n := by
+  obtain ⟨m₀, hm₀⟩ := (s.rm.hbij s.c).mp ((s.hprop s.c).mpr s.hCinR)
+  refine ⟨s.c + s.rm.rake.d, m₀ + s.rm.rake.ks.length, ?_, ?_⟩
+  · intro hdvd
+    have hcd : s.c ∣ s.rm.rake.d := (Nat.dvd_add_iff_right (dvd_refl s.c)).mpr hdvd
+    have hle : s.c ≤ s.p.val := s.hdfac s.c hC hcd
+    have hgt : s.c > s.p.val := r_gt_p s.p.val s.c s.hCinR
+    omega
+  · show s.rm.rake.term (m₀ + s.rm.rake.ks.length) = _
+    rw [Rake.term_add_len, hm₀]
 
 def next (rs₀ : RakeSieve) (hC₀: Nat.Prime rs₀.c) (hNS: nosk' rs₀.p rs₀.c): RakeSieve :=
   let h₀ := rs₀.prop
@@ -65,26 +94,11 @@ def next (rs₀ : RakeSieve) (hC₀: Nat.Prime rs₀.c) (hNS: nosk' rs₀.p rs�
   let c' : MinPrimeGt rs₀.p := { p:=rs₀.c, hpgt:=hpgt, hmin:=hmin}
 
   -- to call `rem`, we have to prove that it won't remove everything.
-  -- so we must produce a proof that another prime besides c exists.
-  have : ∃n m, ¬c'.p ∣ n ∧ rs₀.rm.term m = n := by
-    have hC₀' : Nat.Prime rs₀.c := hC₀
-    obtain ⟨q, hqgt, hq⟩ : ∃ q, rs₀.c.succ ≤ q ∧ Nat.Prime q := Nat.exists_infinite_primes rs₀.c.succ
-    have hqR : q ∈ R rs₀.p := by
-      unfold R
-      constructor
-      · exact Nat.Prime.two_le hq
-      · intro q' hq'le hq' hdiv
-        have : q' = q := Nat.prime_dvd_prime_iff_eq hq' hq |>.mp hdiv
-        omega
-    have hqprop : rs₀.prop q := (hh₀ q).mpr hqR
-    obtain ⟨m, hm⟩ := (rs₀.rm.hbij q).mp hqprop
-    refine ⟨q, m, ?_, hm⟩
-    intro hdiv
-    have : rs₀.c = q := Nat.prime_dvd_prime_iff_eq hC₀' hq |>.mp hdiv
-    omega
+  -- the rake supplies its own witness, c + d (see `survivor`).
+  have hsurv : ∃n m, ¬rs₀.c ∣ n ∧ rs₀.rm.term m = n := rs₀.survivor hC₀
 
   -- now we can use this fact to remove multiples of c
-  let rs := rs₀.rm.rem c'.p (Nat.Prime.pos hC₀) this
+  let rs := rs₀.rm.rem c'.p (Nat.Prime.pos hC₀) hsurv
   let c₁ := rs.rake.term 0
   have hc₁: ∃ i, rs.rake.term i = c₁ := by
     exact exists_apply_eq_apply (fun a => rs.rake.term a) 0
@@ -108,7 +122,18 @@ def next (rs₀ : RakeSieve) (hC₀: Nat.Prime rs₀.c) (hNS: nosk' rs₀.p rs�
         exact (rs.hbij r).mp ((hprop r).mpr hr)
       obtain ⟨k, hk⟩ := this
       rw[←hk]
-      exact rs.min_term_zero k }
+      exact rs.min_term_zero k
+    hdfac := by
+      -- the new period is d * c: its prime factors are those of d (all ≤ p < c) and c itself.
+      intro q hq hqd
+      have hd : rs.rake.d = rs₀.rm.rake.d * rs₀.c := RakeMap.rem_d _ _ _ _
+      rw [hd] at hqd
+      show q ≤ rs₀.c
+      rcases (Nat.Prime.dvd_mul hq).mp hqd with h | h
+      · have h₁ := rs₀.hdfac q hq h
+        have h₂ : rs₀.c > rs₀.p.val := r_gt_p rs₀.p.val rs₀.c hCR₀
+        omega
+      · exact Nat.le_of_dvd hC₀.pos h }
 
 instance : PrimeSieveState RakeSieve where
   P x := x.p

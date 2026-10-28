@@ -13,7 +13,7 @@ quiz:
   - '3'
   - '1'
   answer: 0
-  explain: PrimeGen.lean line 62.
+  explain: SimpleGen.lean line 39.
 - q: What is its `c` field's number?
   type: choice
   choices:
@@ -27,8 +27,8 @@ quiz:
   - by design; see the class docstring
   - an oversight
   answer: 0
-  explain: PrimeGen.lean lines 16–18.
+  explain: PrimeGen.lean lines 15–17.
 ---
 ## Plain English
 
-`SimpleGen.start := { p := ⟨2, Nat.prime_two⟩, c := min_prime_gt 2 }` (PrimeGen.lean lines 61–62): prime 2, next prime 3. Used by [results_exists_prime_gt_of_simpleGen](#/node/results_exists_prime_gt_of_simpleGen). See [SimpleGen](#/node/SimpleGen) and [min_prime_gt](#/node/min_prime_gt).
+`SimpleGen.start := { p := ⟨2, Nat.prime_two⟩, c := min_prime_gt 2 }` (SimpleGen.lean lines 38–39): prime 2, next prime 3. Used by [simpleGen_exists_prime_gt](#/node/simpleGen_exists_prime_gt), the circular reference theorem. See [SimpleGen](#/node/SimpleGen) and [min_prime_gt](#/node/min_prime_gt).

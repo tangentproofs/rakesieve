@@ -1,5 +1,5 @@
 # Nodes for the generic sieve lemmas (PrimeSieve.lean), the RakeSieve itself (RakeSieve.lean)
-# and the simple reference generator (PrimeGen.lean).
+# and the simple reference generator (SimpleGen.lean, circular; kept as a reference spec).
 from _terms import PLAIN_R
 NODES = []
 def node(id, title, summary, body, quiz, caveats=(), widgets=None):
@@ -32,15 +32,15 @@ Its companion [r_next_prop](#/node/r_next_prop) restates it for predicates, whic
  [q("Why must p₁ be the *least* prime above p₀?", ["otherwise a prime between them would not be sieved out", "for speed", "it need not be"], 0,
     "If a prime q with p₀ < q < p₁ existed, R p₀ minus multiples of p₁ would still contain q, but q ∉ R p₁."),
   q("Which numbers are in R 3 but not R 5?", ["multiples of 5 that have no factor 2 or 3, like 5, 25, 35", "all multiples of 5", "primes"], 0, "R 5 = R 3 minus multiples of 5 (5 is the least prime above 3)."),
-  q("Where is this used?", ["in the RakeSieve step, via `r_next_prop`", "nowhere", "in SimpleGen"], 0, "RakeSieve.lean line 96.")])
+  q("Where is this used?", ["in the RakeSieve step, via `r_next_prop`", "nowhere", "in SimpleGen"], 0, "RakeSieve.lean line 110.")])
 
 node("r_next_prop", "r_next for predicates: how a sieve tracks R step by step",
  "The RakeSieve never computes the residue R (what survives sieving) directly. It carries a predicate, adds '∧ not a multiple of c' at each step, and this lemma certifies that the predicate still means exactly R.",
  PLAIN_R + r"""**Theorem (`r_next_prop`, PrimeSieve.lean lines 110–114).** Suppose h₀ n ↔ n ∈ [R](#/node/R) p₀, and h₁ n ↔ h₀ n ∧ ¬ (m.p ∣ n), where m.p is the least prime above p₀. Then h₁ n ↔ n ∈ R m.p.
 
-It is [r_next](#/node/r_next) with names for the two predicates. The comment above it (PrimeSieve.lean lines 98–109) explains the design: a sieve models R p by a bijection with its data structure, and whatever it does to sift out the next prime corresponds to adding `∧ ¬(p₁∣n)` to the predicate. The RakeSieve uses it once per step (RakeSieve.lean line 96).
+It is [r_next](#/node/r_next) with names for the two predicates. The comment above it (PrimeSieve.lean lines 98–109) explains the design: a sieve models R p by a bijection with its data structure, and whatever it does to sift out the next prime corresponds to adding `∧ ¬(p₁∣n)` to the predicate. The RakeSieve uses it once per step (RakeSieve.lean line 110).
 """,
- [q("What is h₁ in the RakeSieve step?", ["the predicate of the rake after removing multiples of the new prime", "the list of primes", "the candidate"], 0, "`h₁ := rs.pred`, with `rs = rs₀.rm.rem c'.p …` (RakeSieve.lean lines 87–94)."),
+ [q("What is h₁ in the RakeSieve step?", ["the predicate of the rake after removing multiples of the new prime", "the list of primes", "the candidate"], 0, "`h₁ := rs.pred`, with `rs = rs₀.rm.rem c'.p …` (RakeSieve.lean lines 101–108)."),
   q("What does the lemma conclude?", ["h₁ describes R of the new prime", "h₁ is decidable", "h₀ = h₁"], 0, "`h₁ n ↔ n ∈ R m.p`."),
   q("Which lemma does it rest on?", ["`r_next`", "`c_prime`", "`r_gt_p`"], 0, "The proof is `simp[hh₁, hh₀]; exact r_next p₀ m`.")])
 
@@ -102,7 +102,7 @@ node("nextState", "nextState: one sieve step, with the proofs filled in",
 """,
  [q("Which two proofs does `nextState` pass to the sieve's `next`?", ["`c_prime` and `no_skipped_prime`", "`r_gt_p` and `r_next`"], 0, "PrimeSieve.lean lines 206–208."),
   q("Does a caller of `nextState` need to prove anything?", ["Yes", "No"], 1, "The proofs come from the driver."),
-  q("For the RakeSieve, which function does `nextState` end up calling?", ["`RakeSieve.next`", "`SimpleGen.next`"], 0, "The RakeSieve's `PrimeSieveState` instance sets `next := .next` (RakeSieve.lean line 116).")])
+  q("For the RakeSieve, which function does `nextState` end up calling?", ["`RakeSieve.next`", "`SimpleGen.next`"], 0, "The RakeSieve's `PrimeSieveState` instance sets `next := .next` (RakeSieve.lean line 141).")])
 
 node("PrimeSieve.next", "PrimeSieve.next: step the wrapped sieve",
  "It is nothing more than `nextState` applied inside the wrapper; all the mathematics is in the proofs it carries along.",
@@ -116,64 +116,87 @@ node("PrimeSieve.next", "PrimeSieve.next: step the wrapped sieve",
   q("Does it need proofs from the caller?", ["No", "Yes"], 0, "`nextState` supplies them.")])
 
 node("RakeSieve", "RakeSieve: a sieve state that carries its own correctness proof",
- "Each state is data plus three proofs: its rake lists exactly the residue R p (the survivors of sieving up to p), its candidate is in R p, and its candidate is below everything in R p. A wrong state cannot even be constructed.",
- PLAIN_R + r"""A `RakeSieve` (RakeSieve.lean lines 5–12) has:
+ "Each state is data plus four proofs: its rake lists exactly the residue R p (the survivors of sieving up to p), its candidate is the least element of R p, and the rake's period has no prime factor above p. That last proof keeps the sieve from ever running empty.",
+ PLAIN_R + r"""A `RakeSieve` (RakeSieve.lean lines 5–15) has:
 
 - `prop : Nat → Prop` and `rm : RakeMap prop`: a [RakeMap](#/node/RakeMap), i.e. a rake (a sorted list of arithmetic sequences with a common step) whose terms are exactly the numbers satisfying `prop`;
 - `p : NPrime`, the current prime, and `c : Nat`, the candidate;
 - `hprop`: **prop n ↔ n ∈ [R](#/node/R) p**, so the rake's terms are exactly the survivors of sieving up to p;
-- `hCinR`: c ∈ R p; `hRmin`: c ≤ r for every r ∈ R p.
+- `hCinR`: c ∈ R p; `hRmin`: c ≤ r for every r ∈ R p;
+- `hdfac` (RakeSieve.lean line 15): **every prime factor of the rake's period d is ≤ p**. The period is the common step of the rake's sequences. It starts at 2 and is multiplied by each new prime, so it is in fact p# = 2·3·5·…·p, though Lean only states the factor bound.
 
-So c is the least survivor, and by the generic lemmas it is the next prime. In the actual sieve, c is the rake's first term (RakeSieve.lean line 88).
+So c is the least survivor, and by the generic lemmas it is the next prime. `hdfac` is what lets the sieve prove it never runs empty: c is a prime above p, so it does not divide d, and so the term c + d survives when c's multiples are removed ([RakeSieve.survivor](#/node/RakeSieve.survivor)). In the actual sieve, c is the rake's first term (RakeSieve.lean line 102).
 
 The commented-out field `Q : Array RakeMap` is the planned queue of primes below p² (issue #2, open pull request #4), not in this version.
 """,
  [q("What does `hprop` say?", ["the rake's predicate holds exactly on R p", "p is prime", "the rake is sorted"], 0, "`hprop : ∀ n:Nat, prop n ↔ n ∈ R p` (RakeSieve.lean line 10)."),
   q("Can you build a `RakeSieve` whose candidate is not the least element of R p?", ["Yes", "No, `hRmin` must be proved"], 1, "Every value of the structure includes the proof `hRmin`."),
-  q("Where does the candidate come from in `RakeSieve.next`?", ["the rake's first term", "`Nat.find`", "a primality test"], 0, "`let c₁ := rs.rake.term 0` (RakeSieve.lean line 88).")],
+  q("Where does the candidate come from in `RakeSieve.next`?", ["the rake's first term", "`Nat.find`", "a primality test"], 0, "`let c₁ := rs.rake.term 0` (RakeSieve.lean line 102)."),
+  q("What does `hdfac` say?", ["every prime factor of the rake's period is ≤ p", "the rake has at most p sequences", "c divides the period"], 0, "`hdfac : ∀ q, Nat.Prime q → q ∣ rm.rake.d → q ≤ p.val` (RakeSieve.lean line 15)."),
+  q("Is `hdfac` an assumption that smuggles in infinitude of primes?", ["No: like `hCinR`, it is a field proved at `init` and re-proved by every step", "Yes"], 0, "RakeSieve.lean lines 57–62 prove it for `init` and lines 126–136 for `next`.")],
  caveats=["The queue of primes below p² described in the README and issue #2 is on the unmerged branch `feature/rakesieve-queue-below-psq` (PR #4), not in main."])
 
 node("RakeSieve.init", "RakeSieve.init: prime 2, odd numbers ≥ 3, candidate 3",
  "The starting rake is built by the same operation as every later step: begin with 2 + n (all numbers ≥ 2) and remove the multiples of 2, leaving the single sequence 3 + 2n.",
- PLAIN_R + r"""`RakeSieve.init` (RakeSieve.lean lines 19–53) is the start state:
+ PLAIN_R + r"""`RakeSieve.init` (RakeSieve.lean lines 22–62) is the start state:
 
 - the rake map is [rm_ge2](#/node/RakeMap.rm_ge2) (the rake {2 + n}, i.e. every number ≥ 2) with the multiples of 2 removed by [RakeMap.rem](#/node/RakeMap.rem); its predicate is n ≥ 2 ∧ ¬ 2 ∣ n;
 - p = 2, c = 3;
-- `hprop`: n ≥ 2 ∧ ¬ 2 ∣ n ↔ n ∈ [R](#/node/R) 2 (proved inline, RakeSieve.lean lines 24–47);
-- `hCinR` and `hRmin`: the two headline facts [3 ∈ R 2](#/node/results_three_mem_R_two) and [nothing in R 2 is below 3](#/node/results_three_le_of_mem_R_two).
+- `hprop`: n ≥ 2 ∧ ¬ 2 ∣ n ↔ n ∈ [R](#/node/R) 2 (proved inline, RakeSieve.lean lines 27–50);
+- `hCinR` and `hRmin`: the two headline facts [3 ∈ R 2](#/node/results_three_mem_R_two) and [nothing in R 2 is below 3](#/node/results_three_le_of_mem_R_two);
+- `hdfac`: the start rake's period is 1 · 2 = 2 ([RakeMap.rem_d](#/node/RakeMap.rem_d)), and its only prime factor, 2, is ≤ p (RakeSieve.lean lines 57–62).
 
-To call `rem`, the code must show some term of {2 + n} is odd; it uses 3 = 2 + 1 (RakeSieve.lean line 21).
+To call `rem`, the code must show some term of {2 + n} is odd; it uses 3 = 2 + 1 (RakeSieve.lean line 24).
 """,
  [q("What is the rake after `init`?", ["2 + n", "3 + 2n (the odd numbers ≥ 3)", "1 + 2n"], 1, "Removing multiples of 2 from 2 + n leaves 3 + 2n; the README walks through this."),
-  q("Which two Results.lean facts does `init` use?", ["3 ∈ R 2 and 3 ≤ everything in R 2", "Euclid's theorem twice"], 0, "RakeSieve.lean lines 48–53."),
-  q("What witness shows `rem 2` leaves something?", ["3, the term at m = 1", "2", "Mathlib's infinitude of primes"], 0, "`use 3; use 1` (RakeSieve.lean line 21). Later steps use Mathlib's Euclid instead.")])
+  q("Which two Results.lean facts does `init` use?", ["3 ∈ R 2 and 3 ≤ everything in R 2", "Euclid's theorem twice"], 0, "RakeSieve.lean lines 51–56."),
+  q("What witness shows `rem 2` leaves something?", ["3, the term at m = 1", "2", "Mathlib's infinitude of primes"], 0, "`use 3; use 1` (RakeSieve.lean line 24). Later steps use the survivor c + d instead.")])
 
 node("RakeSieve.next", "RakeSieve.next: remove the multiples of c, take the first term",
- "The step needs Mathlib's 'there is always a bigger prime' just to know the rake will not come out empty. The sieve's own correctness rests on Euclid, which is why its infinitude theorem is not an independent proof.",
- PLAIN_R + r"""`RakeSieve.next rs₀ hC₀ hNS` (RakeSieve.lean lines 55–111) takes a state, a proof that its candidate c is prime, and a proof that no prime lies between p and c ([nosk'](#/node/nosk')). It returns the state with prime c:
+ "To cross out c's multiples, the step must first prove that something will survive, and the rake supplies the survivor itself: the term c + d, one period past c. No theorem about infinitely many primes is used.",
+ PLAIN_R + r"""`RakeSieve.next rs₀ hC₀ hNS` (RakeSieve.lean lines 84–136) takes a state, a proof that its candidate c is prime, and a proof that no prime lies between p and c ([nosk'](#/node/nosk')). It returns the state with prime c:
 
 1. Package c as the least prime above p (a [MinPrimeGt](#/node/MinPrimeGt)), using [r_gt_p](#/node/r_gt_p) for c > p.
-2. Prove that removing c's multiples leaves at least one term: Mathlib's `Nat.exists_infinite_primes` gives a prime q > c (RakeSieve.lean line 71); q is in R p, so it is a term of the rake, and c ∤ q.
-3. Remove the multiples of c with [RakeMap.rem](#/node/RakeMap.rem) (RakeSieve.lean line 87).
-4. The new candidate c₁ is the new rake's first term (RakeSieve.lean line 88).
-5. The new predicate means R c, by [r_next_prop](#/node/r_next_prop) (RakeSieve.lean line 96); c₁ is in it, and is ≤ every term because the rake is sorted ([RakeMap.min_term_zero](#/node/RakeMap.min_term_zero), RakeSieve.lean line 111).
+2. Prove that removing c's multiples leaves at least one term: [RakeSieve.survivor](#/node/RakeSieve.survivor) gives the term c + d, which c does not divide (RakeSieve.lean line 98).
+3. Remove the multiples of c with [RakeMap.rem](#/node/RakeMap.rem) (RakeSieve.lean line 101).
+4. The new candidate c₁ is the new rake's first term (RakeSieve.lean line 102).
+5. The new predicate means R c, by [r_next_prop](#/node/r_next_prop) (RakeSieve.lean line 110); c₁ is in it, and is ≤ every term because the rake is sorted ([RakeMap.min_term_zero](#/node/RakeMap.min_term_zero), RakeSieve.lean line 125).
 
-Step 2 could be replaced by an explicit witness, but that witness would essentially be Euclid's own argument (a number with no prime factor up to c), so the dependence is natural rather than accidental.
+6. Re-prove the invariant `hdfac` for the new state. The new period is d · c ([RakeMap.rem_d](#/node/RakeMap.rem_d)), so its prime factors are those of d, all ≤ p < c, together with c itself (RakeSieve.lean lines 126–136).
+
+Step 2 used to ask Mathlib for a prime above c (`Nat.exists_infinite_primes`). That made the sieve's infinitude corollary circular. The survivor c + d is the same idea as Euclid's p# + 1, but it is now built from the rake's own data.
 """,
  [q("Why does the step need a non-multiple of c among the rake's terms?", ["`rem` requires a proof it won't remove everything", "for speed", "to sort the rake"], 0,
     "RakeMap.rem's argument `hnmr: ∃n m, ¬j∣n ∧ rm.term m = n` (RakeMap.lean line 48)."),
-  q("Where does that non-multiple come from?", ["a prime q > c from `Nat.exists_infinite_primes`", "the number c + 1", "`decide`"], 0, "RakeSieve.lean line 71."),
-  q("Why is the first term the least survivor?", ["the rake is sorted, so term 0 is its minimum", "by luck", "it is proved by `decide`"], 0, "`rs.min_term_zero k` (RakeSieve.lean line 111)."),
-  q("What is the new prime of the returned state?", ["the old candidate c", "the old prime + 2"], 0, "`p := ⟨c'.p, hC₀⟩` where `c'.p = rs₀.c` (RakeSieve.lean line 97).")],
- caveats=["Uses Mathlib's `Nat.exists_infinite_primes` (RakeSieve.lean line 71); see the main theorem's caveats."])
+  q("Where does that non-multiple come from?", ["the rake's own term c + d, via `RakeSieve.survivor`", "a prime q > c from `Nat.exists_infinite_primes`", "`decide`"], 0, "`have hsurv … := rs₀.survivor hC₀` (RakeSieve.lean line 98)."),
+  q("Why is the first term the least survivor?", ["the rake is sorted, so term 0 is its minimum", "by luck", "it is proved by `decide`"], 0, "`rs.min_term_zero k` (RakeSieve.lean line 125)."),
+  q("What is the new prime of the returned state?", ["the old candidate c", "the old prime + 2"], 0, "`p := ⟨c'.p, hC₀⟩` where `c'.p = rs₀.c` (RakeSieve.lean line 111).")],
+ caveats=["No infinitude theorem is used. The survivor is Euclid's idea (c + p# for p# + 1), carried by the invariant `hdfac`."])
+
+node("RakeSieve.survivor", "RakeSieve.survivor: the rake proves it never runs empty",
+ "The sieve finds its own survivor without asking anyone for a bigger prime. The candidate c sits somewhere in the rake, one full turn later the rake produces c + d, and c cannot divide c + d.",
+ PLAIN_R + r"""**Theorem (`RakeSieve.survivor`, RakeSieve.lean lines 72–82).** For every [RakeSieve](#/node/RakeSieve) state s whose candidate c is prime, some term of the rake is not a multiple of c. Exported as [results_rakeSieve_never_empty](#/node/results_rakeSieve_never_empty), which has the proof outline. [RakeSieve.next](#/node/RakeSieve.next) uses it to call [RakeMap.rem](#/node/RakeMap.rem).
+
+The witness is c + d, where d is the rake's period (the common step of its sequences):
+
+- c is in R p, so it is a term of the rake, say term m₀;
+- [Rake.term_add_len](#/node/Rake.term_add_len): term (m₀ + len) = c + d;
+- if c divided c + d, it would divide d, so c ≤ p by the invariant `hdfac`. But c > p ([r_gt_p](#/node/r_gt_p)).
+
+The docstring (RakeSieve.lean lines 64–71) says plainly that this is Euclid's argument, with c + p# in the part of p# + 1. The difference is that it is carried by the data structure, and no infinitude theorem is imported.
+""",
+ [q("Why is c + d a term of the rake?", ["one period past term m₀ = c, by `Rake.term_add_len`", "because c + d is prime", "by `decide`"], 0, "`rw [Rake.term_add_len, hm₀]` (RakeSieve.lean line 82)."),
+  q("Which invariant rules out c ∣ d?", ["`hdfac`: every prime factor of d is ≤ p", "`hRmin`", "`hprop`"], 0, "`s.hdfac s.c hC hcd` (RakeSieve.lean line 78)."),
+  q("Does it need c to be prime?", ["Yes: `hdfac` speaks about prime factors, so it is applied to c as a prime", "No"], 0, "The hypothesis `hC : Nat.Prime s.c`.")],
+ caveats=["Euclid's argument in the sieve's own terms. It removes the circularity, not Euclid's idea."])
 
 node("RakeSieve.instPrimeSieveStateRakeSieve", "The RakeSieve is a sieve state",
  "The proof that the candidate grows reuses the generic r_gt_p: the new candidate is in the residue R (the survivors of sieving) of the new prime, so it exceeds the new prime, which is the old candidate.",
- PLAIN_R + r"""`instance : PrimeSieveState RakeSieve` (RakeSieve.lean lines 113–126): P is the state's prime p, C its candidate c, the step is [RakeSieve.next](#/node/RakeSieve.next). The `hNext` proof shows the new p is the old c (by unfolding `next`) and the new c exceeds the old c (the new c is in R (new p), so [r_gt_p](#/node/r_gt_p) applies).
+ PLAIN_R + r"""`instance : PrimeSieveState RakeSieve` (RakeSieve.lean lines 138–151): P is the state's prime p, C its candidate c, the step is [RakeSieve.next](#/node/RakeSieve.next). The `hNext` proof shows the new p is the old c (by unfolding `next`) and the new c exceeds the old c (the new c is in R (new p), so [r_gt_p](#/node/r_gt_p) applies).
 """,
- [q("What is `C` for a RakeSieve state?", ["its field `c`", "its rake's last term"], 0, "`C x := x.c` (RakeSieve.lean line 115)."),
-  q("Why is the new candidate bigger than the old one?", ["it lies in R (new p), so it exceeds new p = old c", "the rake grows"], 0, "RakeSieve.lean lines 123–126."),
-  q("Which step function does it use?", ["`RakeSieve.next`", "`PrimeSieve.next`"], 0, "`next := .next` (RakeSieve.lean line 116).")],
+ [q("What is `C` for a RakeSieve state?", ["its field `c`", "its rake's last term"], 0, "`C x := x.c` (RakeSieve.lean line 140)."),
+  q("Why is the new candidate bigger than the old one?", ["it lies in R (new p), so it exceeds new p = old c", "the rake grows"], 0, "RakeSieve.lean lines 148–151."),
+  q("Which step function does it use?", ["`RakeSieve.next`", "`PrimeSieve.next`"], 0, "`next := .next` (RakeSieve.lean line 141).")],
  caveats=["An anonymous instance; this site names it `RakeSieve.instPrimeSieveStateRakeSieve`, which may differ from the name Lean generates."])
 
 node("RakeSieve.instPrimeSieveDriverRakeSieve", "The RakeSieve satisfies the driver",
@@ -181,10 +204,10 @@ node("RakeSieve.instPrimeSieveDriverRakeSieve", "The RakeSieve satisfies the dri
  r"""
 ## Plain English
 
-`instance : PrimeSieveDriver RakeSieve` (RakeSieve.lean lines 130–132) sets `hCinR x := x.hCinR` and `hRmin x := x.hRmin`, after unfolding C and P. The work was done when each state was built: in [RakeSieve.init](#/node/RakeSieve.init) and in [RakeSieve.next](#/node/RakeSieve.next). See [PrimeSieveDriver](#/node/PrimeSieveDriver).
+`instance : PrimeSieveDriver RakeSieve` (RakeSieve.lean lines 155–157) sets `hCinR x := x.hCinR` and `hRmin x := x.hRmin`, after unfolding C and P. The work was done when each state was built: in [RakeSieve.init](#/node/RakeSieve.init) and in [RakeSieve.next](#/node/RakeSieve.next). See [PrimeSieveDriver](#/node/PrimeSieveDriver).
 """,
  [q("Where are the driver facts proved for the RakeSieve?", ["inside `init` and `next`, when each state is built", "in this instance", "nowhere"], 0, "The structure's fields are proofs."),
-  q("How long is the instance?", ["three lines", "a hundred lines"], 0, "RakeSieve.lean lines 130–132."),
+  q("How long is the instance?", ["three lines", "a hundred lines"], 0, "RakeSieve.lean lines 155–157."),
   q("Which two fields does it supply?", ["`hCinR` and `hRmin`", "`hP'` and `hP_lt`"], 0, "Those are the fields of `PrimeSieveDriver`.")],
  caveats=["An anonymous instance; the site's name for it is an approximation."])
 
@@ -193,7 +216,7 @@ node("exists_prime_gt_of_primeGen", "A generator whose primes strictly increase 
  r"""
 ## Plain English
 
-**Theorem (`exists_prime_gt_of_primeGen`, PrimeGen.lean lines 112–118).** For any [PrimeGen](#/node/PrimeGen) α, any state g₀ and any n, some prime p satisfies n < p.
+**Theorem (`exists_prime_gt_of_primeGen`, PrimeGen.lean lines 68–74).** For any [PrimeGen](#/node/PrimeGen) α, any state g₀ and any n, some prime p satisfies n < p.
 
 The witness is the generator's prime after n + 1 steps. By [PrimeGen.P_iterate_add_le](#/node/PrimeGen.P_iterate_add_le) it is at least P g₀ + n + 1 ≥ n + 3. It is prime because generator values are [NPrime](#/node/NPrime)s. This is what [results_exists_prime_gt_of_primeGen](#/node/results_exists_prime_gt_of_primeGen) exports.
 """,
@@ -201,17 +224,42 @@ The witness is the generator's prime after n + 1 steps. By [PrimeGen.P_iterate_a
   q("Is it ever tight, i.e. is the witness the *least* prime above n?", ["not necessarily; the proof only needs some prime above n", "always"], 0, "The witness can be far above n."),
   q("Which field of PrimeGen is used?", ["`hP_lt`", "`hP'`"], 0, "Via `P_iterate_add_le`.")])
 
+node("PrimeGen.exists_iterate_P_eq", "A prime generator skips nothing: every prime is reached",
+ "Two small properties add up to completeness: the primes go up, so some step passes q; nothing is skipped, so the step just before that lands exactly on q.",
+ r"""
+## Plain English
+
+**Theorem (`PrimeGen.exists_iterate_P_eq`, PrimeGen.lean lines 79–97).** For any [prime generator](#/node/PrimeGen) started at g₀ and any prime q at or above the start prime, some number of steps k gives P (next^k g₀) = q.
+
+The proof:
+
+1. The primes go up by at least one per step ([PrimeGen.P_iterate_add_le](#/node/PrimeGen.P_iterate_add_le)), so after q + 1 steps the prime is above q. Let k be the *first* step where the prime is above q (`Nat.find`).
+2. k is not 0, because the start prime is ≤ q. So k = j + 1, and at step j the prime is ≤ q (k was the first above).
+3. If the prime at step j were not q, then q would lie strictly between the primes at steps j and j + 1, which `hP'` forbids.
+
+It is generic and makes no use of Mathlib's infinitude of primes. [results_rakeSieve_emits_every_prime](#/node/results_rakeSieve_emits_every_prime) applies it to the RakeSieve, whose start prime is 2.
+""",
+ [q("Which field of PrimeGen gives 'nothing skipped'?", ["`hP'`", "`hP_lt`"], 0, "Used on the last line, PrimeGen.lean line 97."),
+  q("Why can the first step above q not be step 0?", ["the start prime is ≤ q by hypothesis", "step 0 does not exist"], 0, "`hle : (P g₀ : Nat) ≤ q`."),
+  q("What does `Nat.find` pick here?", ["the first step whose prime is above q", "the largest prime below q"], 0, "`set k := Nat.find hex` (PrimeGen.lean line 84).")],
+ widgets=[{"type": "walkthrough", "title": "The proof (PrimeGen.lean, lines 79-97)", "config": {"steps": [
+   {"text": "Some step's prime is above q: after q + 1 steps the prime has grown by at least q + 1", "lean": "⟨q + 1, by have := PrimeGen.P_iterate_add_le g₀ (q + 1); omega⟩", "link": "PrimeGen.P_iterate_add_le"},
+   {"text": "Take the first such step k", "lean": "set k := Nat.find hex with hkdef"},
+   {"text": "k is a successor j + 1, since the start prime is ≤ q", "lean": "obtain ⟨j, hj⟩ : ∃ j, k = j + 1 := Nat.exists_eq_succ_of_ne_zero hk0"},
+   {"text": "At step j the prime is ≤ q, because k was the first step above q", "lean": "have := Nat.find_min hex (show j < k by omega)"},
+   {"text": "If it were not q, q would be a prime strictly between steps j and j + 1, which hP' rules out", "lean": "exact hP' (next^[j] g₀) ⟨q, hq, by omega, hk⟩", "link": "PrimeGen"}]}}])
+
 node("PrimeGen.P_iterate_add_le", "After k steps the prime has grown by at least k",
  "Strict increase on natural numbers is already a growth guarantee: each step adds at least 1, so k steps add at least k.",
  r"""
 ## Plain English
 
-**Theorem (`PrimeGen.P_iterate_add_le`, PrimeGen.lean lines 100–108).** For any state g and k, P g + k ≤ P (next^[k] g), where next^[k] is next applied k times.
+**Theorem (`PrimeGen.P_iterate_add_le`, PrimeGen.lean lines 56–64).** For any state g and k, P g + k ≤ P (next^[k] g), where next^[k] is next applied k times.
 
 Induction on k, using `hP_lt` at each step. Used by [exists_prime_gt_of_primeGen](#/node/exists_prime_gt_of_primeGen).
 """,
  [q("What does `next^[k] g` mean?", ["next applied k times to g", "the k-th power of next's value"], 0, "Mathlib's function iteration notation."),
-  q("What proof technique?", ["induction on k", "contradiction", "`decide`"], 0, "PrimeGen.lean lines 102–108."),
+  q("What proof technique?", ["induction on k", "contradiction", "`decide`"], 0, "PrimeGen.lean lines 58–64."),
   q("Does it need `hP'`?", ["No", "Yes"], 0, "Only strict increase.")])
 
 node("MinPrimeGt", "MinPrimeGt n: the least prime above n, with proof",
@@ -219,7 +267,7 @@ node("MinPrimeGt", "MinPrimeGt n: the least prime above n, with proof",
  r"""
 ## Plain English
 
-A `MinPrimeGt n` (PrimeGen.lean lines 31–34) has a number p, a proof `hpgt` that p is prime and n < p ([PrimeGt](#/node/PrimeGt)), and a proof `hmin` that no q < p is a prime above n. So p is *the* next prime after n. [min_prime_gt](#/node/min_prime_gt) builds one with `Nat.find`; [RakeSieve.next](#/node/RakeSieve.next) builds one from the sieve's candidate.
+A `MinPrimeGt n` (PrimeGen.lean lines 30–33) has a number p, a proof `hpgt` that p is prime and n < p ([PrimeGt](#/node/PrimeGt)), and a proof `hmin` that no q < p is a prime above n. So p is *the* next prime after n. [min_prime_gt](#/node/min_prime_gt) builds one with `Nat.find`; [RakeSieve.next](#/node/RakeSieve.next) builds one from the sieve's candidate.
 """,
  [q("What does `hmin` say?", ["no q < p is a prime greater than n", "p is minimal among all primes"], 0, "`∀q:Nat, q < p → (¬ PrimeGt n q)`."),
   q("Is MinPrimeGt 7 unique?", ["its number p must be 11", "p could be 11 or 13"], 0, "11 is the least prime above 7, and `hmin` rules out anything else."),
@@ -230,40 +278,40 @@ node("PrimeGt", "PrimeGt n p: p is a prime above n",
  r"""
 ## Plain English
 
-`PrimeGt n p := Nat.Prime p ∧ n < p` (PrimeGen.lean line 29). Used in [MinPrimeGt](#/node/MinPrimeGt) and [ex_prime_gt](#/node/ex_prime_gt).
+`PrimeGt n p := Nat.Prime p ∧ n < p` (PrimeGen.lean line 28). Used in [MinPrimeGt](#/node/MinPrimeGt) and [ex_prime_gt](#/node/ex_prime_gt).
 """,
  [q("Is `PrimeGt 5 7` true?", ["Yes", "No"], 0, "7 is prime and 5 < 7."),
   q("Is `PrimeGt 5 5` true?", ["Yes", "No"], 1, "5 < 5 is false."),
   q("Is `PrimeGt 5 9` true?", ["Yes", "No"], 1, "9 is not prime.")])
 
 node("ex_prime_gt", "There is a prime above c (from Mathlib)",
- "This is where the simple generator borrows Euclid outright: a direct call to Mathlib's `Nat.exists_infinite_primes`.",
+ "This is where the reference generator borrows Euclid outright, with a direct call to Mathlib's `Nat.exists_infinite_primes`. That is why it lives in SimpleGen.lean, off the RakeSieve's path.",
  r"""
 ## Plain English
 
-**Theorem (`ex_prime_gt`, PrimeGen.lean lines 39–45).** For every c there is p with [PrimeGt](#/node/PrimeGt) c p. It applies Mathlib's `Nat.exists_infinite_primes (c + 1)` (line 42). Used by [min_prime_gt](#/node/min_prime_gt), hence by [SimpleGen](#/node/SimpleGen).
+**Theorem (`ex_prime_gt`, SimpleGen.lean lines 16–22).** For every c there is p with [PrimeGt](#/node/PrimeGt) c p. It applies Mathlib's `Nat.exists_infinite_primes (c + 1)` (SimpleGen.lean line 19). Used by [min_prime_gt](#/node/min_prime_gt), hence by [SimpleGen](#/node/SimpleGen). The RakeSieve does not use it: SimpleGen.lean is not imported by Results.lean.
 """,
- [q("Which Mathlib theorem does it call?", ["`Nat.exists_infinite_primes`", "`Nat.find`"], 0, "PrimeGen.lean line 42."),
-  q("Is its statement Euclid's theorem?", ["Yes, in the form ∀ c, ∃ prime p > c", "No"], 0, "Same content as the main theorem."),
-  q("Why is c + 1 passed instead of c?", ["Mathlib's version gives c ≤ p; we need c < p", "no reason"], 0, "The comment on PrimeGen.lean line 40 says so.")])
+ [q("Which Mathlib theorem does it call?", ["`Nat.exists_infinite_primes`", "`Nat.find`"], 0, "SimpleGen.lean line 19."),
+  q("Is its statement Euclid's theorem?", ["Yes, in the form ∀ c, ∃ prime p > c", "No"], 0, "Same content as the infinitude corollary."),
+  q("Why is c + 1 passed instead of c?", ["Mathlib's version gives c ≤ p; we need c < p", "no reason"], 0, "The comment on SimpleGen.lean line 17 says so.")])
 
 node("min_prime_gt", "min_prime_gt n: the least prime above n, found by Nat.find",
  "It is computable in principle, since Nat.find just counts upward, but only because Euclid guarantees the search stops.",
  r"""
 ## Plain English
 
-`min_prime_gt n` (PrimeGen.lean lines 47–51) is the [MinPrimeGt](#/node/MinPrimeGt) n whose number is `Nat.find (ex_prime_gt n)`: the least p satisfying [PrimeGt](#/node/PrimeGt) n p. `Nat.find_spec` and `Nat.find_min` give the two proofs. It is [SimpleGen](#/node/SimpleGen)'s step.
+`min_prime_gt n` (SimpleGen.lean lines 24–28) is the [MinPrimeGt](#/node/MinPrimeGt) n whose number is `Nat.find (ex_prime_gt n)`: the least p satisfying [PrimeGt](#/node/PrimeGt) n p. `Nat.find_spec` and `Nat.find_min` give the two proofs. It is [SimpleGen](#/node/SimpleGen)'s step.
 """,
  [q("What does `Nat.find` need?", ["a proof that some number satisfies the property", "an upper bound only"], 0, "Here `ex_prime_gt n`."),
   q("What is `(min_prime_gt 13).p`?", ["13", "17", "15"], 1, "17 is the least prime above 13."),
   q("Who uses it?", ["SimpleGen", "RakeSieve"], 0, "`SimpleGen.next` and `SimpleGen.start`.")])
 
-node("SimpleGen", "SimpleGen: the obvious prime generator",
- "It is the specification as a program, 'the next prime is the least prime above this one', and it exists so the RakeSieve has something to be compared with.",
+node("SimpleGen", "SimpleGen: the obvious prime generator (reference spec, circular)",
+ "It is the specification as a program, 'the next prime is the least prime above this one'. It exists so the RakeSieve has something to be compared with. It assumes Euclid, so it proves nothing about infinitude.",
  r"""
 ## Plain English
 
-A `SimpleGen` (PrimeGen.lean lines 53–55) holds a prime p and the [least prime above it](#/node/MinPrimeGt). Its step moves to that prime ([SimpleGen.next](#/node/SimpleGen.next)), and [its PrimeGen instance](#/node/instPrimeGenSimpleGen) is proved directly from `hmin` and `hpgt`. The `#guard` on line 97 checks by evaluation that its first ten primes from [SimpleGen.start](#/node/SimpleGen.start) are 2, 3, 5, …, 29.
+A `SimpleGen` (SimpleGen.lean lines 30–32) holds a prime p and the [least prime above it](#/node/MinPrimeGt). Its step moves to that prime ([SimpleGen.next](#/node/SimpleGen.next)), and [its PrimeGen instance](#/node/instPrimeGenSimpleGen) is proved directly from `hmin` and `hpgt`. SimpleGen.lean opens by saying it is a reference spec that assumes Euclid's theorem and is not on the RakeSieve's headline path. The `#guard` on SimpleGen.lean line 57 checks by evaluation that its first ten primes from [SimpleGen.start](#/node/SimpleGen.start) are 2, 3, 5, …, 29.
 """,
  [q("What does a SimpleGen hold?", ["a prime and the least prime above it", "a rake"], 0, "Fields `p` and `c`."),
   q("Is the `#guard` on its first ten primes a proof?", ["it is a compile-time check by evaluation, not a theorem in Results.lean", "it is an axiom"], 0, "`#guard` fails compilation if the equation evaluates to false."),
@@ -274,21 +322,21 @@ node("SimpleGen.start", "SimpleGen.start: begin at 2",
  r"""
 ## Plain English
 
-`SimpleGen.start := { p := ⟨2, Nat.prime_two⟩, c := min_prime_gt 2 }` (PrimeGen.lean lines 61–62): prime 2, next prime 3. Used by [results_exists_prime_gt_of_simpleGen](#/node/results_exists_prime_gt_of_simpleGen). See [SimpleGen](#/node/SimpleGen) and [min_prime_gt](#/node/min_prime_gt).
+`SimpleGen.start := { p := ⟨2, Nat.prime_two⟩, c := min_prime_gt 2 }` (SimpleGen.lean lines 38–39): prime 2, next prime 3. Used by [simpleGen_exists_prime_gt](#/node/simpleGen_exists_prime_gt), the circular reference theorem. See [SimpleGen](#/node/SimpleGen) and [min_prime_gt](#/node/min_prime_gt).
 """,
- [q("What is the start prime?", ["2", "3", "1"], 0, "PrimeGen.lean line 62."),
+ [q("What is the start prime?", ["2", "3", "1"], 0, "SimpleGen.lean line 39."),
   q("What is its `c` field's number?", ["3", "5"], 0, "The least prime above 2."),
-  q("Why is the start not part of PrimeGen?", ["by design; see the class docstring", "an oversight"], 0, "PrimeGen.lean lines 16–18.")])
+  q("Why is the start not part of PrimeGen?", ["by design; see the class docstring", "an oversight"], 0, "PrimeGen.lean lines 15–17.")])
 
 node("instPrimeGenSimpleGen", "SimpleGen is a prime generator",
  "Both obligations fall straight out of the MinPrimeGt fields: 'nothing smaller' is `hmin`, 'bigger' is `hpgt`.",
  r"""
 ## Plain English
 
-`instance : PrimeGen SimpleGen` (PrimeGen.lean lines 64–76): `P g := g.p`, `next := SimpleGen.next`. `hP'`: a prime between p and the next would contradict `hmin`. `hP_lt`: `hpgt` says the next prime is above p. See [PrimeGen](#/node/PrimeGen), [SimpleGen](#/node/SimpleGen).
+`instance : PrimeGen SimpleGen` (SimpleGen.lean lines 41–53): `P g := g.p`, `next := SimpleGen.next`. `hP'`: a prime between p and the next would contradict `hmin`. `hP_lt`: `hpgt` says the next prime is above p. See [PrimeGen](#/node/PrimeGen), [SimpleGen](#/node/SimpleGen).
 """,
- [q("Which field gives 'no skipped prime'?", ["`hmin`", "`hpgt`"], 0, "PrimeGen.lean lines 67–71."),
-  q("Which field gives strict increase?", ["`hpgt`", "`hmin`"], 0, "PrimeGen.lean lines 72–74."),
+ [q("Which field gives 'no skipped prime'?", ["`hmin`", "`hpgt`"], 0, "SimpleGen.lean lines 44–48."),
+  q("Which field gives strict increase?", ["`hpgt`", "`hmin`"], 0, "SimpleGen.lean lines 49–51."),
   q("Is this instance anonymous in the source?", ["Yes; the site's name for it is approximate", "No"], 0, "`instance : PrimeGen SimpleGen where`.")],
  caveats=["An anonymous instance; the site's name for it is an approximation."])
 
@@ -298,14 +346,14 @@ node("three_mem_R_two", "3 ∈ R 2 (the lemma behind the headline)",
 """,
  [q("Which file holds it?", ["PrimeSieve.lean", "RakeSieve.lean"], 0, "Moved there in 37c37c7 so every sieve can use it."),
   q("How is ¬ 2 ∣ 3 checked?", ["`decide`", "`native_decide`"], 0, "By `decide`, PrimeSieve.lean line 27."),
-  q("Which Results.lean theorem re-exports it?", ["`results_three_mem_R_two`", "`results_exists_prime_gt_of_rakeSieve`"], 0, "See Results.lean lines 5–6.")])
+  q("Which Results.lean theorem re-exports it?", ["`results_three_mem_R_two`", "`results_exists_prime_gt_of_rakeSieve`"], 0, "See Results.lean lines 11–12.")])
 
 node("three_le_of_mem_R_two", "Nothing in R 2 is below 3 (the lemma behind the headline)",
  "R 2, the residue after sieving by 2, is the odd numbers from 3 up. With 3 ∈ R 2 this makes 3 its minimum, which is exactly what the start state must prove about its candidate.",
  PLAIN_R + r"""**Theorem (`three_le_of_mem_R_two`, PrimeSieve.lean lines 30–37).** Every r ∈ [R](#/node/R) 2 has 3 ≤ r. Exported as [results_three_le_of_mem_R_two](#/node/results_three_le_of_mem_R_two), which has the proof outline. Used by [RakeSieve.init](#/node/RakeSieve.init).
 """,
  [q("Why is 2 excluded from R 2?", ["2 divides 2", "2 is not prime"], 0, "The prime 2 ≤ 2 divides it."),
-  q("Which structure field does it provide for the start state?", ["`hRmin`", "`hprop`"], 0, "See RakeSieve.lean line 53."),
+  q("Which structure field does it provide for the start state?", ["`hRmin`", "`hprop`"], 0, "See RakeSieve.lean line 56."),
   q("Is it proved by contradiction?", ["Yes", "No"], 0, "`by_contra h` on PrimeSieve.lean line 32.")])
 
 node("MinPrimeGt.p'", "MinPrimeGt.p': the next prime is prime",
@@ -313,8 +361,8 @@ node("MinPrimeGt.p'", "MinPrimeGt.p': the next prime is prime",
  r"""
 ## Plain English
 
-`MinPrimeGt.p' m : Nat.Prime m.p` (PrimeGen.lean line 35): the first half of `hpgt`. See [MinPrimeGt](#/node/MinPrimeGt).
+`MinPrimeGt.p' m : Nat.Prime m.p` (PrimeGen.lean line 34): the first half of `hpgt`. See [MinPrimeGt](#/node/MinPrimeGt).
 """,
  [q("What does it return?", ["a proof that m.p is prime", "the number m.p"], 0, "It is `m.hpgt.left`."),
   q("Which field does it read?", ["`hpgt`", "`hmin`"], 0, "`hpgt : PrimeGt n p`, whose left part is primality."),
-  q("Is it a theorem or a definition?", ["theorem", "def"], 0, "Declared with `theorem` on PrimeGen.lean line 35.")])
+  q("Is it a theorem or a definition?", ["theorem", "def"], 0, "Declared with `theorem` on PrimeGen.lean line 34.")])

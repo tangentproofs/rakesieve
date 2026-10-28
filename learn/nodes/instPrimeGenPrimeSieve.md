@@ -1,16 +1,16 @@
 ---
 id: instPrimeGenPrimeSieve
 title: 'The sieve driver: every PrimeSieve is a prime generator'
-summary: 'The sieve''s correctness theorem is not a named theorem at all. It is this instance: any sieve state whose
-  candidate is the least survivor gives, step by step, the next prime with none skipped. It is proved once, for
-  every such sieve.'
+summary: 'The sieve''s correctness is proved once, for every sieve at the same time: any sieve state whose candidate
+  is the least survivor gives, step by step, the next prime with none skipped. The RakeSieve headlines restate it
+  for the RakeSieve.'
 review: draft
 authors:
 - grok-bot
 caveats:
 - This is an `instance`, so it has no name in the source; this site calls it `instPrimeGenPrimeSieve`, the name
   Lean most likely generates. The exact generated name was not checked (no Lean build).
-- Completeness ('every prime appears') follows easily but is not stated in Lean.
+- Completeness ('every prime appears') is stated separately, as `results_rakeSieve_emits_every_prime`.
 widgets:
 - type: walkthrough
   title: How the instance is proved (PrimeSieve.lean, lines 218-242)
@@ -43,7 +43,7 @@ quiz:
   - the state is finite, and it is sorted
   - the sieve terminates
   answer: 1
-  explain: 'PrimeGen.lean lines 23 and 26: `hP''` (no skipped prime) and `hP_lt` (strict increase).'
+  explain: 'PrimeGen.lean lines 22 and 26: `hP''` (no skipped prime) and `hP_lt` (strict increase).'
 - q: Why can no prime q lie strictly between P and the candidate C?
   type: choice
   choices:
@@ -57,11 +57,10 @@ quiz:
 - q: Is 'the sieve started at 2 produces every prime' stated as a theorem?
   type: choice
   choices:
-  - Yes, in Results.lean
-  - 'No: it follows from this instance plus the start state, but no theorem states it'
-  answer: 1
-  explain: Results.lean exports only Euclid-type statements and two facts about R 2. The enumeration property is
-    implicit in the `PrimeGen` instance.
+  - 'Yes: `results_rakeSieve_emits_every_prime` in Results.lean'
+  - No, it is only implicit in this instance
+  answer: 0
+  explain: Results.lean lines 35–37, proved from this instance with `PrimeGen.exists_iterate_P_eq`.
 - q: Which sieves does this instance cover?
   type: choice
   choices:
@@ -91,8 +90,8 @@ Both facts come from three generic lemmas about any driven sieve state, where C 
 
 And the state's own `hNext` field says that one step turns C into the new P.
 
-For the RakeSieve, α = [RakeSieve](#/node/RakeSieve): its states carry the proofs the driver needs ([the PrimeSieveDriver instance](#/node/RakeSieve.instPrimeSieveDriverRakeSieve)), so `PrimeSieve RakeSieve` is a prime generator. That is what the main theorem uses.
+For the RakeSieve, α = [RakeSieve](#/node/RakeSieve): its states carry the proofs the driver needs ([the PrimeSieveDriver instance](#/node/RakeSieve.instPrimeSieveDriverRakeSieve)), so `PrimeSieve RakeSieve` is a prime generator. The every-prime headline and the infinitude corollary use it.
 
-### What it adds up to (not stated in Lean)
+### What it adds up to
 
-Starting from [RakeSieve.init](#/node/RakeSieve.init), whose prime is 2, these two facts mean the sieve lists 2, 3, 5, 7, 11, … *all* the primes, in order. That conclusion is one short induction away, but Results.lean does not state it. There is no theorem saying "the n-th prime the sieve produces is the n-th prime" or "every prime is eventually produced". See [the review](#/review).
+Starting from [RakeSieve.init](#/node/RakeSieve.init), whose prime is 2, these two facts mean the sieve lists 2, 3, 5, 7, 11, …, *all* the primes, in order. Results.lean now states this directly: [results_rakeSieve_step](#/node/results_rakeSieve_step) for a single step and [results_rakeSieve_emits_every_prime](#/node/results_rakeSieve_emits_every_prime) for "every prime is eventually produced". The second comes from the generic lemma [PrimeGen.exists_iterate_P_eq](#/node/PrimeGen.exists_iterate_P_eq).

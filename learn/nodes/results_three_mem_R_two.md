@@ -43,14 +43,14 @@ quiz:
   - Nowhere
   - In Main.lean only
   answer: 0
-  explain: 'RakeSieve.lean line 50: `simpa [p] using three_mem_R_two`.'
+  explain: 'RakeSieve.lean line 53: `simpa [p] using three_mem_R_two`.'
 ---
 ## Plain English
 
 **R stands for *residue*.** R p is the set of numbers ≥ 2 that no prime ≤ p divides: what is left after crossing out the multiples of every prime up to p ([R](#/node/R)). For example, R 2 is the odd numbers from 3 up.
 
-**Theorem (`results_three_mem_R_two`, Results.lean lines 5–6).** 3 ∈ R 2: the number 3 is at least 2 and is not divisible by any prime q ≤ 2.
+**Theorem (`results_three_mem_R_two`, Results.lean lines 11–12).** 3 ∈ R 2: the number 3 is at least 2 and is not divisible by any prime q ≤ 2.
 
 [R](#/node/R) P is the set of numbers that survive a sieve once every prime up to P has crossed out its multiples. So R 2 is the odd numbers from 3 up, and this theorem says 3 is one of them.
 
-Why it matters: the RakeSieve starts with prime p = 2 and candidate c = 3 ([RakeSieve.init](#/node/RakeSieve.init)). Every sieve state must prove that its candidate lies in R p; for the start state that proof is this theorem (RakeSieve.lean line 50). It was moved out of `RakeSieve.init` into PrimeSieve.lean so that any sieve can reuse it (issue #3).
+Why it matters: the RakeSieve starts with prime p = 2 and candidate c = 3 ([RakeSieve.init](#/node/RakeSieve.init)). Every sieve state must prove that its candidate lies in R p; for the start state that proof is this theorem (RakeSieve.lean line 53). It was moved out of `RakeSieve.init` into PrimeSieve.lean so that any sieve can reuse it (issue #3).

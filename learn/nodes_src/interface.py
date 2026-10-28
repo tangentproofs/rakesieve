@@ -12,25 +12,25 @@ node("NPrime", "NPrime: a natural number packaged with a proof that it is prime"
  r"""
 ## Plain English
 
-`NPrime` is the type `{ n : Nat // Nat.Prime n }` (PrimeGen.lean line 7): a pair of a natural number and a proof that it is prime. Lean can only build one by supplying the proof, for example `⟨2, Nat.prime_two⟩`.
+`NPrime` is the type `{ n : Nat // Nat.Prime n }` (PrimeGen.lean line 6): a pair of a natural number and a proof that it is prime. Lean can only build one by supplying the proof, for example `⟨2, Nat.prime_two⟩`.
 
-The library adds conveniences: two `NPrime`s are equal when their numbers are ([NPrime.eq_iff](#/node/NPrime.eq_iff)), they print as their number, and they coerce to `Nat` (PrimeGen.lean lines 9–12).
+The library adds conveniences: two `NPrime`s are equal when their numbers are ([NPrime.eq_iff](#/node/NPrime.eq_iff)), they print as their number, and they coerce to `Nat` (PrimeGen.lean lines 8–11).
 
 Because [PrimeGen](#/node/PrimeGen)'s `P` returns an `NPrime`, every generator's output is prime *by its type*.
 """,
  [q("Can you build an `NPrime` holding 4?", ["Yes", "No: you would need a proof of `Nat.Prime 4`, which is false"], 1,
     "An `NPrime` is a subtype value: the number together with a proof that it is prime."),
   q("How is the number 2 packaged as an `NPrime` in this library?", ["`⟨2, Nat.prime_two⟩`", "`NPrime.mk 2`", "`2 : NPrime` with no proof"], 0,
-    "See `SimpleGen.start` (PrimeGen.lean line 62) and `RakeSieve.init` (RakeSieve.lean line 22)."),
+    "See `SimpleGen.start` (SimpleGen.lean line 39) and `RakeSieve.init` (RakeSieve.lean line 25)."),
   q("What does `(P g).prop` give you, for a generator state g?", ["the number", "a proof that the number is prime", "the next state"], 1,
-    "`.prop` is the proof component of a subtype value; `exists_prime_gt_of_primeGen` uses it (PrimeGen.lean line 117).")])
+    "`.prop` is the proof component of a subtype value; `exists_prime_gt_of_primeGen` uses it (PrimeGen.lean line 73).")])
 
 node("PrimeGen", "PrimeGen: what it means to generate primes in order",
  "The spec of a prime generator is only two lines, 'no prime is skipped' and 'the prime goes up', and the second line was added only in September 2026 because the first alone allows a generator stuck on one prime.",
  r"""
 ## Plain English
 
-A `PrimeGen` on a type α of states (PrimeGen.lean lines 19–26) provides:
+A `PrimeGen` on a type α of states (PrimeGen.lean lines 18–25) provides:
 
 - `P : α → NPrime`, the prime at the current state ([NPrime](#/node/NPrime));
 - `next : α → α`, the step to the next state;
@@ -43,9 +43,9 @@ The start state is deliberately not part of the class (the docstring explains: u
 """,
  [q("Which two properties does `PrimeGen` require?",
     ["output is prime; output is odd", "no prime strictly between consecutive outputs; outputs strictly increase", "the state is finite; next terminates"], 1,
-    "`hP'` and `hP_lt` (PrimeGen.lean lines 23 and 26). Primality of the output is built into the type `NPrime`."),
+    "`hP'` and `hP_lt` (PrimeGen.lean lines 22 and 25). Primality of the output is built into the type `NPrime`."),
   q("Does `PrimeGen` say the generator starts at 2?", ["Yes", "No, the start state is chosen separately"], 1,
-    "There is no `init` field; the docstring says it was intentionally left out (PrimeGen.lean lines 16–18)."),
+    "There is no `init` field; the docstring says it was intentionally left out (PrimeGen.lean lines 15–17)."),
   q("A 'generator' with `next g = g` satisfies which condition?", ["`hP'` only", "`hP_lt` only", "both", "neither"], 0,
     "There is no prime strictly between p and p, so `hP'` holds, but `p < p` fails, so `hP_lt` does not.")])
 
@@ -123,7 +123,7 @@ node("PrimeSieve", "PrimeSieve: a wrapper that turns a sieve state into a genera
 
 `PrimeSieve α` is a structure with one field, `state : α` (PrimeSieve.lean lines 211–212), for a type α that has [PrimeSieveState](#/node/PrimeSieveState) and [PrimeSieveDriver](#/node/PrimeSieveDriver) instances (the section `variable` line, PrimeSieve.lean line 210).
 
-Its step is [PrimeSieve.next](#/node/PrimeSieve.next), which runs the sieve once with the proofs supplied automatically, and the [driver instance](#/node/instPrimeGenPrimeSieve) makes it a [PrimeGen](#/node/PrimeGen). The main theorem uses `PrimeSieve RakeSieve` with state `RakeSieve.init`.
+Its step is [PrimeSieve.next](#/node/PrimeSieve.next), which runs the sieve once with the proofs supplied automatically, and the [driver instance](#/node/instPrimeGenPrimeSieve) makes it a [PrimeGen](#/node/PrimeGen). The every-prime headline and the infinitude corollary use `PrimeSieve RakeSieve` with state `RakeSieve.init`.
 """,
  [q("How many fields does `PrimeSieve α` have?", ["one, `state`", "two", "four"], 0, "PrimeSieve.lean line 212."),
   q("Why wrap the state instead of making α itself a `PrimeGen`?", ["so a single generic instance can cover every sieve type without overlapping other instances", "for speed", "because Lean forbids it"], 0,

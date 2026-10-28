@@ -30,4 +30,4 @@ quiz:
 ---
 ## Plain English
 
-`PrimeGt n p := Nat.Prime p ∧ n < p` (PrimeGen.lean line 29). Used in [MinPrimeGt](#/node/MinPrimeGt) and [ex_prime_gt](#/node/ex_prime_gt).
+`PrimeGt n p := Nat.Prime p ∧ n < p` (PrimeGen.lean line 28). Used in [MinPrimeGt](#/node/MinPrimeGt) and [ex_prime_gt](#/node/ex_prime_gt).

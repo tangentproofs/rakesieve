@@ -1,6 +1,5 @@
 -- PrimeGen: a specification for algorithms that generate prime numbers.
 import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Data.Nat.Prime.Infinite
 import Mathlib.Data.Nat.Find
 import Mathlib.Tactic.Linarith.Frontend
 
@@ -15,7 +14,7 @@ instance : Coe NPrime Nat where coe n := n.val
 
 /-- A prime generator yields a strictly increasing sequence of consecutive primes.
 `init` is intentionally *not* part of the class: only needed for zero-arg `primes`;
-prefer `primes g₀ n` with an explicit start state (e.g. `SimpleGen.start`). -/
+prefer `primes g₀ n` with an explicit start state (e.g. `SimpleGen.start` in SimpleGen.lean). -/
 class PrimeGen (α : Type) where
   P : α → NPrime
   next : α → α
@@ -34,48 +33,6 @@ structure MinPrimeGt (n:Nat) where
   hmin : ∀q:Nat, q < p → (¬ PrimeGt n q)
 theorem MinPrimeGt.p' (m:MinPrimeGt n) : Nat.Prime m.p := m.hpgt.left
 
-section simple_gen
-
-  theorem ex_prime_gt (c:Nat) : ∃ p, PrimeGt c p := by
-    let d := c + 1 -- because the line below has ≤ and we need <
-    let ⟨p, hcp, hprime⟩ : ∃ (p : ℕ), d ≤ p ∧ Nat.Prime p :=
-      Nat.exists_infinite_primes d
-    use p; constructor
-    · exact hprime
-    · omega
-
-  def min_prime_gt (n: Nat) : MinPrimeGt n :=
-    let e := ex_prime_gt n
-    { p:=Nat.find e,
-      hpgt:=Nat.find_spec e,
-      hmin:= by exact fun {q} a => Nat.find_min e a}
-
-  structure SimpleGen where
-    p : NPrime
-    c : MinPrimeGt p.val
-
-  def SimpleGen.next (g:SimpleGen) : SimpleGen :=
-    { p:=⟨g.c.p, g.c.hpgt.left⟩, c:=min_prime_gt g.c.p }
-
-  /-- Canonical start state for `SimpleGen` (replaces class-level `init`). -/
-  def SimpleGen.start : SimpleGen :=
-    { p := ⟨2, Nat.prime_two⟩, c := min_prime_gt 2 }
-
-  instance : PrimeGen SimpleGen where
-    P g := g.p
-    next := .next
-    hP' g := by  -- goal: no prime q between g.p and (g.next.p = g.c.p)
-      -- why? that would imply prime_gt (g.p) q, but hmin contradicts this
-      intro h
-      rcases h with ⟨q, hq, hgt, hlt⟩
-      exact (g.c.hmin q hlt) ⟨hq, hgt⟩
-    hP_lt g := by
-      -- g.next.p = g.c.p and g.c witnesses PrimeGt g.p
-      simpa [SimpleGen.next] using g.c.hpgt.right
-
-  open PrimeGen
-
-end simple_gen
 
 /- function power. apply f recursively n times to x₀ and collect the results.
   (!! lean has `f^[n] x` but this doesn't collect intermediate results. maybe
@@ -94,7 +51,6 @@ set_option linter.hashCommand false
 def primes {α : Type} [pg: PrimeGen α] (g₀ : α) (n : Nat) : List NPrime :=
   fpow (fun g => pg.next g) n g₀ |>.map fun g => pg.P g
 
-#guard (primes SimpleGen.start 10 |>.map (·.val)) = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
 
 /-- After `k` steps, `P` has increased by at least `k`. -/
 theorem PrimeGen.P_iterate_add_le {α : Type} [PrimeGen α] (g : α) (k : Nat) :
@@ -116,3 +72,26 @@ theorem exists_prime_gt_of_primeGen {α : Type} [PrimeGen α] (g₀ : α) (n : N
   have h2 : (P g₀ : Nat) ≥ 2 := Nat.Prime.two_le (P g₀).prop
   refine ⟨P (next^[k] g₀), (P (next^[k] g₀)).prop, ?_⟩
   omega
+
+/-- A prime generator skips nothing: every prime `q` at or above the start prime is emitted at
+some step. (Take the first step whose prime passes `q`; the step before it is ≤ `q`, and `hP'`
+leaves no room for `q` strictly in between.) -/
+theorem PrimeGen.exists_iterate_P_eq {α : Type} [PrimeGen α] (g₀ : α) (q : Nat)
+    (hq : Nat.Prime q) (hle : (P g₀ : Nat) ≤ q) : ∃ k, (P (next^[k] g₀) : Nat) = q := by
+  classical
+  have hex : ∃ k, q < (P (next^[k] g₀) : Nat) :=
+    ⟨q + 1, by have := PrimeGen.P_iterate_add_le g₀ (q + 1); omega⟩
+  set k := Nat.find hex with hkdef
+  have hk : q < (P (next^[k] g₀) : Nat) := Nat.find_spec hex
+  have hk0 : k ≠ 0 := by
+    intro h0
+    rw [h0, Function.iterate_zero, id] at hk
+    omega
+  obtain ⟨j, hj⟩ : ∃ j, k = j + 1 := Nat.exists_eq_succ_of_ne_zero hk0
+  have hjle : (P (next^[j] g₀) : Nat) ≤ q := by
+    have := Nat.find_min hex (show j < k by omega)
+    omega
+  rw [hj, Function.iterate_succ_apply'] at hk
+  refine ⟨j, ?_⟩
+  by_contra hne
+  exact hP' (next^[j] g₀) ⟨q, hq, by omega, hk⟩
