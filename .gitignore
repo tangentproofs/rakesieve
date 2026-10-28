@@ -3,3 +3,6 @@
 !/lean_packages/manifest.json
 .lake
 lake-manifest.json
+learn/node_modules/
+learn/dist/
+__pycache__/

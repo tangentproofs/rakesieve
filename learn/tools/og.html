@@ -1,0 +1,11 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+body{margin:0;width:1200px;height:630px;background:#272822;color:#f8f8f2;font-family:system-ui,sans-serif;display:flex;flex-direction:column;justify-content:center;padding:0 80px;box-sizing:border-box}
+h1{font-size:68px;margin:0 0 18px}h1 span{color:#f92672}p{font-size:32px;color:#a6e22e;margin:0 0 28px}
+code{font-family:ui-monospace,monospace;font-size:28px;color:#66d9ef;display:block;margin:6px 0}small{font-size:24px;color:#a59f85;margin-top:24px}
+</style></head><body>
+<h1>rake<span>sieve</span>, explained</h1>
+<p>A prime sieve built from arithmetic sequences, checked in Lean 4, read back into plain English</p>
+<code>def R (P : Nat) : Set Nat := { n | n ≥ 2 ∧ ∀ q ≤ P, Nat.Prime q → ¬ q ∣ n }</code>
+<code>instance : PrimeGen (PrimeSieve RakeSieve)  -- next prime, none skipped</code>
+<small>tangentproofs · Lean 4 + Mathlib · draft explainer</small>
+</body></html>

@@ -1,0 +1,18 @@
+{
+  "name": "rakesieve-learn",
+  "private": true,
+  "type": "module",
+  "description": "Plain-English explainer for the RakeSieve Lean 4 prime sieve",
+  "scripts": {
+    "validate": "node tools/build_site.mjs --check",
+    "build": "node tools/build_site.mjs",
+    "test": "node tools/test_progress.mjs && node tools/test_leanlines.mjs && node tools/test_statement.mjs && node tools/build_site.mjs --check",
+    "serve": "node tools/build_site.mjs && python3 -m http.server -d dist 8765",
+    "decls": "python3 tools/scan_decls.py"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1",
+    "js-yaml": "^4.1.0",
+    "marked": "^14.1.4"
+  }
+}

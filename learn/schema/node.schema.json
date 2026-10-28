@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/tangentproofs/star-height/site/schema/node.schema.json",
+  "title": "Explainer node frontmatter",
+  "description": "YAML frontmatter of site/nodes/<id>.md. The Markdown body after the frontmatter is the plain-English explanation and must contain a '## Plain English' heading.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "title",
+    "summary",
+    "review",
+    "authors",
+    "quiz"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Lean declaration name (e.g. 'RakeSieve.next'). Must equal the file name without .md and exist in data/decls.json."
+    },
+    "title": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 80
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 300,
+      "description": "One-sentence plain-English statement."
+    },
+    "review": {
+      "enum": [
+        "draft",
+        "human-reviewed"
+      ],
+      "description": "'draft' until a human has checked the text and quiz key against the Lean source."
+    },
+    "authors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "caveats": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Faithfulness notes: places where the English is necessarily looser than the Lean, or where the author is unsure."
+    },
+    "widgets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "walkthrough"
+            ]
+          },
+          "title": {
+            "type": "string"
+          },
+          "config": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "quiz": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "q",
+          "type",
+          "answer",
+          "explain"
+        ],
+        "properties": {
+          "q": {
+            "type": "string",
+            "description": "Question (Markdown; Lean in backticks)."
+          },
+          "type": {
+            "enum": [
+              "choice",
+              "number",
+              "text"
+            ]
+          },
+          "choices": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 2
+          },
+          "answer": {
+            "description": "choice: 0-based index of the correct choice. number: the number. text: list of accepted answers (compared case-insensitively, whitespace-insensitively).",
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "minItems": 1
+              }
+            ]
+          },
+          "explain": {
+            "type": "string",
+            "minLength": 10,
+            "description": "Why the answer is right, pointing at the Lean."
+          }
+        }
+      }
+    }
+  }
+}

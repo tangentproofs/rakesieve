@@ -1,0 +1,2968 @@
+[
+ {
+  "id": "ASeq",
+  "name": "ASeq",
+  "kind": "structure",
+  "file": "ASeq.lean",
+  "module": "ASeq",
+  "line": 6,
+  "endLine": 9,
+  "statement": "structure ASeq where  -- arithmetic sequence (k + dn)\n  k : Nat  -- constant\n  d : Nat  -- delta (step size)\nderiving Repr",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat",
+   "Repr"
+  ],
+  "meaningDeps": [],
+  "proofDeps": [],
+  "usedBy": [
+   "ASeq.compose",
+   "ASeq.compose_def",
+   "ASeq.gte",
+   "ASeq.gte_same_delta",
+   "ASeq.gte_term",
+   "ASeq.instCoeFunASeqNatNat",
+   "ASeq.instToStringASeq",
+   "ASeq.le",
+   "ASeq.length_partition",
+   "ASeq.partition",
+   "ASeq.term",
+   "ASeq.terms",
+   "Rake.seq",
+   "Rake.seqs",
+   "instInhabitedASeq",
+   "instLEASeq",
+   "instOrdASeq",
+   "instTotal"
+  ],
+  "depth": 4,
+  "extracted": false
+ },
+ {
+  "id": "ASeq.le",
+  "name": "ASeq.le",
+  "kind": "def",
+  "file": "ASeq.lean",
+  "module": "ASeq",
+  "line": 11,
+  "endLine": 11,
+  "statement": "def ASeq.le (a b: ASeq) := if a.d = b.d then a.k≤b.k else a.d<b.d",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [],
+  "meaningDeps": [
+   "ASeq"
+  ],
+  "proofDeps": [],
+  "usedBy": [
+   "instLEASeq"
+  ],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "instLEASeq",
+  "name": "instLEASeq",
+  "kind": "instance",
+  "file": "ASeq.lean",
+  "module": "ASeq",
+  "line": 12,
+  "endLine": 12,
+  "statement": "instance : LE ASeq",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "LE"
+  ],
+  "meaningDeps": [
+   "ASeq"
+  ],
+  "proofDeps": [
+   "ASeq.le"
+  ],
+  "usedBy": [],
+  "depth": null,
+  "extracted": false,
+  "autoName": true
+ },
+ {
+  "id": "instTotal",
+  "name": "instTotal",
+  "kind": "instance",
+  "file": "ASeq.lean",
+  "module": "ASeq",
+  "line": 13,
+  "endLine": 24,
+  "statement": "instance : Std.Total (α := ASeq) (·≤·)",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Std.Total"
+  ],
+  "meaningDeps": [
+   "ASeq"
+  ],
+  "proofDeps": [],
+  "usedBy": [],
+  "depth": null,
+  "extracted": false,
+  "autoName": true
+ },
+ {
+  "id": "instInhabitedASeq",
+  "name": "instInhabitedASeq",
+  "kind": "instance",
+  "file": "ASeq.lean",
+  "module": "ASeq",
+  "line": 26,
+  "endLine": 27,
+  "statement": "instance : Inhabited ASeq",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Inhabited"
+  ],
+  "meaningDeps": [
+   "ASeq"
+  ],
+  "proofDeps": [],
+  "usedBy": [],
+  "depth": null,
+  "extracted": false,
+  "autoName": true
+ },
+ {
+  "id": "instOrdASeq",
+  "name": "instOrdASeq",
+  "kind": "instance",
+  "file": "ASeq.lean",
+  "module": "ASeq",
+  "line": 29,
+  "endLine": 33,
+  "statement": "instance : Ord ASeq",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Ord"
+  ],
+  "meaningDeps": [
+   "ASeq"
+  ],
+  "proofDeps": [],
+  "usedBy": [],
+  "depth": null,
+  "extracted": false,
+  "autoName": true
+ },
+ {
+  "id": "aseq",
+  "name": "aseq",
+  "kind": "def",
+  "file": "ASeq.lean",
+  "module": "ASeq",
+  "line": 35,
+  "endLine": 35,
+  "statement": "@[simp] def aseq (k:Nat) (d:Nat) := ASeq.mk k d",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat"
+  ],
+  "meaningDeps": [],
+  "proofDeps": [],
+  "usedBy": [
+   "ASeq.compose",
+   "ASeq.evens",
+   "ASeq.nats",
+   "ASeq.odds",
+   "Rake.gte",
+   "Rake.seq",
+   "Rake.seqs",
+   "Rake.term",
+   "RakeMap.rm_ge2",
+   "RakeMap.rm_nat"
+  ],
+  "depth": 3,
+  "extracted": false
+ },
+ {
+  "id": "ASeq.nats",
+  "name": "ASeq.nats",
+  "kind": "def",
+  "file": "ASeq.lean",
+  "module": "ASeq",
+  "line": 40,
+  "endLine": 40,
+  "statement": "def nats  := aseq 0 1",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [],
+  "meaningDeps": [
+   "aseq"
+  ],
+  "proofDeps": [],
+  "usedBy": [],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "ASeq.evens",
+  "name": "ASeq.evens",
+  "kind": "def",
+  "file": "ASeq.lean",
+  "module": "ASeq",
+  "line": 41,
+  "endLine": 41,
+  "statement": "def evens := aseq 0 2",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [],
+  "meaningDeps": [
+   "aseq"
+  ],
+  "proofDeps": [],
+  "usedBy": [],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "ASeq.odds",
+  "name": "ASeq.odds",
+  "kind": "def",
+  "file": "ASeq.lean",
+  "module": "ASeq",
+  "line": 42,
+  "endLine": 42,
+  "statement": "def odds  := aseq 1 2",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [],
+  "meaningDeps": [
+   "aseq"
+  ],
+  "proofDeps": [],
+  "usedBy": [],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "ASeq.term",
+  "name": "ASeq.term",
+  "kind": "def",
+  "file": "ASeq.lean",
+  "module": "ASeq",
+  "line": 45,
+  "endLine": 45,
+  "statement": "@[simp] def term (s : ASeq) (n : Nat) : Nat := s.k + s.d * n",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat"
+  ],
+  "meaningDeps": [
+   "ASeq"
+  ],
+  "proofDeps": [],
+  "usedBy": [
+   "ASeq.gte_term",
+   "ASeq.instCoeFunASeqNatNat",
+   "ASeq.terms",
+   "RakeMap.rm_ge2",
+   "RakeMap.rm_nat"
+  ],
+  "depth": 3,
+  "extracted": false
+ },
+ {
+  "id": "ASeq.instCoeFunASeqNatNat",
+  "name": "ASeq.instCoeFunASeqNatNat",
+  "kind": "instance",
+  "file": "ASeq.lean",
+  "module": "ASeq",
+  "line": 48,
+  "endLine": 48,
+  "statement": "instance : CoeFun ASeq fun _ => Nat → Nat",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat"
+  ],
+  "meaningDeps": [
+   "ASeq"
+  ],
+  "proofDeps": [
+   "ASeq.term"
+  ],
+  "usedBy": [],
+  "depth": null,
+  "extracted": false,
+  "autoName": true
+ },
+ {
+  "id": "ASeq.terms",
+  "name": "ASeq.terms",
+  "kind": "def",
+  "file": "ASeq.lean",
+  "module": "ASeq",
+  "line": 53,
+  "endLine": 53,
+  "statement": "def terms (s : ASeq) (n : Nat) : List Nat := List.range n |>.map λ i => term s i",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat",
+   "List",
+   "List.range"
+  ],
+  "meaningDeps": [
+   "ASeq",
+   "ASeq.term"
+  ],
+  "proofDeps": [],
+  "usedBy": [],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "ASeq.compose",
+  "name": "ASeq.compose",
+  "kind": "def",
+  "file": "ASeq.lean",
+  "module": "ASeq",
+  "line": 60,
+  "endLine": 60,
+  "statement": "def compose (s t: ASeq) : ASeq := aseq (s.k + s.d * t.k) (s.d * t.d)",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [],
+  "meaningDeps": [
+   "ASeq",
+   "aseq"
+  ],
+  "proofDeps": [],
+  "usedBy": [
+   "ASeq.partition"
+  ],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "ASeq.compose_def",
+  "name": "ASeq.compose_def",
+  "kind": "theorem",
+  "file": "ASeq.lean",
+  "module": "ASeq",
+  "line": 62,
+  "endLine": 68,
+  "statement": "theorem compose_def (s t: ASeq) {n:Nat} : (s.compose t) n = s (t n)",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat"
+  ],
+  "meaningDeps": [
+   "ASeq"
+  ],
+  "proofDeps": [],
+  "usedBy": [],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "ASeq.partition",
+  "name": "ASeq.partition",
+  "kind": "def",
+  "file": "ASeq.lean",
+  "module": "ASeq",
+  "line": 70,
+  "endLine": 71,
+  "statement": "def partition (s : ASeq) (n : Nat) : List ASeq :=\n  List.range n |>.map fun i => compose s $ .mk i n",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat",
+   "List",
+   "List.range"
+  ],
+  "meaningDeps": [
+   "ASeq",
+   "ASeq.compose"
+  ],
+  "proofDeps": [],
+  "usedBy": [
+   "ASeq.length_partition"
+  ],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "ASeq.length_partition",
+  "name": "ASeq.length_partition",
+  "kind": "theorem",
+  "file": "ASeq.lean",
+  "module": "ASeq",
+  "line": 73,
+  "endLine": 75,
+  "statement": "theorem length_partition {s: ASeq} {n: Nat}\n  : (s.partition n).length = n",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat"
+  ],
+  "meaningDeps": [
+   "ASeq"
+  ],
+  "proofDeps": [
+   "ASeq.partition"
+  ],
+  "usedBy": [],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "ASeq.instToStringASeq",
+  "name": "ASeq.instToStringASeq",
+  "kind": "instance",
+  "file": "ASeq.lean",
+  "module": "ASeq",
+  "line": 77,
+  "endLine": 84,
+  "statement": "instance : ToString ASeq",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "ToString"
+  ],
+  "meaningDeps": [
+   "ASeq"
+  ],
+  "proofDeps": [],
+  "usedBy": [],
+  "depth": null,
+  "extracted": false,
+  "autoName": true
+ },
+ {
+  "id": "ASeq.gte",
+  "name": "ASeq.gte",
+  "kind": "def",
+  "file": "ASeq.lean",
+  "module": "ASeq",
+  "line": 87,
+  "endLine": 92,
+  "statement": "def gte (s : ASeq) (n : Nat) : ASeq :=\n  if n ≤ s.k then s\n  else if n ≤ s.d then .mk (s.k + s.d) s.d\n  else\n    let t := n / s.d\n    ASeq.mk (s.k + s.d * (t + 1)) s.d",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat"
+  ],
+  "meaningDeps": [
+   "ASeq"
+  ],
+  "proofDeps": [],
+  "usedBy": [
+   "ASeq.gte_same_delta",
+   "ASeq.gte_term",
+   "Rake.gte"
+  ],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "ASeq.self_lt_mul_div_add",
+  "name": "ASeq.self_lt_mul_div_add",
+  "kind": "theorem",
+  "file": "ASeq.lean",
+  "module": "ASeq",
+  "line": 94,
+  "endLine": 101,
+  "statement": "protected lemma self_lt_mul_div_add (n d : Nat) (hd: d > 0) : n ≤ d * (n/d + 1)",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat"
+  ],
+  "meaningDeps": [],
+  "proofDeps": [],
+  "usedBy": [
+   "ASeq.gte_term"
+  ],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "ASeq.gte_term",
+  "name": "ASeq.gte_term",
+  "kind": "theorem",
+  "file": "ASeq.lean",
+  "module": "ASeq",
+  "line": 103,
+  "endLine": 111,
+  "statement": "theorem gte_term (s : ASeq) (n : Nat) : s.d > 0 → n ≤ term (s.gte n) 0",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat"
+  ],
+  "meaningDeps": [
+   "ASeq",
+   "ASeq.term"
+  ],
+  "proofDeps": [
+   "ASeq.gte",
+   "ASeq.self_lt_mul_div_add"
+  ],
+  "usedBy": [],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "ASeq.gte_same_delta",
+  "name": "ASeq.gte_same_delta",
+  "kind": "theorem",
+  "file": "ASeq.lean",
+  "module": "ASeq",
+  "line": 113,
+  "endLine": 117,
+  "statement": "theorem gte_same_delta (s : ASeq) (n : Nat) : (s.gte n).d = s.d",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat"
+  ],
+  "meaningDeps": [
+   "ASeq"
+  ],
+  "proofDeps": [
+   "ASeq.gte"
+  ],
+  "usedBy": [],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "List.Sorted",
+  "name": "List.Sorted",
+  "kind": "abbrev",
+  "file": "Rake.lean",
+  "module": "Rake",
+  "line": 11,
+  "endLine": 11,
+  "statement": "abbrev Sorted {α : Type _} (r : α → α → Prop) (l : List α) : Prop := l.Pairwise r",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Prop",
+   "List"
+  ],
+  "meaningDeps": [],
+  "proofDeps": [],
+  "usedBy": [
+   "Rake",
+   "Rake.sort_nodup",
+   "Rake.sorted_get"
+  ],
+  "depth": 4,
+  "extracted": false
+ },
+ {
+  "id": "Rake",
+  "name": "Rake",
+  "kind": "structure",
+  "file": "Rake.lean",
+  "module": "Rake",
+  "line": 15,
+  "endLine": 22,
+  "statement": "structure Rake : Type where\n  d     : Nat\n  ks    : List Nat\n  size : Nat := ks.length\n  sorted: Bool := true\n  hsort : sorted → List.Sorted (·<·) ks := by simp\n  huniq : sorted → ks.Nodup := by simp\n  hsize : 0 < ks.length := by simp",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat",
+   "List",
+   "Bool"
+  ],
+  "meaningDeps": [
+   "List.Sorted"
+  ],
+  "proofDeps": [],
+  "usedBy": [
+   "Rake.ge2",
+   "Rake.gte",
+   "Rake.k_of_term",
+   "Rake.length_partition",
+   "Rake.nat",
+   "Rake.partition",
+   "Rake.partition_def",
+   "Rake.partition_term_iff",
+   "Rake.partition_term_keep",
+   "Rake.partition_term_same",
+   "Rake.rem",
+   "Rake.rem_def",
+   "Rake.rem_def'",
+   "Rake.rem_drop",
+   "Rake.rem_keep",
+   "Rake.rem_same",
+   "Rake.seq",
+   "Rake.seqs",
+   "Rake.sort",
+   "Rake.sort_term_iff_term",
+   "Rake.sorted_min_term_zero",
+   "Rake.term",
+   "Rake.term_iff",
+   "Rake.term_simp",
+   "Rake.terms",
+   "Rake.zer",
+   "RakeMap"
+  ],
+  "depth": 3,
+  "extracted": false
+ },
+ {
+  "id": "Rake.zer",
+  "name": "Rake.zer",
+  "kind": "def",
+  "file": "Rake.lean",
+  "module": "Rake",
+  "line": 26,
+  "endLine": 26,
+  "statement": "def zer : Rake := { d := 0, ks := [0] }",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [],
+  "meaningDeps": [
+   "Rake"
+  ],
+  "proofDeps": [],
+  "usedBy": [
+   "Rake.rem",
+   "Rake.rem_def",
+   "Rake.rem_def'"
+  ],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "Rake.nat",
+  "name": "Rake.nat",
+  "kind": "def",
+  "file": "Rake.lean",
+  "module": "Rake",
+  "line": 27,
+  "endLine": 27,
+  "statement": "def nat : Rake := { d := 1, ks := [0] }",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [],
+  "meaningDeps": [
+   "Rake"
+  ],
+  "proofDeps": [],
+  "usedBy": [
+   "RakeMap.rm_nat"
+  ],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "Rake.ge2",
+  "name": "Rake.ge2",
+  "kind": "def",
+  "file": "Rake.lean",
+  "module": "Rake",
+  "line": 28,
+  "endLine": 28,
+  "statement": "def ge2 : Rake := { d := 1, ks := [2] }",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [],
+  "meaningDeps": [
+   "Rake"
+  ],
+  "proofDeps": [],
+  "usedBy": [
+   "RakeMap.rm_ge2",
+   "RakeSieve.init"
+  ],
+  "depth": 2,
+  "extracted": false
+ },
+ {
+  "id": "Rake.term",
+  "name": "Rake.term",
+  "kind": "def",
+  "file": "Rake.lean",
+  "module": "Rake",
+  "line": 32,
+  "endLine": 35,
+  "statement": "def term (r: Rake) (n : Nat) : Nat :=\n  let q := r.ks.length\n  have : n%q < r.ks.length := Nat.mod_lt _ r.hsize\n  aseq r.ks[n%q] r.d |>.term (n/q)",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat",
+   "Nat.mod_lt"
+  ],
+  "meaningDeps": [
+   "Rake",
+   "aseq"
+  ],
+  "proofDeps": [],
+  "usedBy": [
+   "Rake.k_of_term",
+   "Rake.term_iff",
+   "Rake.term_simp",
+   "RakeMap.rm_ge2",
+   "RakeMap.rm_nat",
+   "RakeSieve.init"
+  ],
+  "depth": 2,
+  "extracted": false
+ },
+ {
+  "id": "Rake.terms",
+  "name": "Rake.terms",
+  "kind": "def",
+  "file": "Rake.lean",
+  "module": "Rake",
+  "line": 37,
+  "endLine": 38,
+  "statement": "def terms (r: Rake) (n: Nat) : List Nat :=\n  List.range n |>.map r.term",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat",
+   "List",
+   "List.range"
+  ],
+  "meaningDeps": [
+   "Rake"
+  ],
+  "proofDeps": [],
+  "usedBy": [],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "Rake.term_simp",
+  "name": "Rake.term_simp",
+  "kind": "theorem",
+  "file": "Rake.lean",
+  "module": "Rake",
+  "line": 40,
+  "endLine": 46,
+  "statement": "theorem term_simp (r:Rake) (n:Nat)\n: (∃k, (r.term n = k + r.d * (n/r.ks.length)) ∧ ∃i: Fin r.ks.length, i=n%r.ks.length ∧ k=r.ks[i])",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat",
+   "Fin"
+  ],
+  "meaningDeps": [
+   "Rake"
+  ],
+  "proofDeps": [
+   "Rake.term"
+  ],
+  "usedBy": [],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "Rake.term_iff",
+  "name": "Rake.term_iff",
+  "kind": "theorem",
+  "file": "Rake.lean",
+  "module": "Rake",
+  "line": 48,
+  "endLine": 99,
+  "statement": "theorem term_iff (r:Rake)\n  : ∀m, (∃n, r.term n = m) ↔ (∃ k∈r.ks,  ∃x:Nat, k+x*r.d = m)",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat"
+  ],
+  "meaningDeps": [
+   "Rake"
+  ],
+  "proofDeps": [
+   "Rake.term"
+  ],
+  "usedBy": [
+   "Rake.partition_term_keep",
+   "Rake.partition_term_same",
+   "Rake.rem_def",
+   "Rake.rem_drop",
+   "Rake.rem_keep",
+   "Rake.rem_same",
+   "Rake.sort_term_iff_term"
+  ],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "Rake.seq",
+  "name": "Rake.seq",
+  "kind": "def",
+  "file": "Rake.lean",
+  "module": "Rake",
+  "line": 105,
+  "endLine": 106,
+  "statement": "def seq (r:Rake) (n:Nat) {hn:n<r.ks.length} : ASeq :=\n  aseq (r.ks[n]'hn) r.d",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat"
+  ],
+  "meaningDeps": [
+   "Rake",
+   "ASeq",
+   "aseq"
+  ],
+  "proofDeps": [],
+  "usedBy": [],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "Rake.seqs",
+  "name": "Rake.seqs",
+  "kind": "def",
+  "file": "Rake.lean",
+  "module": "Rake",
+  "line": 108,
+  "endLine": 109,
+  "statement": "def seqs (r: Rake) : List ASeq :=\n  r.ks.map (λ k => aseq k r.d)",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "List"
+  ],
+  "meaningDeps": [
+   "Rake",
+   "ASeq",
+   "aseq"
+  ],
+  "proofDeps": [],
+  "usedBy": [],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "Rake.k_of_term",
+  "name": "Rake.k_of_term",
+  "kind": "theorem",
+  "file": "Rake.lean",
+  "module": "Rake",
+  "line": 114,
+  "endLine": 130,
+  "statement": "theorem k_of_term (r: Rake) (hmn: r.term m = n)\n: ∃k ∈ r.ks, ∃i : (Fin r.ks.length),\n    i = m%r.ks.length\n    ∧ k = r.ks[i]\n    ∧ n = k + r.d * (m/r.ks.length)",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Fin"
+  ],
+  "meaningDeps": [
+   "Rake"
+  ],
+  "proofDeps": [
+   "Rake.term"
+  ],
+  "usedBy": [],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "Rake.sort_nodup",
+  "name": "Rake.sort_nodup",
+  "kind": "def",
+  "file": "Rake.lean",
+  "module": "Rake",
+  "line": 136,
+  "endLine": 145,
+  "statement": "def sort_nodup (xs:List Nat) (hxs₀ : List.Nodup xs)\n: { xs':List Nat // List.Sorted (·<·) xs' ∧ xs'.Perm xs\n    ∧ xs.length = xs'.length ∧ xs'.Nodup }",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "List",
+   "Nat",
+   "List.Nodup",
+   "List.mergeSort_perm",
+   "List.sortedLE_mergeSort"
+  ],
+  "meaningDeps": [
+   "List.Sorted"
+  ],
+  "proofDeps": [],
+  "usedBy": [
+   "Rake.sort"
+  ],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "Rake.sort",
+  "name": "Rake.sort",
+  "kind": "def",
+  "file": "Rake.lean",
+  "module": "Rake",
+  "line": 147,
+  "endLine": 164,
+  "statement": "def sort (r: Rake) : {r':Rake // r'.d=r.d ∧ r'.sorted ∧ r'.ks.Perm r.ks.dedup }",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [],
+  "meaningDeps": [
+   "Rake",
+   "Rake.sort_nodup"
+  ],
+  "proofDeps": [],
+  "usedBy": [
+   "Rake.sort_term_iff_term"
+  ],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "Rake.length_pos_of_dedup",
+  "name": "Rake.length_pos_of_dedup",
+  "kind": "theorem",
+  "file": "Rake.lean",
+  "module": "Rake",
+  "line": 166,
+  "endLine": 170,
+  "statement": "lemma length_pos_of_dedup {l:List Nat} (hlen: 0 < l.length) : 0 < l.dedup.length",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "List",
+   "Nat"
+  ],
+  "meaningDeps": [],
+  "proofDeps": [],
+  "usedBy": [],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "Rake.zero_le_cases",
+  "name": "Rake.zero_le_cases",
+  "kind": "def",
+  "file": "Rake.lean",
+  "module": "Rake",
+  "line": 172,
+  "endLine": 173,
+  "statement": "def zero_le_cases (n:Nat) (zeq: 0=n → P) (zlt: 0<n → P) : P :=\n  if h:0=n then zeq h else zlt <| Nat.zero_lt_of_ne_zero λa=>h a.symm",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat"
+  ],
+  "meaningDeps": [],
+  "proofDeps": [],
+  "usedBy": [
+   "Rake.sorted_min_term_zero"
+  ],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "Rake.sorted_get",
+  "name": "Rake.sorted_get",
+  "kind": "theorem",
+  "file": "Rake.lean",
+  "module": "Rake",
+  "line": 175,
+  "endLine": 178,
+  "statement": "lemma sorted_get (xs:List Nat) (hxs: List.Sorted (·<·) xs) (i j:Fin xs.length) (hij: i<j)\n  : (xs[i] < xs[j])",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "List",
+   "Nat",
+   "Fin"
+  ],
+  "meaningDeps": [
+   "List.Sorted"
+  ],
+  "proofDeps": [],
+  "usedBy": [
+   "Rake.sorted_min_term_zero"
+  ],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "Rake.sorted_min_term_zero",
+  "name": "Rake.sorted_min_term_zero",
+  "kind": "theorem",
+  "file": "Rake.lean",
+  "module": "Rake",
+  "line": 185,
+  "endLine": 196,
+  "statement": "theorem sorted_min_term_zero (r: Rake) (hr: r.sorted) : ∀ n, (r.term 0 ≤ r.term n)",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [],
+  "meaningDeps": [
+   "Rake"
+  ],
+  "proofDeps": [
+   "Rake.zero_le_cases",
+   "Rake.sorted_get"
+  ],
+  "usedBy": [
+   "RakeMap.min_term_zero"
+  ],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "Rake.sort_term_iff_term",
+  "name": "Rake.sort_term_iff_term",
+  "kind": "theorem",
+  "file": "Rake.lean",
+  "module": "Rake",
+  "line": 198,
+  "endLine": 216,
+  "statement": "theorem sort_term_iff_term  (r:Rake) (n:Nat)\n  : (∃m, r.term m = n) ↔ (∃m', r.sort.val.term m' = n)",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat"
+  ],
+  "meaningDeps": [
+   "Rake"
+  ],
+  "proofDeps": [
+   "Rake.sort",
+   "Rake.term_iff"
+  ],
+  "usedBy": [],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "Rake.List.mod_length",
+  "name": "Rake.List.mod_length",
+  "kind": "theorem",
+  "file": "Rake.lean",
+  "module": "Rake",
+  "line": 224,
+  "endLine": 225,
+  "statement": "lemma List.mod_length {α : Type} (l:List α) (i:Nat) (hl: 0 < l.length)\n  : (i % l.length) < l.length",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "List",
+   "Nat"
+  ],
+  "meaningDeps": [],
+  "proofDeps": [],
+  "usedBy": [
+   "Rake.partition",
+   "Rake.partition_def",
+   "Rake.partition_term_same"
+  ],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "Rake.partition",
+  "name": "Rake.partition",
+  "kind": "def",
+  "file": "Rake.lean",
+  "module": "Rake",
+  "line": 232,
+  "endLine": 239,
+  "statement": "def partition (r:Rake) (j: Nat) (hj:0<j:=by simp): Rake",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat",
+   "List.range"
+  ],
+  "meaningDeps": [
+   "Rake",
+   "Rake.List.mod_length"
+  ],
+  "proofDeps": [],
+  "usedBy": [
+   "Rake.length_partition",
+   "Rake.partition_def",
+   "Rake.partition_term_keep",
+   "Rake.partition_term_same",
+   "Rake.rem_def'"
+  ],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "Rake.length_partition",
+  "name": "Rake.length_partition",
+  "kind": "theorem",
+  "file": "Rake.lean",
+  "module": "Rake",
+  "line": 240,
+  "endLine": 241,
+  "statement": "theorem length_partition (r:Rake) (j: Nat) (hj:0<j)\n  : (r.partition j hj).ks.length = j * r.ks.length",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat"
+  ],
+  "meaningDeps": [
+   "Rake"
+  ],
+  "proofDeps": [
+   "Rake.partition"
+  ],
+  "usedBy": [
+   "Rake.partition_term_keep"
+  ],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "Rake.partition_def",
+  "name": "Rake.partition_def",
+  "kind": "theorem",
+  "file": "Rake.lean",
+  "module": "Rake",
+  "line": 243,
+  "endLine": 246,
+  "statement": "theorem partition_def (r:Rake) (j: Nat) (hj:0<j) (i') (hi')\n  : (r.partition j hj).ks[i'] =\n    r.ks[i'%r.ks.length]'(List.mod_length r.ks i' r.hsize) + (i'/r.ks.length) * r.d",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat"
+  ],
+  "meaningDeps": [
+   "Rake",
+   "Rake.List.mod_length"
+  ],
+  "proofDeps": [
+   "Rake.partition"
+  ],
+  "usedBy": [
+   "Rake.partition_term_keep",
+   "Rake.partition_term_same"
+  ],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "Rake.partition_term_same",
+  "name": "Rake.partition_term_same",
+  "kind": "theorem",
+  "file": "Rake.lean",
+  "module": "Rake",
+  "line": 248,
+  "endLine": 278,
+  "statement": "theorem partition_term_same (r:Rake) (j:Nat) (hj: 0 < j) (r':Rake) (hr':r' = r.partition j hj)\n  : ∀n, (∃m', r'.term m' = n) → (∃m, r.term m = n)",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat"
+  ],
+  "meaningDeps": [
+   "Rake"
+  ],
+  "proofDeps": [
+   "Rake.term_iff",
+   "Rake.partition",
+   "Rake.partition_def",
+   "Rake.List.mod_length"
+  ],
+  "usedBy": [
+   "Rake.partition_term_iff"
+  ],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "Rake.partition_term_keep",
+  "name": "Rake.partition_term_keep",
+  "kind": "theorem",
+  "file": "Rake.lean",
+  "module": "Rake",
+  "line": 280,
+  "endLine": 338,
+  "statement": "theorem partition_term_keep (r:Rake) (j:Nat) (hj: 0 < j) (r':Rake) (hr':r' = r.partition j hj)\n  : ∀t, (∃n, r.term n = t) → (∃n, r'.term n = t)",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat"
+  ],
+  "meaningDeps": [
+   "Rake"
+  ],
+  "proofDeps": [
+   "Rake.term_iff",
+   "Rake.length_partition",
+   "Rake.partition_def",
+   "Rake.partition"
+  ],
+  "usedBy": [
+   "Rake.partition_term_iff"
+  ],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "Rake.partition_term_iff",
+  "name": "Rake.partition_term_iff",
+  "kind": "theorem",
+  "file": "Rake.lean",
+  "module": "Rake",
+  "line": 340,
+  "endLine": 344,
+  "statement": "theorem partition_term_iff (r:Rake) (j:Nat) (hj: 0 < j)\n  : ∀n, (∃m, (r.partition j hj).term m = n) ↔ (∃m, r.term m = n)",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat"
+  ],
+  "meaningDeps": [
+   "Rake"
+  ],
+  "proofDeps": [
+   "Rake.partition_term_same",
+   "Rake.partition_term_keep"
+  ],
+  "usedBy": [],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "Rake.rem",
+  "name": "Rake.rem",
+  "kind": "def",
+  "file": "Rake.lean",
+  "module": "Rake",
+  "line": 353,
+  "endLine": 362,
+  "statement": "def rem : Rake",
+  "variables": [
+   "(r: Rake)",
+   "{j: Nat}",
+   "(hj: 0<j)"
+  ],
+  "truncated": false,
+  "mathlib": [],
+  "meaningDeps": [
+   "Rake",
+   "Rake.zer"
+  ],
+  "proofDeps": [],
+  "usedBy": [
+   "Rake.rem_def",
+   "Rake.rem_def'"
+  ],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "Rake.HasNonMultiple",
+  "name": "Rake.HasNonMultiple",
+  "kind": "abbrev",
+  "file": "Rake.lean",
+  "module": "Rake",
+  "line": 364,
+  "endLine": 364,
+  "statement": "abbrev HasNonMultiple (j:Nat): Prop := ∃n, ¬j∣n ∧ ∃m, r.term m=n",
+  "variables": [
+   "(r: Rake)",
+   "{j: Nat}",
+   "(hj: 0<j)"
+  ],
+  "truncated": false,
+  "mathlib": [
+   "Nat",
+   "Prop"
+  ],
+  "meaningDeps": [],
+  "proofDeps": [],
+  "usedBy": [
+   "Rake.rem_def",
+   "Rake.rem_drop",
+   "Rake.rem_keep",
+   "Rake.rem_same",
+   "RakeMap.rem"
+  ],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "Rake.rem_def'",
+  "name": "Rake.rem_def'",
+  "kind": "theorem",
+  "file": "Rake.lean",
+  "module": "Rake",
+  "line": 365,
+  "endLine": 368,
+  "statement": "lemma rem_def' (r:Rake) {j: Nat} (hj: 0<j) (r': Rake) (hr': r' = r.rem hj)\n  : r'=zer\n  ∨ (r'.d=r.d*j ∧ r'.ks=(r.partition j hj).ks.filter (λk => ¬j∣k) ∧ 0<r'.ks.length)",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat"
+  ],
+  "meaningDeps": [
+   "Rake",
+   "Rake.zer"
+  ],
+  "proofDeps": [
+   "Rake.rem",
+   "Rake.partition"
+  ],
+  "usedBy": [
+   "Rake.rem_def"
+  ],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "Rake.rem_def",
+  "name": "Rake.rem_def",
+  "kind": "theorem",
+  "file": "Rake.lean",
+  "module": "Rake",
+  "line": 370,
+  "endLine": 409,
+  "statement": "theorem rem_def (r:Rake) {j: Nat} (hj: 0<j) (r': Rake) (hr': r' = r.rem hj) (hnm: HasNonMultiple r j)\n  : r'.d=r.d*j ∧ r'.ks=(r.partition j hj).ks.filter (λk => ¬j∣k) ∧ 0<r'.ks.length",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat"
+  ],
+  "meaningDeps": [
+   "Rake",
+   "Rake.HasNonMultiple"
+  ],
+  "proofDeps": [
+   "Rake.rem_def'",
+   "Rake.term_iff",
+   "Rake.rem",
+   "Rake.zer"
+  ],
+  "usedBy": [
+   "Rake.rem_drop",
+   "Rake.rem_keep",
+   "Rake.rem_same"
+  ],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "Rake.rem_drop",
+  "name": "Rake.rem_drop",
+  "kind": "theorem",
+  "file": "Rake.lean",
+  "module": "Rake",
+  "line": 411,
+  "endLine": 431,
+  "statement": "theorem rem_drop (r:Rake) {j: Nat} (hj: 0<j) (r': Rake) (hr': r' = r.rem hj) (hnm: HasNonMultiple r j)\n  : ∀n, j∣n → ¬(∃m, r'.term m = n)",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat"
+  ],
+  "meaningDeps": [
+   "Rake",
+   "Rake.HasNonMultiple"
+  ],
+  "proofDeps": [
+   "Rake.term_iff",
+   "Rake.rem_def"
+  ],
+  "usedBy": [],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "Rake.rem_keep",
+  "name": "Rake.rem_keep",
+  "kind": "theorem",
+  "file": "Rake.lean",
+  "module": "Rake",
+  "line": 433,
+  "endLine": 457,
+  "statement": "theorem rem_keep (r:Rake) {j: Nat} (hj: 0<j) (r': Rake) (hr': r' = r.rem hj)\n  : ∀n, ¬j∣n → (∃m, r.term m = n) → (∃m', r'.term m' = n)",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat"
+  ],
+  "meaningDeps": [
+   "Rake"
+  ],
+  "proofDeps": [
+   "Rake.term_iff",
+   "Rake.HasNonMultiple",
+   "Rake.rem_def"
+  ],
+  "usedBy": [],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "Rake.rem_same",
+  "name": "Rake.rem_same",
+  "kind": "theorem",
+  "file": "Rake.lean",
+  "module": "Rake",
+  "line": 459,
+  "endLine": 467,
+  "statement": "theorem rem_same (r:Rake) {j: Nat} (hj: 0<j) (r': Rake) (hr': r' = r.rem hj) (hnm: HasNonMultiple r j)\n  : ∀n, (∃m', r'.term m' = n) → (∃m, r.term m = n)",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat"
+  ],
+  "meaningDeps": [
+   "Rake",
+   "Rake.HasNonMultiple"
+  ],
+  "proofDeps": [
+   "Rake.term_iff",
+   "Rake.rem_def"
+  ],
+  "usedBy": [],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "Rake.gte",
+  "name": "Rake.gte",
+  "kind": "def",
+  "file": "Rake.lean",
+  "module": "Rake",
+  "line": 473,
+  "endLine": 476,
+  "statement": "def gte (r: Rake) (n: Nat) : Rake  :=\n  let f : ℕ → ℕ := (λk => let s := aseq k r.d; (ASeq.gte s n).k)\n  { d := r.d, ks := r.ks.map f, sorted := false,\n    hsize := Nat.lt_of_lt_of_eq r.hsize (r.ks.length_map _).symm }",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat"
+  ],
+  "meaningDeps": [
+   "Rake",
+   "aseq",
+   "ASeq.gte"
+  ],
+  "proofDeps": [],
+  "usedBy": [],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "RakeMap",
+  "name": "RakeMap",
+  "kind": "structure",
+  "file": "RakeMap.lean",
+  "module": "RakeMap",
+  "line": 6,
+  "endLine": 9,
+  "statement": "structure RakeMap (pred: Nat → Prop) where\n  rake : Rake\n  hbij : ∀ n, pred n ↔ ∃ m, rake.term m = n\n  hord : rake.sorted := by rfl",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat",
+   "Prop"
+  ],
+  "meaningDeps": [
+   "RakeMap.pred",
+   "Rake"
+  ],
+  "proofDeps": [],
+  "usedBy": [
+   "RakeMap.min_term_zero",
+   "RakeMap.pred",
+   "RakeMap.rem",
+   "RakeMap.rm_ge2",
+   "RakeMap.rm_nat",
+   "RakeMap.term",
+   "RakeSieve",
+   "RakeSieve.init"
+  ],
+  "depth": 2,
+  "extracted": false
+ },
+ {
+  "id": "RakeMap.pred",
+  "name": "RakeMap.pred",
+  "kind": "def",
+  "file": "RakeMap.lean",
+  "module": "RakeMap",
+  "line": 15,
+  "endLine": 15,
+  "statement": "def pred {p:Nat → Prop} (_:RakeMap p) : Nat → Prop := p",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat",
+   "Prop"
+  ],
+  "meaningDeps": [
+   "RakeMap"
+  ],
+  "proofDeps": [],
+  "usedBy": [
+   "RakeMap",
+   "RakeSieve.init"
+  ],
+  "depth": 2,
+  "extracted": false
+ },
+ {
+  "id": "RakeMap.term",
+  "name": "RakeMap.term",
+  "kind": "def",
+  "file": "RakeMap.lean",
+  "module": "RakeMap",
+  "line": 16,
+  "endLine": 16,
+  "statement": "@[simp] def term (rm: RakeMap p) (n:Nat) := rm.rake.term n",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat"
+  ],
+  "meaningDeps": [
+   "RakeMap"
+  ],
+  "proofDeps": [],
+  "usedBy": [],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "RakeMap.min_term_zero",
+  "name": "RakeMap.min_term_zero",
+  "kind": "theorem",
+  "file": "RakeMap.lean",
+  "module": "RakeMap",
+  "line": 18,
+  "endLine": 19,
+  "statement": "theorem min_term_zero (rm:RakeMap p)  : ∀ n, (rm.term 0 ≤ rm.term n)",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [],
+  "meaningDeps": [
+   "RakeMap"
+  ],
+  "proofDeps": [
+   "Rake.sorted_min_term_zero"
+  ],
+  "usedBy": [],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "RakeMap.rm_nat",
+  "name": "RakeMap.rm_nat",
+  "kind": "def",
+  "file": "RakeMap.lean",
+  "module": "RakeMap",
+  "line": 23,
+  "endLine": 25,
+  "statement": "def rm_nat : RakeMap (λ _ => True) := {\n  rake := nat\n  hbij := by intro n; simp[Rake.term, nat, aseq, ASeq.term]}",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [],
+  "meaningDeps": [
+   "RakeMap",
+   "Rake.nat",
+   "Rake.term",
+   "aseq",
+   "ASeq.term"
+  ],
+  "proofDeps": [],
+  "usedBy": [],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "RakeMap.rm_ge2",
+  "name": "RakeMap.rm_ge2",
+  "kind": "def",
+  "file": "RakeMap.lean",
+  "module": "RakeMap",
+  "line": 27,
+  "endLine": 34,
+  "statement": "def rm_ge2 : RakeMap (λn => 2≤n)",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [],
+  "meaningDeps": [
+   "RakeMap",
+   "Rake.ge2",
+   "Rake.term",
+   "aseq",
+   "ASeq.term"
+  ],
+  "proofDeps": [],
+  "usedBy": [
+   "RakeSieve.init"
+  ],
+  "depth": 2,
+  "extracted": false
+ },
+ {
+  "id": "RakeMap.rem",
+  "name": "RakeMap.rem",
+  "kind": "def",
+  "file": "RakeMap.lean",
+  "module": "RakeMap",
+  "line": 48,
+  "endLine": 68,
+  "statement": "def rem (rm : RakeMap prop) (j: Nat) (hj: 0<j) (hnmr: ∃n m, ¬j∣n ∧ rm.term m = n)\n  : RakeMap (λ n => prop n ∧ ¬j∣n)",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat"
+  ],
+  "meaningDeps": [
+   "RakeMap",
+   "Rake.HasNonMultiple"
+  ],
+  "proofDeps": [],
+  "usedBy": [],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "NPrime",
+  "name": "NPrime",
+  "kind": "def",
+  "file": "PrimeGen.lean",
+  "module": "PrimeGen",
+  "line": 7,
+  "endLine": 7,
+  "statement": "def NPrime : Type := { n: Nat // Nat.Prime n } deriving Repr, Ord, LT, LE",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat",
+   "Nat.Prime",
+   "Repr",
+   "Ord",
+   "LT",
+   "LE"
+  ],
+  "meaningDeps": [],
+  "proofDeps": [],
+  "usedBy": [
+   "NPrime.eq_iff",
+   "PrimeGen",
+   "PrimeSieveState",
+   "RakeSieve",
+   "SimpleGen",
+   "c_prime",
+   "instCoeNPrimeNat",
+   "instDvdNPrime",
+   "instToStringNPrime",
+   "main",
+   "primes"
+  ],
+  "depth": 2,
+  "extracted": false
+ },
+ {
+  "id": "NPrime.eq_iff",
+  "name": "NPrime.eq_iff",
+  "kind": "theorem",
+  "file": "PrimeGen.lean",
+  "module": "PrimeGen",
+  "line": 9,
+  "endLine": 9,
+  "statement": "@[simp] theorem NPrime.eq_iff (a b : NPrime) : a = b ↔ a.val = b.val",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [],
+  "meaningDeps": [
+   "NPrime"
+  ],
+  "proofDeps": [],
+  "usedBy": [],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "instToStringNPrime",
+  "name": "instToStringNPrime",
+  "kind": "instance",
+  "file": "PrimeGen.lean",
+  "module": "PrimeGen",
+  "line": 10,
+  "endLine": 10,
+  "statement": "instance : ToString NPrime",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "ToString"
+  ],
+  "meaningDeps": [
+   "NPrime"
+  ],
+  "proofDeps": [],
+  "usedBy": [],
+  "depth": null,
+  "extracted": false,
+  "autoName": true
+ },
+ {
+  "id": "instDvdNPrime",
+  "name": "instDvdNPrime",
+  "kind": "instance",
+  "file": "PrimeGen.lean",
+  "module": "PrimeGen",
+  "line": 11,
+  "endLine": 11,
+  "statement": "instance : Dvd NPrime",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Dvd"
+  ],
+  "meaningDeps": [
+   "NPrime"
+  ],
+  "proofDeps": [],
+  "usedBy": [],
+  "depth": null,
+  "extracted": false,
+  "autoName": true
+ },
+ {
+  "id": "instCoeNPrimeNat",
+  "name": "instCoeNPrimeNat",
+  "kind": "instance",
+  "file": "PrimeGen.lean",
+  "module": "PrimeGen",
+  "line": 12,
+  "endLine": 12,
+  "statement": "instance : Coe NPrime Nat",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Coe",
+   "Nat"
+  ],
+  "meaningDeps": [
+   "NPrime"
+  ],
+  "proofDeps": [],
+  "usedBy": [],
+  "depth": null,
+  "extracted": false,
+  "autoName": true
+ },
+ {
+  "id": "PrimeGen",
+  "name": "PrimeGen",
+  "kind": "class",
+  "file": "PrimeGen.lean",
+  "module": "PrimeGen",
+  "line": 19,
+  "endLine": 26,
+  "statement": "class PrimeGen (α : Type) where\n  P : α → NPrime\n  next : α → α\n  /-- No prime is skipped between `P g` and `P (next g)`. -/\n  hP' (g:α) : (¬∃ q, Nat.Prime q ∧ P g < q ∧  q < P (next g))\n  /-- The generated prime strictly increases at each step.\n  Needed for infinitude: `hP'` alone allows a constant generator. -/\n  hP_lt (g:α) : (P g : Nat) < P (next g)",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat.Prime",
+   "Nat"
+  ],
+  "meaningDeps": [
+   "NPrime"
+  ],
+  "proofDeps": [],
+  "usedBy": [
+   "PrimeGen.P_iterate_add_le",
+   "exists_prime_gt_of_primeGen",
+   "instPrimeGenPrimeSieve",
+   "instPrimeGenSimpleGen",
+   "primes",
+   "results_exists_prime_gt_of_primeGen"
+  ],
+  "depth": 1,
+  "extracted": false
+ },
+ {
+  "id": "PrimeGt",
+  "name": "PrimeGt",
+  "kind": "abbrev",
+  "file": "PrimeGen.lean",
+  "module": "PrimeGen",
+  "line": 29,
+  "endLine": 29,
+  "statement": "abbrev PrimeGt (n p:Nat) := Nat.Prime p ∧ n < p",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat",
+   "Nat.Prime"
+  ],
+  "meaningDeps": [],
+  "proofDeps": [],
+  "usedBy": [
+   "MinPrimeGt",
+   "RakeSieve.next",
+   "ex_prime_gt"
+  ],
+  "depth": 3,
+  "extracted": false
+ },
+ {
+  "id": "MinPrimeGt",
+  "name": "MinPrimeGt",
+  "kind": "structure",
+  "file": "PrimeGen.lean",
+  "module": "PrimeGen",
+  "line": 31,
+  "endLine": 34,
+  "statement": "structure MinPrimeGt (n:Nat) where\n  p : Nat\n  hpgt : PrimeGt n p\n  hmin : ∀q:Nat, q < p → (¬ PrimeGt n q)",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat"
+  ],
+  "meaningDeps": [
+   "PrimeGt"
+  ],
+  "proofDeps": [],
+  "usedBy": [
+   "MinPrimeGt.p'",
+   "RakeSieve.next",
+   "SimpleGen",
+   "min_prime_gt",
+   "r_next",
+   "r_next_prop"
+  ],
+  "depth": 3,
+  "extracted": false
+ },
+ {
+  "id": "MinPrimeGt.p'",
+  "name": "MinPrimeGt.p'",
+  "kind": "theorem",
+  "file": "PrimeGen.lean",
+  "module": "PrimeGen",
+  "line": 35,
+  "endLine": 35,
+  "statement": "theorem MinPrimeGt.p' (m:MinPrimeGt n) : Nat.Prime m.p",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat.Prime"
+  ],
+  "meaningDeps": [
+   "MinPrimeGt"
+  ],
+  "proofDeps": [],
+  "usedBy": [
+   "RakeSieve.init"
+  ],
+  "depth": 2,
+  "extracted": false
+ },
+ {
+  "id": "ex_prime_gt",
+  "name": "ex_prime_gt",
+  "kind": "theorem",
+  "file": "PrimeGen.lean",
+  "module": "PrimeGen",
+  "line": 39,
+  "endLine": 45,
+  "statement": "  theorem ex_prime_gt (c:Nat) : ∃ p, PrimeGt c p",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat"
+  ],
+  "meaningDeps": [
+   "PrimeGt"
+  ],
+  "proofDeps": [],
+  "usedBy": [
+   "min_prime_gt"
+  ],
+  "depth": 3,
+  "extracted": false
+ },
+ {
+  "id": "min_prime_gt",
+  "name": "min_prime_gt",
+  "kind": "def",
+  "file": "PrimeGen.lean",
+  "module": "PrimeGen",
+  "line": 47,
+  "endLine": 51,
+  "statement": "  def min_prime_gt (n: Nat) : MinPrimeGt n :=\n    let e := ex_prime_gt n\n    { p:=Nat.find e,\n      hpgt:=Nat.find_spec e,\n      hmin:= by exact fun {q} a => Nat.find_min e a}",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat",
+   "Nat.find",
+   "Nat.find_spec",
+   "Nat.find_min"
+  ],
+  "meaningDeps": [
+   "MinPrimeGt",
+   "ex_prime_gt"
+  ],
+  "proofDeps": [],
+  "usedBy": [
+   "SimpleGen.next",
+   "SimpleGen.start"
+  ],
+  "depth": 2,
+  "extracted": false
+ },
+ {
+  "id": "SimpleGen",
+  "name": "SimpleGen",
+  "kind": "structure",
+  "file": "PrimeGen.lean",
+  "module": "PrimeGen",
+  "line": 53,
+  "endLine": 55,
+  "statement": "  structure SimpleGen where\n    p : NPrime\n    c : MinPrimeGt p.val",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [],
+  "meaningDeps": [
+   "NPrime",
+   "MinPrimeGt"
+  ],
+  "proofDeps": [],
+  "usedBy": [
+   "SimpleGen.next",
+   "SimpleGen.start",
+   "instPrimeGenSimpleGen"
+  ],
+  "depth": 2,
+  "extracted": false
+ },
+ {
+  "id": "SimpleGen.next",
+  "name": "SimpleGen.next",
+  "kind": "def",
+  "file": "PrimeGen.lean",
+  "module": "PrimeGen",
+  "line": 57,
+  "endLine": 58,
+  "statement": "  def SimpleGen.next (g:SimpleGen) : SimpleGen :=\n    { p:=⟨g.c.p, g.c.hpgt.left⟩, c:=min_prime_gt g.c.p }",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [],
+  "meaningDeps": [
+   "SimpleGen",
+   "min_prime_gt"
+  ],
+  "proofDeps": [],
+  "usedBy": [
+   "instPrimeGenSimpleGen"
+  ],
+  "depth": 2,
+  "extracted": false
+ },
+ {
+  "id": "SimpleGen.start",
+  "name": "SimpleGen.start",
+  "kind": "def",
+  "file": "PrimeGen.lean",
+  "module": "PrimeGen",
+  "line": 61,
+  "endLine": 62,
+  "statement": "  def SimpleGen.start : SimpleGen :=\n    { p := ⟨2, Nat.prime_two⟩, c := min_prime_gt 2 }",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat.prime_two"
+  ],
+  "meaningDeps": [
+   "SimpleGen",
+   "min_prime_gt"
+  ],
+  "proofDeps": [],
+  "usedBy": [
+   "results_exists_prime_gt_of_simpleGen"
+  ],
+  "depth": 1,
+  "extracted": false
+ },
+ {
+  "id": "instPrimeGenSimpleGen",
+  "name": "instPrimeGenSimpleGen",
+  "kind": "instance",
+  "file": "PrimeGen.lean",
+  "module": "PrimeGen",
+  "line": 64,
+  "endLine": 76,
+  "statement": "  instance : PrimeGen SimpleGen",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [],
+  "meaningDeps": [
+   "PrimeGen",
+   "SimpleGen"
+  ],
+  "proofDeps": [
+   "SimpleGen.next"
+  ],
+  "usedBy": [
+   "results_exists_prime_gt_of_simpleGen"
+  ],
+  "depth": 1,
+  "extracted": false,
+  "autoName": true
+ },
+ {
+  "id": "fpow",
+  "name": "fpow",
+  "kind": "def",
+  "file": "PrimeGen.lean",
+  "module": "PrimeGen",
+  "line": 83,
+  "endLine": 87,
+  "statement": "def fpow (f : α → α) (n:Nat) (x₀ : α) : List α :=\n  let rec aux (n:Nat) (x:α) (acc:List α) :=\n    if n = 0 then x::acc\n    else aux (n-1) (f x) (x::acc)\n  aux (n-1) x₀ [] |>.reverse",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat",
+   "List"
+  ],
+  "meaningDeps": [],
+  "proofDeps": [],
+  "usedBy": [
+   "primes"
+  ],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "primes",
+  "name": "primes",
+  "kind": "def",
+  "file": "PrimeGen.lean",
+  "module": "PrimeGen",
+  "line": 94,
+  "endLine": 95,
+  "statement": "def primes {α : Type} [pg: PrimeGen α] (g₀ : α) (n : Nat) : List NPrime :=\n  fpow (fun g => pg.next g) n g₀ |>.map fun g => pg.P g",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat",
+   "List"
+  ],
+  "meaningDeps": [
+   "PrimeGen",
+   "NPrime",
+   "fpow"
+  ],
+  "proofDeps": [],
+  "usedBy": [],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "PrimeGen.P_iterate_add_le",
+  "name": "PrimeGen.P_iterate_add_le",
+  "kind": "theorem",
+  "file": "PrimeGen.lean",
+  "module": "PrimeGen",
+  "line": 100,
+  "endLine": 108,
+  "statement": "theorem PrimeGen.P_iterate_add_le {α : Type} [PrimeGen α] (g : α) (k : Nat) :\n    (P g : Nat) + k ≤ P (next^[k] g)",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat"
+  ],
+  "meaningDeps": [
+   "PrimeGen"
+  ],
+  "proofDeps": [],
+  "usedBy": [
+   "exists_prime_gt_of_primeGen"
+  ],
+  "depth": 2,
+  "extracted": false
+ },
+ {
+  "id": "exists_prime_gt_of_primeGen",
+  "name": "exists_prime_gt_of_primeGen",
+  "kind": "theorem",
+  "file": "PrimeGen.lean",
+  "module": "PrimeGen",
+  "line": 112,
+  "endLine": 118,
+  "statement": "theorem exists_prime_gt_of_primeGen {α : Type} [PrimeGen α] (g₀ : α) (n : Nat) :\n    ∃ p, Nat.Prime p ∧ n < p",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat",
+   "Nat.Prime"
+  ],
+  "meaningDeps": [
+   "PrimeGen"
+  ],
+  "proofDeps": [
+   "PrimeGen.P_iterate_add_le"
+  ],
+  "usedBy": [
+   "results_exists_prime_gt_of_primeGen",
+   "results_exists_prime_gt_of_rakeSieve",
+   "results_exists_prime_gt_of_simpleGen"
+  ],
+  "depth": 1,
+  "extracted": false
+ },
+ {
+  "id": "nosk'",
+  "name": "nosk'",
+  "kind": "abbrev",
+  "file": "PrimeSieve.lean",
+  "module": "PrimeSieve",
+  "line": 5,
+  "endLine": 5,
+  "statement": "abbrev nosk' P C := (¬∃ q:Nat, Nat.Prime q ∧ P < q ∧ q < C) -- no skipped prime",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat",
+   "Nat.Prime"
+  ],
+  "meaningDeps": [],
+  "proofDeps": [],
+  "usedBy": [
+   "PrimeSieveState",
+   "RakeSieve.next"
+  ],
+  "depth": 2,
+  "extracted": false
+ },
+ {
+  "id": "PrimeSieveState",
+  "name": "PrimeSieveState",
+  "kind": "class",
+  "file": "PrimeSieve.lean",
+  "module": "PrimeSieve",
+  "line": 6,
+  "endLine": 11,
+  "statement": "class PrimeSieveState (α : Type) where\n  P     (s:α) : NPrime\n  C     (s:α) : Nat\n  next  (s:α) (hC: Nat.Prime (C s)) (hN: nosk' (P s) (C s)): α\n  hNext (s:α) (hC: Nat.Prime (C s)) (hN: nosk' (P s) (C s)) {s':α}\n    : (s'=(next s hC hN) → P s' = C s ∧ C s' > C s)",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat",
+   "Nat.Prime"
+  ],
+  "meaningDeps": [
+   "NPrime",
+   "nosk'"
+  ],
+  "proofDeps": [],
+  "usedBy": [
+   "PrimeSieve",
+   "PrimeSieve.next",
+   "PrimeSieve.start",
+   "PrimeSieveDriver",
+   "RakeSieve.instPrimeSieveStateRakeSieve",
+   "c_gt_p",
+   "c_prime",
+   "hs_suffice",
+   "instPrimeGenPrimeSieve",
+   "nextState",
+   "no_skipped_prime"
+  ],
+  "depth": 1,
+  "extracted": false
+ },
+ {
+  "id": "R",
+  "name": "R",
+  "kind": "def",
+  "file": "PrimeSieve.lean",
+  "module": "PrimeSieve",
+  "line": 16,
+  "endLine": 16,
+  "statement": "def R(P:Nat) : Set Nat := { n | n≥2 ∧ ∀q≤P, Nat.Prime q → ¬q∣n }",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat",
+   "Set",
+   "Nat.Prime"
+  ],
+  "meaningDeps": [],
+  "proofDeps": [],
+  "usedBy": [
+   "PrimeSieveDriver",
+   "RakeSieve",
+   "RakeSieve.init",
+   "RakeSieve.next",
+   "c_prime",
+   "no_skipped_prime",
+   "r_gt_p",
+   "r_next",
+   "r_next_prop",
+   "results_three_le_of_mem_R_two",
+   "results_three_mem_R_two",
+   "three_le_of_mem_R_two",
+   "three_mem_R_two"
+  ],
+  "depth": 1,
+  "extracted": false
+ },
+ {
+  "id": "three_mem_R_two",
+  "name": "three_mem_R_two",
+  "kind": "theorem",
+  "file": "PrimeSieve.lean",
+  "module": "PrimeSieve",
+  "line": 19,
+  "endLine": 27,
+  "statement": "theorem three_mem_R_two : (3 : Nat) ∈ R 2",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat"
+  ],
+  "meaningDeps": [
+   "R"
+  ],
+  "proofDeps": [],
+  "usedBy": [
+   "RakeSieve.init",
+   "results_three_mem_R_two"
+  ],
+  "depth": 1,
+  "extracted": false
+ },
+ {
+  "id": "three_le_of_mem_R_two",
+  "name": "three_le_of_mem_R_two",
+  "kind": "theorem",
+  "file": "PrimeSieve.lean",
+  "module": "PrimeSieve",
+  "line": 30,
+  "endLine": 37,
+  "statement": "theorem three_le_of_mem_R_two : ∀ r ∈ R 2, (3 : Nat) ≤ r",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat"
+  ],
+  "meaningDeps": [
+   "R"
+  ],
+  "proofDeps": [],
+  "usedBy": [
+   "RakeSieve.init",
+   "results_three_le_of_mem_R_two"
+  ],
+  "depth": 1,
+  "extracted": false
+ },
+ {
+  "id": "r_gt_p",
+  "name": "r_gt_p",
+  "kind": "theorem",
+  "file": "PrimeSieve.lean",
+  "module": "PrimeSieve",
+  "line": 40,
+  "endLine": 53,
+  "statement": "lemma r_gt_p (p:Nat) : (∀r∈R p, r > p)",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat"
+  ],
+  "meaningDeps": [
+   "R"
+  ],
+  "proofDeps": [],
+  "usedBy": [
+   "RakeSieve.instPrimeSieveStateRakeSieve",
+   "RakeSieve.next",
+   "c_gt_p"
+  ],
+  "depth": 2,
+  "extracted": false
+ },
+ {
+  "id": "r_next",
+  "name": "r_next",
+  "kind": "theorem",
+  "file": "PrimeSieve.lean",
+  "module": "PrimeSieve",
+  "line": 60,
+  "endLine": 96,
+  "statement": "theorem r_next (p₀: Nat) (m: MinPrimeGt p₀) {n:Nat}\n  : (n ∈ R p₀ ∧ ¬↑m.p ∣ n) ↔ (n ∈ R m.p)",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat"
+  ],
+  "meaningDeps": [
+   "MinPrimeGt",
+   "R"
+  ],
+  "proofDeps": [],
+  "usedBy": [
+   "r_next_prop"
+  ],
+  "depth": 4,
+  "extracted": false
+ },
+ {
+  "id": "r_next_prop",
+  "name": "r_next_prop",
+  "kind": "theorem",
+  "file": "PrimeSieve.lean",
+  "module": "PrimeSieve",
+  "line": 110,
+  "endLine": 114,
+  "statement": "theorem r_next_prop {p₀ n:Nat} {h₀ h₁: Nat → Prop} {m : MinPrimeGt p₀}\n  (hh₀: h₀ n ↔ n ∈ R p₀) (hh₁: h₁ n ↔ h₀ n ∧ ¬(m.p ∣ n))\n  : (h₁ n ↔ n ∈ R m.p)",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat",
+   "Prop"
+  ],
+  "meaningDeps": [
+   "MinPrimeGt",
+   "R"
+  ],
+  "proofDeps": [
+   "r_next"
+  ],
+  "usedBy": [
+   "RakeSieve.next"
+  ],
+  "depth": 3,
+  "extracted": false
+ },
+ {
+  "id": "PrimeSieveDriver",
+  "name": "PrimeSieveDriver",
+  "kind": "class",
+  "file": "PrimeSieve.lean",
+  "module": "PrimeSieve",
+  "line": 124,
+  "endLine": 126,
+  "statement": "class PrimeSieveDriver (α : Type) [PrimeSieveState α] where\n  hCinR  (g:α) : C g ∈ R (P g)            -- C is an element of R\n  hRmin  (g:α) : ∀ n ∈ R (P g), C g ≤ n   -- C is min of R",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [],
+  "meaningDeps": [
+   "PrimeSieveState",
+   "R"
+  ],
+  "proofDeps": [],
+  "usedBy": [
+   "PrimeSieve",
+   "PrimeSieve.next",
+   "PrimeSieve.start",
+   "RakeSieve.instPrimeSieveDriverRakeSieve",
+   "c_gt_p",
+   "c_prime",
+   "hs_suffice",
+   "instPrimeGenPrimeSieve",
+   "nextState",
+   "no_skipped_prime"
+  ],
+  "depth": 1,
+  "extracted": false
+ },
+ {
+  "id": "c_gt_p",
+  "name": "c_gt_p",
+  "kind": "theorem",
+  "file": "PrimeSieve.lean",
+  "module": "PrimeSieve",
+  "line": 129,
+  "endLine": 131,
+  "statement": "theorem c_gt_p (α : Type) [PrimeSieveState α] [PrimeSieveDriver α] (g:α) : C g > P g",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [],
+  "meaningDeps": [
+   "PrimeSieveState",
+   "PrimeSieveDriver"
+  ],
+  "proofDeps": [
+   "r_gt_p"
+  ],
+  "usedBy": [
+   "c_prime",
+   "hs_suffice",
+   "instPrimeGenPrimeSieve"
+  ],
+  "depth": 1,
+  "extracted": false
+ },
+ {
+  "id": "no_skipped_prime",
+  "name": "no_skipped_prime",
+  "kind": "theorem",
+  "file": "PrimeSieve.lean",
+  "module": "PrimeSieve",
+  "line": 133,
+  "endLine": 151,
+  "statement": "theorem no_skipped_prime (α : Type) [PrimeSieveState α] [PrimeSieveDriver α] (g:α)\n  : ¬ ∃ q:Nat, Nat.Prime q ∧ P g < q ∧ q < C g",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat",
+   "Nat.Prime"
+  ],
+  "meaningDeps": [
+   "PrimeSieveState",
+   "PrimeSieveDriver"
+  ],
+  "proofDeps": [
+   "R"
+  ],
+  "usedBy": [
+   "c_prime",
+   "hs_suffice",
+   "instPrimeGenPrimeSieve",
+   "nextState"
+  ],
+  "depth": 1,
+  "extracted": false
+ },
+ {
+  "id": "no_prime_factors_im_no_factors",
+  "name": "no_prime_factors_im_no_factors",
+  "kind": "theorem",
+  "file": "PrimeSieve.lean",
+  "module": "PrimeSieve",
+  "line": 153,
+  "endLine": 170,
+  "statement": "lemma no_prime_factors_im_no_factors {c:Nat} -- c is a candidate prime\n  (h2lc: 2 ≤ c)                              -- c is at least 2\n  (hnpf: ∀ p < c, Nat.Prime p → ¬(p∣c))      -- c has no prime factors\n  : Nat.Prime c",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat",
+   "Nat.Prime"
+  ],
+  "meaningDeps": [],
+  "proofDeps": [],
+  "usedBy": [
+   "c_prime"
+  ],
+  "depth": 2,
+  "extracted": false
+ },
+ {
+  "id": "c_prime",
+  "name": "c_prime",
+  "kind": "theorem",
+  "file": "PrimeSieve.lean",
+  "module": "PrimeSieve",
+  "line": 173,
+  "endLine": 193,
+  "statement": "theorem c_prime (α: Type) [PrimeSieveState α] [PrimeSieveDriver α] (g:α)\n  : Nat.Prime (C g)",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat.Prime"
+  ],
+  "meaningDeps": [
+   "PrimeSieveState",
+   "PrimeSieveDriver"
+  ],
+  "proofDeps": [
+   "NPrime",
+   "R",
+   "no_skipped_prime",
+   "c_gt_p",
+   "no_prime_factors_im_no_factors"
+  ],
+  "usedBy": [
+   "hs_suffice",
+   "instPrimeGenPrimeSieve",
+   "nextState"
+  ],
+  "depth": 1,
+  "extracted": false
+ },
+ {
+  "id": "hs_suffice",
+  "name": "hs_suffice",
+  "kind": "theorem",
+  "file": "PrimeSieve.lean",
+  "module": "PrimeSieve",
+  "line": 198,
+  "endLine": 203,
+  "statement": "theorem hs_suffice (α : Type) [PrimeSieveState α] [PrimeSieveDriver α] (g:α)\n  :  (Nat.Prime (C g)) ∧ (C g > P g) ∧ (¬∃ q, Nat.Prime q ∧ P g < q ∧  q < C g)",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat.Prime"
+  ],
+  "meaningDeps": [
+   "PrimeSieveState",
+   "PrimeSieveDriver"
+  ],
+  "proofDeps": [
+   "c_prime",
+   "c_gt_p",
+   "no_skipped_prime"
+  ],
+  "usedBy": [],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "nextState",
+  "name": "nextState",
+  "kind": "def",
+  "file": "PrimeSieve.lean",
+  "module": "PrimeSieve",
+  "line": 205,
+  "endLine": 208,
+  "statement": "def nextState {α : Type} [PrimeSieveState α] [PrimeSieveDriver α] (s: α) : α :=\n  let c' := c_prime α s\n  let ns := no_skipped_prime α s\n  PrimeSieveState.next s c' ns",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [],
+  "meaningDeps": [
+   "PrimeSieveState",
+   "PrimeSieveDriver",
+   "c_prime",
+   "no_skipped_prime"
+  ],
+  "proofDeps": [],
+  "usedBy": [
+   "PrimeSieve.next",
+   "instPrimeGenPrimeSieve"
+  ],
+  "depth": 1,
+  "extracted": false
+ },
+ {
+  "id": "PrimeSieve",
+  "name": "PrimeSieve",
+  "kind": "structure",
+  "file": "PrimeSieve.lean",
+  "module": "PrimeSieve",
+  "line": 211,
+  "endLine": 212,
+  "statement": "structure PrimeSieve  where\n  state  : α",
+  "variables": [
+   "(α : Type)",
+   "[PrimeSieveState α]",
+   "[PrimeSieveDriver α]"
+  ],
+  "truncated": false,
+  "mathlib": [],
+  "meaningDeps": [
+   "PrimeSieveState",
+   "PrimeSieveDriver"
+  ],
+  "proofDeps": [],
+  "usedBy": [
+   "PrimeSieve.next",
+   "PrimeSieve.start",
+   "instPrimeGenPrimeSieve",
+   "main",
+   "results_exists_prime_gt_of_rakeSieve"
+  ],
+  "depth": 1,
+  "extracted": false
+ },
+ {
+  "id": "PrimeSieve.next",
+  "name": "PrimeSieve.next",
+  "kind": "def",
+  "file": "PrimeSieve.lean",
+  "module": "PrimeSieve",
+  "line": 214,
+  "endLine": 215,
+  "statement": "def PrimeSieve.next (x:PrimeSieve α) : PrimeSieve α :=\n  { state := nextState x.state }",
+  "variables": [
+   "(α : Type)",
+   "[PrimeSieveState α]",
+   "[PrimeSieveDriver α]"
+  ],
+  "truncated": false,
+  "mathlib": [],
+  "meaningDeps": [
+   "PrimeSieve",
+   "nextState",
+   "PrimeSieveState",
+   "PrimeSieveDriver"
+  ],
+  "proofDeps": [],
+  "usedBy": [
+   "instPrimeGenPrimeSieve"
+  ],
+  "depth": 1,
+  "extracted": false
+ },
+ {
+  "id": "instPrimeGenPrimeSieve",
+  "name": "instPrimeGenPrimeSieve",
+  "kind": "instance",
+  "file": "PrimeSieve.lean",
+  "module": "PrimeSieve",
+  "line": 218,
+  "endLine": 242,
+  "statement": "instance : PrimeGen (PrimeSieve α)",
+  "variables": [
+   "(α : Type)",
+   "[PrimeSieveState α]",
+   "[PrimeSieveDriver α]"
+  ],
+  "truncated": false,
+  "mathlib": [],
+  "meaningDeps": [
+   "PrimeGen",
+   "PrimeSieve",
+   "PrimeSieveState",
+   "PrimeSieveDriver"
+  ],
+  "proofDeps": [
+   "PrimeSieve.next",
+   "c_prime",
+   "no_skipped_prime",
+   "nextState",
+   "c_gt_p"
+  ],
+  "usedBy": [
+   "results_exists_prime_gt_of_rakeSieve"
+  ],
+  "depth": 0,
+  "extracted": false,
+  "autoName": true
+ },
+ {
+  "id": "PrimeSieve.start",
+  "name": "PrimeSieve.start",
+  "kind": "def",
+  "file": "PrimeSieve.lean",
+  "module": "PrimeSieve",
+  "line": 245,
+  "endLine": 247,
+  "statement": "def PrimeSieve.start {β : Type} [PrimeSieveState β] [PrimeSieveDriver β] (s : β) :\n    PrimeSieve β :=\n  { state := s }",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [],
+  "meaningDeps": [
+   "PrimeSieveState",
+   "PrimeSieveDriver",
+   "PrimeSieve"
+  ],
+  "proofDeps": [],
+  "usedBy": [],
+  "depth": null,
+  "extracted": false
+ },
+ {
+  "id": "RakeSieve",
+  "name": "RakeSieve",
+  "kind": "structure",
+  "file": "RakeSieve.lean",
+  "module": "RakeSieve",
+  "line": 5,
+  "endLine": 12,
+  "statement": "structure RakeSieve where\n  prop : Nat -> Prop\n  rm: RakeMap prop\n  p : NPrime               -- the current prime\n  c : Nat                  -- the candidate for next prime\n  hprop : ∀ n:Nat, prop n ↔ n ∈ R p\n  hCinR : c ∈ R p\n  hRmin : ∀ r ∈ R p, c ≤ r",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat",
+   "Prop"
+  ],
+  "meaningDeps": [
+   "RakeMap",
+   "NPrime",
+   "R"
+  ],
+  "proofDeps": [],
+  "usedBy": [
+   "RakeSieve.init",
+   "RakeSieve.instPrimeSieveDriverRakeSieve",
+   "RakeSieve.instPrimeSieveStateRakeSieve",
+   "RakeSieve.next",
+   "results_exists_prime_gt_of_rakeSieve"
+  ],
+  "depth": 1,
+  "extracted": false
+ },
+ {
+  "id": "RakeSieve.init",
+  "name": "RakeSieve.init",
+  "kind": "def",
+  "file": "RakeSieve.lean",
+  "module": "RakeSieve",
+  "line": 19,
+  "endLine": 53,
+  "statement": "def init : RakeSieve",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat.prime_two",
+   "Nat",
+   "Nat.Prime.two_le"
+  ],
+  "meaningDeps": [
+   "RakeSieve",
+   "RakeMap",
+   "RakeMap.rm_ge2",
+   "Rake.ge2",
+   "Rake.term",
+   "RakeMap.pred",
+   "R",
+   "MinPrimeGt.p'",
+   "three_mem_R_two",
+   "three_le_of_mem_R_two"
+  ],
+  "proofDeps": [],
+  "usedBy": [
+   "main",
+   "results_exists_prime_gt_of_rakeSieve"
+  ],
+  "depth": 1,
+  "extracted": false
+ },
+ {
+  "id": "RakeSieve.next",
+  "name": "RakeSieve.next",
+  "kind": "def",
+  "file": "RakeSieve.lean",
+  "module": "RakeSieve",
+  "line": 55,
+  "endLine": 111,
+  "statement": "def next (rs₀ : RakeSieve) (hC₀: Nat.Prime rs₀.c) (hNS: nosk' rs₀.p rs₀.c): RakeSieve",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat.Prime",
+   "Nat.exists_infinite_primes",
+   "Nat.Prime.two_le",
+   "Nat.prime_dvd_prime_iff_eq",
+   "Nat.Prime.pos",
+   "exists_apply_eq_apply"
+  ],
+  "meaningDeps": [
+   "RakeSieve",
+   "nosk'",
+   "R",
+   "PrimeGt",
+   "r_gt_p",
+   "MinPrimeGt",
+   "r_next_prop"
+  ],
+  "proofDeps": [],
+  "usedBy": [
+   "RakeSieve.instPrimeSieveStateRakeSieve"
+  ],
+  "depth": 2,
+  "extracted": false
+ },
+ {
+  "id": "RakeSieve.instPrimeSieveStateRakeSieve",
+  "name": "RakeSieve.instPrimeSieveStateRakeSieve",
+  "kind": "instance",
+  "file": "RakeSieve.lean",
+  "module": "RakeSieve",
+  "line": 113,
+  "endLine": 126,
+  "statement": "instance : PrimeSieveState RakeSieve",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [],
+  "meaningDeps": [
+   "PrimeSieveState",
+   "RakeSieve"
+  ],
+  "proofDeps": [
+   "RakeSieve.next",
+   "r_gt_p"
+  ],
+  "usedBy": [
+   "results_exists_prime_gt_of_rakeSieve"
+  ],
+  "depth": 1,
+  "extracted": false,
+  "autoName": true
+ },
+ {
+  "id": "RakeSieve.instPrimeSieveDriverRakeSieve",
+  "name": "RakeSieve.instPrimeSieveDriverRakeSieve",
+  "kind": "instance",
+  "file": "RakeSieve.lean",
+  "module": "RakeSieve",
+  "line": 130,
+  "endLine": 132,
+  "statement": "instance : PrimeSieveDriver RakeSieve",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [],
+  "meaningDeps": [
+   "PrimeSieveDriver",
+   "RakeSieve"
+  ],
+  "proofDeps": [],
+  "usedBy": [
+   "results_exists_prime_gt_of_rakeSieve"
+  ],
+  "depth": 1,
+  "extracted": false,
+  "autoName": true
+ },
+ {
+  "id": "results_three_mem_R_two",
+  "name": "results_three_mem_R_two",
+  "kind": "theorem",
+  "file": "Results.lean",
+  "module": "Results",
+  "line": 5,
+  "endLine": 6,
+  "statement": "theorem results_three_mem_R_two : (3 : Nat) ∈ R 2",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat"
+  ],
+  "meaningDeps": [
+   "R"
+  ],
+  "proofDeps": [
+   "three_mem_R_two"
+  ],
+  "usedBy": [],
+  "depth": 0,
+  "extracted": false
+ },
+ {
+  "id": "results_three_le_of_mem_R_two",
+  "name": "results_three_le_of_mem_R_two",
+  "kind": "theorem",
+  "file": "Results.lean",
+  "module": "Results",
+  "line": 8,
+  "endLine": 9,
+  "statement": "theorem results_three_le_of_mem_R_two : ∀ r ∈ R 2, (3 : Nat) ≤ r",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat"
+  ],
+  "meaningDeps": [
+   "R"
+  ],
+  "proofDeps": [
+   "three_le_of_mem_R_two"
+  ],
+  "usedBy": [],
+  "depth": 0,
+  "extracted": false
+ },
+ {
+  "id": "results_exists_prime_gt_of_primeGen",
+  "name": "results_exists_prime_gt_of_primeGen",
+  "kind": "theorem",
+  "file": "Results.lean",
+  "module": "Results",
+  "line": 11,
+  "endLine": 13,
+  "statement": "theorem results_exists_prime_gt_of_primeGen {α : Type} [PrimeGen α] (g₀ : α) (n : Nat) :\n    ∃ p, Nat.Prime p ∧ n < p",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat",
+   "Nat.Prime"
+  ],
+  "meaningDeps": [
+   "PrimeGen"
+  ],
+  "proofDeps": [
+   "exists_prime_gt_of_primeGen"
+  ],
+  "usedBy": [],
+  "depth": 0,
+  "extracted": false
+ },
+ {
+  "id": "results_exists_prime_gt_of_simpleGen",
+  "name": "results_exists_prime_gt_of_simpleGen",
+  "kind": "theorem",
+  "file": "Results.lean",
+  "module": "Results",
+  "line": 15,
+  "endLine": 17,
+  "statement": "theorem results_exists_prime_gt_of_simpleGen (n : Nat) :\n    ∃ p, Nat.Prime p ∧ n < p",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat",
+   "Nat.Prime"
+  ],
+  "meaningDeps": [],
+  "proofDeps": [
+   "exists_prime_gt_of_primeGen",
+   "SimpleGen.start",
+   "instPrimeGenSimpleGen"
+  ],
+  "usedBy": [],
+  "depth": 0,
+  "extracted": false
+ },
+ {
+  "id": "results_exists_prime_gt_of_rakeSieve",
+  "name": "results_exists_prime_gt_of_rakeSieve",
+  "kind": "theorem",
+  "file": "Results.lean",
+  "module": "Results",
+  "line": 19,
+  "endLine": 21,
+  "statement": "theorem results_exists_prime_gt_of_rakeSieve (n : Nat) :\n    ∃ p, Nat.Prime p ∧ n < p",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "Nat",
+   "Nat.Prime"
+  ],
+  "meaningDeps": [],
+  "proofDeps": [
+   "exists_prime_gt_of_primeGen",
+   "RakeSieve.init",
+   "PrimeSieve",
+   "RakeSieve",
+   "instPrimeGenPrimeSieve",
+   "RakeSieve.instPrimeSieveStateRakeSieve",
+   "RakeSieve.instPrimeSieveDriverRakeSieve"
+  ],
+  "usedBy": [],
+  "depth": 0,
+  "extracted": false
+ },
+ {
+  "id": "main",
+  "name": "main",
+  "kind": "def",
+  "file": "Main.lean",
+  "module": "Main",
+  "line": 4,
+  "endLine": 10,
+  "statement": "def main : IO Unit",
+  "variables": [],
+  "truncated": false,
+  "mathlib": [
+   "IO",
+   "List"
+  ],
+  "meaningDeps": [
+   "PrimeSieve",
+   "RakeSieve.init",
+   "NPrime"
+  ],
+  "proofDeps": [],
+  "usedBy": [],
+  "depth": null,
+  "extracted": false
+ }
+]

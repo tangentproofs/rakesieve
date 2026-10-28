@@ -25,13 +25,41 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Set up Node (for the plain-English explainer)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: learn/package-lock.json
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build plain-English explainer (learn/)
+        working-directory: learn
+        run: |
+          npm ci
+          npm test
+          python3 tools/scan_decls.py
+          git diff --exit-code data/ || { echo "::error::learn/data is stale; run python3 learn/tools/scan_decls.py"; exit 1; }
+          npm run build
+
+      - name: Prepare Pages site
+        run: |
+          mkdir -p _site
+          cp -R site/. _site/
+          mkdir -p _site/learn
+          cp -R learn/dist/. _site/learn/
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: site
+          path: _site
 
       - name: Deploy to GitHub Pages
         id: deployment
