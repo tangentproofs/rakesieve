@@ -66,3 +66,15 @@ def rem (rm : RakeMap prop) (j: Nat) (hj: 0<j) (hnmr: ∃n m, ¬j∣n ∧ rm.ter
     have hs := r₁.sort_term_iff_term n
     apply Iff.intro; all_goals aesop
   { rake := r₂, hbij := hbij₂, hord := by simp[r₂.prop] }
+
+/-- `rem j` multiplies the rake's period by `j` (the rake is partitioned into `j` classes;
+filtering and sorting keep the period). -/
+theorem rem_d (rm : RakeMap prop) (j : Nat) (hj : 0 < j) (hnmr : ∃ n m, ¬j∣n ∧ rm.term m = n) :
+    (rm.rem j hj hnmr).rake.d = rm.rake.d * j := by
+  have hnm : rm.rake.HasNonMultiple j := by
+    obtain ⟨n, m, hjn, ht⟩ := hnmr
+    exact ⟨n, hjn, m, ht⟩
+  have h₁ := (Rake.rem_def rm.rake hj (rm.rake.rem hj) rfl hnm).1
+  have h₂ := (rm.rake.rem hj).sort.prop.1
+  show (rm.rake.rem hj).sort.val.d = _
+  rw [h₂, h₁]

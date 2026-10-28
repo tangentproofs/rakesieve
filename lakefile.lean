@@ -10,6 +10,8 @@ lean_lib Rake { }
 lean_lib RakeMap { }
 lean_lib RakeSieve { }
 lean_lib Results { }
+lean_lib SimpleGen { }
+lean_lib NoEuclidCheck { }
 
 @[default_target]
 lean_exe leansieve {
